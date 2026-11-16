@@ -92,7 +92,8 @@ USE ukca_mode_setup,        ONLY: nmodes, cp_du, mode_sup_insol
 
 USE ukca_environment_fields_mod, ONLY: drep
 USE ereport_mod,            ONLY: ereport
-USE yomhook,                ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,               ONLY: jprb, jpim
 USE ereport_mod,            ONLY: ereport
 USE umPrintMgr,             ONLY: umPrint, umMessage
@@ -133,13 +134,11 @@ REAL    :: fracduem(ndiv,nmodes)   ! fraction dust emitted to each mode
 INTEGER           :: errcode       ! Error code
 CHARACTER(LEN=errormessagelength) :: cmessage
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_PRIM_DU'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Molar mass of dry air (kg/mol)
 mm_da = avogadro*boltzmann/rgas
@@ -221,7 +220,7 @@ DO idiv = 1,ndiv    ! loop over bins
   END DO   ! nmodes
 END DO   ! ndiv
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_prim_du

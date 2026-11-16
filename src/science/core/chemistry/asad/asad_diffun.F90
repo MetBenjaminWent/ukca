@@ -78,7 +78,8 @@ USE asad_mod,               ONLY: fdot, ydot, prod, slos,                      &
                                   linfam, nodd, moffam, madvtr,                &
                                   nf, nlf, jpcspf
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE asad_prls_mod, ONLY: asad_prls
 IMPLICIT NONE
 
@@ -97,9 +98,7 @@ LOGICAL :: gfam
 LOGICAL :: gtr
 LOGICAL, SAVE :: gdepem = .TRUE.
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_DIFFUN'
 
@@ -107,7 +106,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_DIFFUN'
 !       1. Initialise tracer/family chemistry tendencies
 !          ---------- ------------- --------- ----------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 DO jtr = 1, jpcspf
   DO jl = 1, kl
     fdot(jl,jtr) = 0.0
@@ -148,7 +147,7 @@ DO j = 1, nf
   END DO
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_diffun
 END MODULE asad_diffun_mod

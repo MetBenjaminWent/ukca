@@ -78,7 +78,8 @@ USE ukca_cspecies,  ONLY: c_species,n_so2 ! to convert so2 concs
 ! import fitting coefficients from input Rose metadata
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE parkind1,            ONLY: jprb, jpim
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -119,15 +120,13 @@ REAL :: fit_2 != -0.931
 ! default intercept value = 4.65
 REAL :: fit_3 != 4.65
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CALC_CLOUD_PH'
 
 ! End of Header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Replace default fitting parameters with those input from rose metadata
 fit_1=ukca_config%ph_fit_coeff_a
@@ -183,7 +182,7 @@ DO k = 1, model_levels
 END DO     ! k
 
 ! Finished defined new values of cloud pH to use elsewhere
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE ukca_calc_cloud_ph
 

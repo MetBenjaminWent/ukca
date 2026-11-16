@@ -131,7 +131,8 @@ USE ukca_config_specification_mod,  ONLY: glomap_config, glomap_variables,     &
                                           i_primss_method_jaegle
 
 USE ereport_mod,                    ONLY: ereport
-USE yomhook,                        ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,                       ONLY: jprb, jpim
 USE umPrintMgr,                     ONLY: umPrint
 
@@ -224,14 +225,12 @@ CHARACTER(LEN=errormessagelength) :: cmessage       ! Error message
 INTEGER           :: errcode        ! Error code
 
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_PRIM_SS'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -393,7 +392,7 @@ DO jv = 1,nbins
   END IF     ! if drhi(jv) > cutoff
 END DO      ! jv = 1,nbins
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_prim_ss
 END MODULE ukca_prim_ss_mod

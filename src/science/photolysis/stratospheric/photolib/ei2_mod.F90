@@ -10,7 +10,8 @@
 MODULE ei2_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -37,7 +38,8 @@ CONTAINS
 REAL FUNCTION ei2(x)
 USE ei1_mod, ONLY: ei1
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Function interface
@@ -47,13 +49,11 @@ REAL, INTENT(IN) :: x ! Argument of the second exponential integral.
 REAL, PARAMETER :: thresh=0.10e-15
 REAL, PARAMETER :: xmax=50.0
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='EI2'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !     Calculate integral
 IF ( x <= thresh ) THEN
@@ -63,7 +63,7 @@ ELSE IF ( x >= xmax ) THEN
 ELSE
   ei2 = EXP(-x) - x*ei1(x)
 END IF
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END FUNCTION ei2

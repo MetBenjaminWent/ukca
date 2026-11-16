@@ -49,7 +49,8 @@ SUBROUTINE ukca_ddepo3_ocean(p0,t0,sst,usa,rc)
 USE ukca_um_legacy_mod,        ONLY: vkman, rgas => r
 USE ukca_config_constants_mod, ONLY: rhosea
 USE parkind1,                  ONLY: jpim, jprb
-USE yomhook,                   ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 
 IMPLICIT NONE
@@ -64,9 +65,7 @@ REAL, INTENT(OUT) :: rc  ! surface resistance term (s/m)
 REAL, PARAMETER :: del = 3.0e-6 ! assumed depth of ocean surface micro layer (m)
 
 ! Local variables
-INTEGER(KIND=jpim), PARAMETER :: zhook_in = 0 ! DrHook tracing entry
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1 ! DrHook tracing exit
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 REAL :: rhoa ! air density (kg/m3)
 REAL :: alpha ! ozone dimensionless solubility
 REAL :: usw ! waterside friction velocity (m/s)
@@ -86,7 +85,7 @@ REAL :: trm2
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DDEPO3_OCEAN'
 
 !------------------------------------------------------------------------
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 
 rhoa = p0 / ( rgas * t0 ) ! air density (kg/m3)
@@ -118,7 +117,7 @@ vdw=SQRT(a1*m_diff)*(psi*b_k1(delzt1)*COSH(argm)+b_k0(delzt1)*SINH(argm))/     &
 
 rc=1.0/(alpha*vdw) ! surface resistance (s/m)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE ukca_ddepo3_ocean
 

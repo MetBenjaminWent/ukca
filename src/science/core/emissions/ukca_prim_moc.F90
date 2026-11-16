@@ -105,7 +105,8 @@ USE ukca_config_constants_mod,      ONLY: avogadro, boltzmann
 
 USE ukca_config_specification_mod,  ONLY: glomap_config, glomap_variables
 
-USE yomhook,                        ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,                       ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -153,13 +154,11 @@ REAL :: dens_ssa(row_length,rows)
 REAL :: scale_emiss
     ! Scaling factor for the marine POM emission
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_PRIM_MOC'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Molar mass of dry air (kg/mol)
 mm_da = avogadro*boltzmann/rgas
@@ -219,7 +218,7 @@ DO imode=1,nmodes
 
 END DO ! loop over nmodes
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 

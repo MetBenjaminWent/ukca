@@ -10,7 +10,8 @@
 MODULE acshno3_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -36,7 +37,8 @@ CONTAINS
 SUBROUTINE acshno3(temp,ahno3)
 USE ukca_parpho_mod, ONLY: jpwav
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -75,19 +77,17 @@ REAL,PARAMETER :: b     (jpwav) = [ (0.0,i=1,54),                              &
   9.300e-03,0.000e+00,0.000e+00,0.000e+00,0.000e+00,0.000e+00,                 &
   (0.0,i=1,95) ]
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSHNO3'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 tc=temp
 tc=MAX(tc, 200.0)
 tc=MIN(tc, 360.0)
 
 ahno3(50:103) = ahno3t(50:103)*EXP(b(50:103)*(tc-298.0))
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE acshno3

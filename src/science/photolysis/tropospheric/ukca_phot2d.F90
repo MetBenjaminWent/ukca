@@ -27,7 +27,8 @@
 MODULE ukca_phot2d
 
 USE ukca_flupj_mod,      ONLY: ukca_flupj
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,            ONLY: jprb, jpim
 
 USE photol_constants_mod, ONLY: pi_over_180 => const_pi_over_180
@@ -85,13 +86,11 @@ REAL, INTENT(OUT) :: photol_rates_2d(:,:,:,:,:)
 REAL :: pr2d(nolev)     ! 2D model level pressures
 REAL :: pr2dj(nlphot)   ! 2D photolysis level pressures
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_PHOTIN'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Set up 2-D pressure arrays
 
@@ -104,7 +103,7 @@ CALL ukca_interpj(pjin2d, pr2dj, pl, row_lengthda,                             &
              tot_p_rows, p_levelsda, jppj, nolat, nlphot, ntphot,              &
              sinlat, pi_over_180, photol_rates_2d)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_photin
 
@@ -146,14 +145,12 @@ REAL :: za                       ! Factor related to vertical re
 REAL :: pp(nlphot+1)
 REAL :: pres(maxlev)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INPR2D'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 DO j = 1, nolev
   ee = EXP((j-1)/2.0)
   pr2d(j) = psur/(ee * fac)
@@ -188,7 +185,7 @@ DO ij = 2,nlphot
   pr2dj(ij) = (pp(ij)+pp(ij-1))*0.5
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_inpr2d
 
@@ -244,9 +241,7 @@ REAL :: lati
 REAL :: press
 REAL :: delphi
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INTERPJ'
 
@@ -254,7 +249,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INTERPJ'
 !       Set up 2D latitudes. lat=1 pole nord
 !       LAT2D() is the latitude in the centre of the 2D box in radians
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 delphi = Npole/nolat
 DO i = 1,nolat
   lat2d(i)=SIN((90.0 - (2*i-1)*delphi)*degrad)
@@ -309,7 +304,7 @@ DO jr = 1,jppj              ! Loop over photolysis reactions
   END DO     ! End of loop over times of day
 END DO       ! End of loop over photolysis reactions
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 RETURN
 
 END SUBROUTINE ukca_interpj

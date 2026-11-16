@@ -59,7 +59,8 @@ USE ukca_fdiss_constant_mod, ONLY: ukca_fdiss_constant
 USE ukca_config_constants_mod,  ONLY: rho_water, avogadro
 USE ukca_constants,  ONLY: m_air, H_plus
 USE parkind1,        ONLY: jprb, jpim
-USE yomhook,         ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod,     ONLY: ereport
 USE umPrintMgr, ONLY:                                                          &
     umPrint,                                                                   &
@@ -100,14 +101,12 @@ LOGICAL, SAVE      :: first_pass = .TRUE.    ! Identifies if thread has
                                              ! been through CRITICAL region
 LOGICAL            :: todo(n_points)    ! T where cloud frac above threshold
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_HETERO'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !       1. Identify equations and calculate fractional dissociation
 !          --------------------------------------------------------
@@ -336,7 +335,7 @@ ELSE
   IF (iho2_h > 0)  rk(:,iho2_h) = 0.0
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_hetero
 END MODULE asad_hetero_mod

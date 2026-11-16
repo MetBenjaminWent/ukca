@@ -92,7 +92,8 @@ USE ukca_config_constants_mod, ONLY: rmol, boltzmann, avogadro
 USE ukca_constants,   ONLY: pi
 USE ukca_um_legacy_mod, ONLY: rgas => r
 USE ukca_types_mod,   ONLY: log_small
-USE yomhook,          ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,         ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -137,14 +138,12 @@ REAL    :: dair
 ! Molar mass of dry air (kg/mol)
 REAL :: mm_da  ! =avogadro*boltzmann/rgas
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_COND_COFF_V'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 term1=SQRT(8.0*rmol/(pi*mmcg))
 ! .. used in calcn of thermal velocity of condensable gas
@@ -214,7 +213,7 @@ IF (ifuchs == 2) THEN
   END WHERE
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_cond_coff_v
 END MODULE ukca_cond_coff_v_mod

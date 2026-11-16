@@ -170,7 +170,8 @@ USE ukca_constants,     ONLY: pi
 USE ukca_types_mod,     ONLY: log_small
 USE ukca_config_constants_mod, ONLY: boltzmann
 USE parkind1,           ONLY: jprb, jpim
-USE yomhook,            ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Subroutine interface:
@@ -226,18 +227,16 @@ REAL :: term5
 
 REAL, PARAMETER :: ukca_mfp_ref=6.6e-8
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_COAG_COFF_V'
 
 !
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 kij(:) = 0.0
 !
 IF (coag_on == 0) THEN
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 !
@@ -342,7 +341,7 @@ IF (icoag == 4) THEN
   END WHERE
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_coag_coff_v
 END MODULE ukca_coag_coff_v_mod

@@ -8821,7 +8821,8 @@ SUBROUTINE asad_load_default_fluxes
 ! 5) The generic arrays are deallocated
 
 USE ukca_config_specification_mod,  ONLY: ukca_config
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,            ONLY: jprb, jpim
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Normal
 USE errormessagelength_mod, ONLY: errormessagelength
@@ -8873,14 +8874,12 @@ INTEGER :: p1                   ! start position in asad_chemical_fluxes array
 INTEGER :: p2                   ! end position in asad_chemical_fluxes array
 INTEGER :: errcode              ! error code
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_LOAD_DEFAULT_FLUXES'
 CHARACTER(LEN=errormessagelength) :: cmessage     ! error message
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (ukca_config%l_ukca_strattrop) THEN
   ! Select the asad diagnostics appropriate for StratTrop chemistry and
@@ -9560,7 +9559,7 @@ IF (ALLOCATED(aa_trop_ox_budget_prod02)) DEALLOCATE(aa_trop_ox_budget_prod02)
 IF (ALLOCATED(aa_trop_ox_budget_prod01)) DEALLOCATE(aa_trop_ox_budget_prod01)
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE asad_load_default_fluxes
 

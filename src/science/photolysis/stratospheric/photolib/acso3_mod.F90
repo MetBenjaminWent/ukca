@@ -10,7 +10,8 @@
 MODULE acso3_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -49,7 +50,8 @@ CHARACTER(LEN=*), PARAMETER, PRIVATE :: ModuleName='ACSO3_MOD'
 CONTAINS
 SUBROUTINE acso3(t,jpwav,ao3)
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -85,13 +87,11 @@ REAL,PARAMETER :: c(3,19) = RESHAPE([                                          &
 REAL,PARAMETER :: n(19) = [ (18.0,i=1,8), (19.0,i=1,3), (20.0,i=1,3),          &
  (21.0,i=1,3), (22.0,i=1,2) ]
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSO3'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !     Check that temperature is in range.
 tc = t
@@ -104,7 +104,7 @@ tm2302 = tm230*tm230
 ao3(84:102) = (c(1,1:19)+c(2,1:19)*tm230+c(3,1:19)*tm2302)                     &
   *(10.0**(-n(1:19)))
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE acso3

@@ -10,7 +10,8 @@
 MODULE acsh2o2_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -35,7 +36,8 @@ CHARACTER(LEN=*), PARAMETER, PRIVATE :: ModuleName='ACSH2O2_MOD'
 CONTAINS
 SUBROUTINE acsh2o2(temp,jpwav,wavenm,ah2o2)
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -72,13 +74,11 @@ REAL :: tc
 
 INTEGER :: jw  ! Loop counter
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSH2O2'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !     Check that temperature is in range.
 tc = temp
@@ -100,7 +100,7 @@ DO jw = 83,103
     +                 a4*lam4 + a5*lam5 + a6*lam6 + a7*lam7)                   &
     + (1.0-chi)*(b0 + b1*lam  + b2*lam2 + b3*lam3 + b4*lam4))
 END DO
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE acsh2o2

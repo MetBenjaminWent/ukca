@@ -71,7 +71,8 @@ USE ereport_mod, ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 
 USE parkind1, ONLY: jpim, jprb
-USE yomhook,  ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE conversions_mod, ONLY: pi
 USE ukca_radaer_lut_read_in, ONLY: ukca_radaer_get_lut_index
 
@@ -335,13 +336,11 @@ CHARACTER (LEN=errormessagelength) :: cmessage
 ! error indicator
 INTEGER:: icode
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_RADAER_BAND_AVERAGE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !
 ! To band-average modal optical properties, we need first to compute
@@ -906,7 +905,7 @@ CASE DEFAULT
 END SELECT ! precalc%n_integ_pts is 3 or more
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_radaer_band_average

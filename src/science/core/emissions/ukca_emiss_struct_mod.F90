@@ -121,22 +121,21 @@ CONTAINS
 SUBROUTINE ukca_em_struct_init(emissions)
 
 USE parkind1,             ONLY: jpim, jprb      ! DrHook
-USE yomhook,              ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
 ! Emissions structure input, as automatic array
 TYPE (ukca_em_struct), INTENT(IN OUT) :: emissions (:)
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0  ! For Dr Hook
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_EM_STRUCT_INIT'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 emissions(:)%var_name    = REPEAT(' ',80)
 emissions(:)%tracer_name = REPEAT(' ',10)
@@ -171,7 +170,7 @@ emissions(:)%from_emiss  = -1
 ! independently for each element of emissions(:). This is done in
 ! ukca_emiss_init after calling this routine.
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_em_struct_init
@@ -186,7 +185,8 @@ END SUBROUTINE ukca_em_struct_init
 SUBROUTINE ukca_copy_emiss_struct(srce, targ)
 
 USE parkind1,             ONLY: jpim, jprb      ! DrHook
-USE yomhook,              ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -194,15 +194,13 @@ IMPLICIT NONE
 TYPE (ukca_em_struct), INTENT(IN)  :: srce
 TYPE (ukca_em_struct), INTENT(OUT) :: targ
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0  ! For Dr Hook
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_COPY_EMISS_STRUCT'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 targ%var_name    = srce%var_name
 targ%tracer_name = srce%tracer_name
@@ -257,7 +255,7 @@ IF (ASSOCIATED(srce%diags)) THEN
   targ%diags(:,:,:) = srce%diags(:,:,:)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 
 RETURN
 END SUBROUTINE ukca_copy_emiss_struct

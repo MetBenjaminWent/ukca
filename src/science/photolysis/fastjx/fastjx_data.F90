@@ -61,7 +61,8 @@
 !
 MODULE fastjx_data
 
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,            ONLY: jprb, jpim
 
 USE ukca_parpho_mod,       ONLY: jpwav
@@ -307,7 +308,8 @@ USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname, error_report,       &
 USE ukca_missing_data_mod, ONLY: imdi
 USE photol_config_specification_mod, ONLY: photol_config
 
-USE yomhook,     ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,    ONLY: jprb, jpim
 
 IMPLICIT  NONE
@@ -327,15 +329,13 @@ CHARACTER(LEN=maxlen_procname), OPTIONAL, INTENT(OUT) :: error_routine
 
 CHARACTER(LEN=maxlen_message) :: cmessage
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_SET_LIMITS'
 
 
 ! ***********************************************************************
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 cmessage = ''
@@ -407,7 +407,7 @@ CASE DEFAULT
 
 END SELECT
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE fastjx_set_limits
 
@@ -421,14 +421,12 @@ IMPLICIT  NONE
 INTEGER, INTENT(IN) :: row_length
 INTEGER, INTENT(IN) :: rows
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_ALLOCATE_MEMORY'
 
 ! ***********************************************************************
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Allocate arrays that depend on GCM size
 IF (.NOT. ALLOCATED(amf2))                                                     &
@@ -492,7 +490,7 @@ IF (.NOT. ALLOCATED(tz_block  ))                                               &
 IF (.NOT. ALLOCATED(u0        ))                                               &
   ALLOCATE(u0        (kpcx ))
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE fastjx_allocate_memory
 
@@ -504,13 +502,11 @@ SUBROUTINE fastjx_deallocate_memory
 
 IMPLICIT  NONE
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_DEALLOCATE_MEMORY'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 IF (ALLOCATED(amf2))        DEALLOCATE(amf2)
 IF (ALLOCATED(dm_3d))       DEALLOCATE(dm_3d)
@@ -545,7 +541,7 @@ IF (ALLOCATED(u0))          DEALLOCATE(u0)
 IF (ALLOCATED(tz_3d))       DEALLOCATE(tz_3d)
 IF (ALLOCATED(tz_block))    DEALLOCATE(tz_block)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE fastjx_deallocate_memory
 
@@ -558,14 +554,12 @@ SUBROUTINE fastjx_set_data_from_config()
 IMPLICIT  NONE
 
 INTEGER :: n_species
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_SET_DATA_FROM_CONFIG'
 
 ! ***********************************************************************
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 ! Copy configuration data to local variables.
 ! Wavelength number as selected by user.
@@ -618,7 +612,7 @@ jlabel(:) = photol_config%jlabel(:)
 IF (.NOT. ALLOCATED(jind)) ALLOCATE(jind(n_species))
 jind(:) = photol_config%jind(:)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE fastjx_set_data_from_config
 
@@ -636,13 +630,11 @@ REAL, INTENT(IN) :: f1
 REAL, INTENT(IN) :: f2
 REAL, INTENT(IN) :: f3
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_5
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FLINT'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 IF (tint <= t2) THEN
   IF (tint <= t1) THEN
@@ -658,7 +650,7 @@ ELSE
   END IF
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
 RETURN
 
 END FUNCTION flint

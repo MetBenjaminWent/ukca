@@ -127,7 +127,8 @@ USE ukca_setup_indices, ONLY: nmasprocsuintr23,                                &
                               nmasprocsointr23,                                &
                               nmasprocntintr23, nmasprocnhintr23,              &
                               nmasprocmpintr23
-USE yomhook,            ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,           ONLY: jprb, jpim
 USE ukca_um_legacy_mod, ONLY: umErf
 
@@ -174,14 +175,12 @@ REAL    :: dm(glomap_variables%ncp)
 REAL    :: newn
 REAL    :: newnp1
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CLOUDPROC'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -297,7 +296,7 @@ IF (iactmethod == 1) THEN
   END DO ! end loop over boxes
 END IF ! if iactmethod=1
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_cloudproc
 END MODULE ukca_cloudproc_mod

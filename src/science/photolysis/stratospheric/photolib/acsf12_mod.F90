@@ -10,7 +10,8 @@
 MODULE acsf12_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -35,7 +36,8 @@ CONTAINS
 SUBROUTINE acsf12(t,wavenm,af12)
 USE ukca_parpho_mod, ONLY: jpwav
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -64,13 +66,11 @@ REAL,PARAMETER :: af12t(jpwav) = [                                             &
   4.328e-23,2.236e-23,1.040e-23,3.751e-24,1.146e-24,0.000e+00,                 &
   (0.0,i=1,125)]
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSF12'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !     Check that temperature is in range.
 tc = MIN (t, 300.0)
@@ -81,7 +81,7 @@ DO jw = 45 , 71
   arg = 4.1e-4*(wavenm(jw)-184.9)*(tc-298.0)
   af12(jw) = af12t(jw)*EXP(arg)
 END DO
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE acsf12

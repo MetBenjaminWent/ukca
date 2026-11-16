@@ -71,7 +71,8 @@ SUBROUTINE ukca_check_md_nd(nbox,process,nd,md,mdt)
 USE ukca_config_specification_mod, ONLY: glomap_variables
 USE ukca_mode_setup,   ONLY: nmodes
 USE parkind1,          ONLY: jprb, jpim
-USE yomhook,           ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod,       ONLY: ereport
 USE ukca_types_mod,    ONLY: logical_32
 USE umPrintMgr,        ONLY:                                                   &
@@ -117,13 +118,11 @@ REAL    :: mdtmax
 REAL    :: ndmax
 CHARACTER(LEN=errormessagelength) :: cmessage
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHECK_MD_ND'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -194,7 +193,7 @@ IF (toterr > 0) THEN
   END IF
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_check_md_nd
 END MODULE ukca_check_md_nd_mod

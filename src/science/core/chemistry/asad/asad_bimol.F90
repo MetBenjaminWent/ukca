@@ -83,7 +83,8 @@ USE asad_findreaction_mod, ONLY: asad_findreaction
 USE ukca_config_specification_mod, ONLY: ukca_config
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ukca_um_legacy_mod, ONLY: exp_v, powr_v, oneover_v
 USE errormessagelength_mod, ONLY: errormessagelength
 USE ereport_mod, ONLY: ereport
@@ -135,9 +136,7 @@ CHARACTER(LEN=10) :: prods(jpspb)
 LOGICAL, SAVE :: first = .TRUE.
 LOGICAL, SAVE :: first_pass = .TRUE.
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 INTEGER, PARAMETER          :: i_chem_version_117 = 117
 INTEGER, PARAMETER          :: i_chem_version_121 = 121
@@ -156,7 +155,7 @@ LOGICAL :: stratflag(n_points)
 INTEGER                             :: errcode=0   ! Error flag (0 = OK)
 CHARACTER(LEN=errormessagelength)   :: cmessage    ! Error return message
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ALLOCATE(z1(1:n_points))
 ALLOCATE(z3(1:n_points))
@@ -529,7 +528,7 @@ IF (ALLOCATED(ratioa2b)) DEALLOCATE(ratioa2b)
 IF (ALLOCATED(ratiob2total)) DEALLOCATE(ratiob2total)
 IF (ALLOCATED(alpha)) DEALLOCATE(alpha)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_bimol
 END MODULE asad_bimol_mod

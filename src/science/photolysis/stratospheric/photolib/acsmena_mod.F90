@@ -10,7 +10,8 @@
 MODULE acsmena_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -38,7 +39,8 @@ CONTAINS
 SUBROUTINE acsmena(t, amena)
 USE ukca_parpho_mod, ONLY: jpwav
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 REAL, INTENT(IN)    :: t              ! Temperature in kelvin
@@ -71,13 +73,11 @@ REAL, PARAMETER :: b(jpwav) = [                                                &
   0.00734  , 0.00874  , 0.00997  , 0.0136   ,                                  &
   0.0136   , 0.0136   , (0.0,i=1,102) ]
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSMENA'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 !     Check that temperature is in range.
 tc = MAX(MIN (t, 330.0), 240.0)
 
@@ -85,6 +85,6 @@ tc = MAX(MIN (t, 330.0), 240.0)
 amena(76:101) = EXP(LOG(amena298(76:101)) +                                    &
   b(76:101) * (tc - 298.0))
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 END SUBROUTINE acsmena
 END MODULE acsmena_mod

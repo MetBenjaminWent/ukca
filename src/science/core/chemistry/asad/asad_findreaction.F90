@@ -74,7 +74,8 @@ CONTAINS
 INTEGER FUNCTION asad_findreaction( react1,react2,products,                    &
                                     np,reactions,idx_in,nr,ns )
 
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -93,9 +94,7 @@ CHARACTER(LEN=10) :: prods(ns-2), inprods(ns-2), empty_ten
 
 LOGICAL           :: found(ns-2), thelast
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_FINDREACTION'
 
@@ -104,7 +103,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_FINDREACTION'
 !          Search for reactants first.
 !          ------ --- --------- ------
 !
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 asad_findreaction = 0
 empty_ten             = '         '
 
@@ -180,14 +179,14 @@ DO
 
   j = j + 1
   IF ( j > nreacts ) THEN
-    IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
 END DO
 
 9999 CONTINUE
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END FUNCTION asad_findreaction
 END MODULE asad_findreaction_mod

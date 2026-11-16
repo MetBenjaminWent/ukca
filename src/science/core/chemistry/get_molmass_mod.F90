@@ -54,7 +54,8 @@ USE ukca_constants,  ONLY: m_br, m_brcl, m_bro, m_brono2, m_c, m_c2h4,         &
 
 USE ereport_mod,     ONLY: ereport
 USE parkind1,        ONLY: jpim,  jprb     ! DrHook
-USE yomhook,         ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE errormessagelength_mod, ONLY: errormessagelength
 
 IMPLICIT NONE
@@ -69,15 +70,13 @@ REAL :: get_molmass
 INTEGER                        :: ierr
 CHARACTER (LEN=errormessagelength)             :: cmessage
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0  ! DrHook tracing entry
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1  ! DrHook tracing exit
-REAL    (KIND=jprb)            :: zhook_handle   ! DrHook tracing
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='GET_MOLMASS'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ierr = 0
 
@@ -320,7 +319,7 @@ IF (ierr /= 0) THEN
   CALL ereport ('GET_MOLMASS', ierr, cmessage)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 

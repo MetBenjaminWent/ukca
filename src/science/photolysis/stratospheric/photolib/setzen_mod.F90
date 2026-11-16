@@ -10,7 +10,8 @@
 MODULE setzen_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -43,7 +44,8 @@ USE ukca_parpho_mod, ONLY: jplev, jpchi, jps90, jpchin,                        &
                            jptem, jpo3p, jps90,                                &
                            szamax, tmin, tmax, o3min, o3max
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -68,16 +70,14 @@ INTEGER :: j
 INTEGER :: jc
 INTEGER :: jt
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='SETZEN'
 
 
 
 !     Spacing of angles in lookup table
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 cosint=1.0/REAL(jpchi-1-jps90)
 radint=(szamax - 90.0)*pi/(180.0*REAL(jps90))
 
@@ -126,7 +126,7 @@ ELSE
     tabo3(jt) = o3min + o3dif*REAL(jt-1)
   END DO
 END IF
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE setzen

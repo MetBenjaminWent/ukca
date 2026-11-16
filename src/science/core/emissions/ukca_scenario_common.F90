@@ -30,7 +30,8 @@ USE umPrintMgr, ONLY: umPrint, umMessage, PrStatus_Diag, PrintStatus
 
 USE errormessagelength_mod, ONLY: errormessagelength
 USE ereport_mod,       ONLY: ereport
-USE yomhook,           ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,          ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -82,14 +83,12 @@ INTEGER, INTENT(IN)  :: n_lbc                    ! Size of LBC-names array
 CHARACTER(LEN=*), INTENT(IN) :: lbc_spec(n_lbc) ! Names of Lower BC species
 
 INTEGER :: i
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SET_LBC_INDEX'
 
 ! Body of subroutine
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialise full_lbc array (assuming this routine is only called once)
 DO i = 1, n_full_spc
@@ -153,7 +152,7 @@ DO i= 1, n_lbc
   END SELECT
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_set_lbc_index
 
@@ -217,14 +216,12 @@ INTEGER :: i   ! loop variable
 INTEGER :: ierr
 CHARACTER(LEN=errormessagelength) :: cmessage
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_LUMP_LBCS'
 
 ! Body of subroutine
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 IF (first) THEN
 
@@ -279,7 +276,7 @@ IF (PrintStatus >= Prstatus_Diag) THEN
   END DO
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 
 RETURN
 END SUBROUTINE ukca_lump_lbcs
@@ -301,13 +298,11 @@ REAL, INTENT(IN OUT) :: lbc_mmr(n_bdy_vals) ! Final values of Lower BC species
 
 INTEGER :: i
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SET_LBC_MMR'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Initialise lbc array
 DO i = 1, n_bdy_vals
@@ -344,7 +339,7 @@ IF (icf3chf2    > 0) lbc_mmr(icf3chf2   ) = full_lbc(i_cf3chf2) ! HFC125
 IF (ich2fcf3    > 0) lbc_mmr(ich2fcf3   ) = full_lbc(i_ch2fcf3) ! HFC134a
 IF (ichbr3      > 0) lbc_mmr(ichbr3     ) = full_lbc(i_chbr3) ! CHBr3
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE ukca_set_lbc_mmr
 

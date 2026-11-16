@@ -49,7 +49,8 @@ SUBROUTINE ukca_diurnal_isop_ems(row_length,                                   &
 
 USE ukca_constants,  ONLY: rhour_per_day, rsec_per_hour,  pi, pi_over_180,     &
                            recip_pi_over_180, fxb, fxc
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Diag
 
@@ -89,13 +90,11 @@ REAL  :: daylen(1:row_length,1:rows)      ! day length for curent day
 REAL  :: cs_hour_ang(1:row_length,1:rows) ! cosine hour angle
 
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DIURNAL_ISOP_EMS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !     Calculate Declination Angle and Daylength for each row for
 !     curent day of the year.
@@ -189,7 +188,7 @@ DO j = 1,rows
   END DO                  !end domain loop
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_diurnal_isop_ems
 END MODULE ukca_diurnal_isop_ems_mod

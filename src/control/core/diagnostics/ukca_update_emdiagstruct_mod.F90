@@ -50,7 +50,8 @@ SUBROUTINE update_emdiagstruct (                                               &
 USE ukca_um_legacy_mod,     ONLY: get_emdiag_stash, sf, UKCA_diag_sect
 USE ereport_mod,            ONLY: ereport
 USE parkind1,               ONLY: jpim,  jprb     ! DrHook
-USE yomhook,                ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE errormessagelength_mod, ONLY: errormessagelength
 
 IMPLICIT NONE
@@ -71,15 +72,13 @@ INTEGER                        :: item, section
 CHARACTER (LEN=errormessagelength)            :: cmessage
 LOGICAL, SAVE                  :: l_first = .TRUE.
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0  ! DrHook tracing entry
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1  ! DrHook tracing exit
-REAL    (KIND=jprb)            :: zhook_handle   ! DrHook tracing
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UPDATE_EMDIAGSTRUCT'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ierr    = 0
 
@@ -547,7 +546,7 @@ IF (ierr == 1) THEN
   CALL ereport ('UPDATE_EMDIAGSTRUCT', ierr, cmessage)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE update_emdiagstruct

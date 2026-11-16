@@ -22,7 +22,8 @@
 !
 MODULE ukca_cspecies
 
-USE yomhook,         ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,        ONLY: jprb, jpim
 IMPLICIT NONE
 PRIVATE
@@ -200,9 +201,7 @@ INTEGER :: errcode                ! Variable passed to ereport
 INTEGER :: i, m
 CHARACTER(LEN=errormessagelength) :: cmessage
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CALC_CSPECIES'
 
@@ -211,7 +210,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CALC_CSPECIES'
 !     Add new entry if new tracers are introduced, and add value for c_xx
 !      in UKCA_CONSTANTS, where xx is the species.
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 ! advected tracers
 c_species = 0.0
 WHERE (advt == 'Ox        ') c_species = c_o3
@@ -902,7 +901,7 @@ IF (printstatus > prstatus_oper) THEN
   CALL umPrint(umMessage,src='ukca_cspecies')
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_calc_cspecies
 

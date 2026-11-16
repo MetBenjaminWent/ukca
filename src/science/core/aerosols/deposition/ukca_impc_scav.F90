@@ -52,7 +52,8 @@ SUBROUTINE ukca_mode_imscavcoff(verbose)
 ! Set values of collision efficiencies
 
 USE umPrintMgr,         ONLY: umPrint, umMessage
-USE yomhook,            ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,           ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -61,13 +62,11 @@ INTEGER, INTENT(IN) :: verbose ! flag to indicate level of verbosity
 
 INTEGER :: i, j  ! loop counters
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_IMSCAVCOFF'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Set up collision efficiencies for all aerosol bins and raindrop bins
 colleff4( 1,1:nrow)=[ 0.522e+05,0.139e+05,0.328e+04,0.775e+03,                 &
@@ -204,7 +203,7 @@ IF (verbose >= 2) THEN
   END DO
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_mode_imscavcoff
 ! ----------------------------------------------------------------------
@@ -412,7 +411,8 @@ USE ukca_setup_indices, ONLY:                                                  &
     nmasimscmpaitins, nmasimscmpaccins, nmasimscmpcorins,                      &
     nmasimscmpsupins
 
-USE yomhook,            ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,           ONLY: jprb, jpim
 USE ukca_config_specification_mod, ONLY: glomap_config, glomap_variables
 
@@ -488,16 +488,14 @@ REAL    :: dm(glomap_variables%ncp)
 REAL, PARAMETER :: fc=0.3
 REAL, PARAMETER :: fd=1.0
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_IMPC_SCAV'
 
 allfrac(1)=fc
 allfrac(2)=fd
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -1275,7 +1273,7 @@ ELSE ! l_fix_ukca_impscav
 
 END IF ! l_fix_ukca_impscav
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_impc_scav
 END MODULE ukca_impc_scav_mod

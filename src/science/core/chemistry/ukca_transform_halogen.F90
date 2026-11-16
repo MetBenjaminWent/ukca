@@ -122,7 +122,8 @@ SUBROUTINE ukca_transform_halogen(rows, row_length, model_levels, tr_ukca,     &
                                   forward, tracers)
 
 USE parkind1,       ONLY: jprb, jpim
-USE yomhook,        ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -139,14 +140,12 @@ REAL, INTENT(IN OUT) :: tracers(row_length, rows, model_levels, tr_ukca)
 
 LOGICAL, SAVE :: first=.TRUE.
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_TRANSFORM_HALOGEN'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (first) THEN
   CALL ukca_setup_lumping()
@@ -208,7 +207,7 @@ ELSE
                  forward, tracers)
 
 END IF
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE ukca_transform_halogen
@@ -281,7 +280,8 @@ SUBROUTINE transform(row_length, rows, model_levels, tr_ukca,                  &
 ! ************************************************************
 
 USE parkind1,       ONLY: jprb, jpim
-USE yomhook,        ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -310,13 +310,11 @@ INTEGER :: i
 REAL, ALLOCATABLE :: total_all(:,:,:)
 REAL, ALLOCATABLE :: total_source(:,:,:)
 REAL, ALLOCATABLE :: total_nochange(:,:,:)
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='TRANSFORM'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ALLOCATE(total_all(row_length,rows,model_levels))
 ALLOCATE(total_source(row_length,rows,model_levels))
@@ -491,7 +489,7 @@ DEALLOCATE (total_all)
 DEALLOCATE (total_source)
 DEALLOCATE (total_nochange)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE transform
 
@@ -534,20 +532,19 @@ USE asad_mod,       ONLY: advt, jpctr
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
 
 USE parkind1,       ONLY: jprb, jpim
-USE yomhook,        ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
 INTEGER :: i
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SETUP_LUMPING'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 DO i=1,jpctr
   SELECT CASE (advt(i))
@@ -746,7 +743,7 @@ DO i=1,jpctr
   END SELECT
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 END SUBROUTINE ukca_setup_lumping
 
 END MODULE ukca_transform_halogen_mod

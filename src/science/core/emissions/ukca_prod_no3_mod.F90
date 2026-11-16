@@ -57,7 +57,8 @@ USE ereport_mod,              ONLY: ereport
 USE errormessagelength_mod,   ONLY: errormessagelength
 
 USE parkind1,   ONLY: jpim, jprb      ! DrHook
-USE yomhook,    ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -204,13 +205,11 @@ REAL :: ptnh3(row_length,rows,model_levels)
 
 INTEGER                            :: errcode    ! Error code for ereport
 CHARACTER (LEN=errormessagelength) :: cmessage   ! Error message
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_PROD_NO3_FINE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -762,7 +761,7 @@ WHERE (hono2_mmr(:,:,:) < 0.0)
   hono2_mmr(:,:,:) = 0.0
 END WHERE
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE ukca_prod_no3_fine
 
@@ -796,7 +795,8 @@ USE ukca_config_defs_mod,          ONLY: n_mode_tracers
 USE ukca_config_specification_mod, ONLY: glomap_config, glomap_variables
 
 USE parkind1,   ONLY: jpim, jprb      ! DrHook
-USE yomhook,    ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -887,13 +887,11 @@ INTEGER :: nidx(1:nmodes)         ! Store the tracer index for number
 
 INTEGER                            :: errcode    ! Error code for ereport
 CHARACTER (LEN=errormessagelength) :: cmessage   ! Error message
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_PROD_NO3_COARSE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -1210,7 +1208,7 @@ IF (ALLOCATED(dust_diam))  DEALLOCATE (dust_diam)
 IF (ALLOCATED(dust_mconc)) DEALLOCATE (dust_mconc)
 IF (ALLOCATED(dust_nconc)) DEALLOCATE (dust_nconc)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 
 END SUBROUTINE ukca_prod_no3_coarse
 
@@ -1226,7 +1224,8 @@ USE ukca_config_defs_mod,      ONLY: n_mode_tracers
 USE asad_mod,                  ONLY: jpctr
 
 USE parkind1, ONLY: jpim, jprb      ! DrHook
-USE yomhook, ONLY: lhook, dr_hook   ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -1243,12 +1242,10 @@ INTEGER, POINTER :: ncp
 
 INTEGER :: ifirst, nitra, mitra, imode, icp
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_NO3_CHECK_VALUES'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -1278,7 +1275,7 @@ DO imode = 1,nmodes
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 
 END SUBROUTINE ukca_no3_check_values
 

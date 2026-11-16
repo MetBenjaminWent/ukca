@@ -77,7 +77,8 @@ USE ukca_setup_indices,      ONLY: mm_gas, mhno3,                              &
                                    nmascondnnaccsol, nmascondnncorsol
 
 USE parkind1,   ONLY: jpim, jprb      ! DrHook
-USE yomhook,    ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 
 IMPLICIT NONE
@@ -180,13 +181,11 @@ REAL, PARAMETER :: zavg = 6.02217e+23       ! Avogadro number [mol-1]
 REAL, PARAMETER :: pfrac_ca=0.05            ! Fraction of dust that is Ca2+
 LOGICAL :: do_dust
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_COARSE_NO3'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !---------------------------------------
 ! 0.0 Setup constants
@@ -466,7 +465,7 @@ DO i = 1,nbox
   IF (s0g(i,mhno3) < 0.0) s0g(i,mhno3) = 0.0
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_coarse_no3
 END MODULE ukca_coarse_no3_mod

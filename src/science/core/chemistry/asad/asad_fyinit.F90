@@ -75,7 +75,8 @@ USE ukca_environment_fields_mod, ONLY: atmospheric_co2,                        &
                                        atmospheric_ch4
 USE ukca_constants, ONLY: c_co2, c_h2, c_n2, c_o2, c_ch4
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod, ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 
@@ -124,9 +125,7 @@ LOGICAL, SAVE :: gonce = .TRUE.
 LOGICAL, SAVE :: first_pass = .TRUE.
 CHARACTER(LEN=errormessagelength) :: cmessage
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_FYINIT'
 
@@ -134,7 +133,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_FYINIT'
 !       1.  Species initialised only at start of dynamical step.
 !           ------- ----------- ---- -- ----- -- --------- -----
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 ! OMP CRITICAL will only allow one thread through this code at a time,
 ! while the other threads are held until completion.
 !$OMP CRITICAL (asad_fyinit_init)
@@ -314,7 +313,7 @@ IF (ofirst .AND.                                                               &
   END DO
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_fyinit
 END MODULE asad_fyinit_mod

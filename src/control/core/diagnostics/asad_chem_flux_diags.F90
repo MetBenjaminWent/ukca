@@ -42,7 +42,8 @@ USE asad_mod,         ONLY: advt, dpd, dpw, fpsc1, fpsc2,                      &
 USE ukca_tropopause,  ONLY: L_stratosphere
 USE ukca_cspecies,    ONLY: c_species
 USE parkind1,         ONLY: jprb, jpim
-USE yomhook,          ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod,      ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus,                         &
                       PrStatus_Oper, PrStatus_Diag, umPrintFlush
@@ -306,15 +307,13 @@ CHARACTER (LEN=errormessagelength) :: cmessage          ! Error message
 TYPE(field_spec_type), ALLOCATABLE, SAVE :: chemcodes(:)
 
 ! Dr Hook
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_SETSTASH_CHEMDIAG'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ierr = -1
 
@@ -467,7 +466,7 @@ END IF
 
 ierr = 0
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_setstash_chemdiag
 
@@ -479,14 +478,12 @@ IMPLICIT NONE
 
 TYPE(chemdiag), INTENT(IN OUT) :: diagnostic
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_ZERO_CHEMDIAG'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 !     "zero" all fields
 diagnostic%location             = 0
@@ -508,7 +505,7 @@ IF (ALLOCATED(diagnostic%products))                                            &
 IF (ALLOCATED(diagnostic%throughput))                                          &
      diagnostic%throughput(:,:,:)    = 0.0
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE asad_zero_chemdiag
 ! #####################################################################
@@ -525,14 +522,12 @@ CHARACTER(LEN=errormessagelength) :: cmessage
 CHARACTER(LEN=72) :: outformat
 INTEGER       :: errcode
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_INIT_CHEMDIAG'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 n_chemdiags = 0
 DO i = 1, n_asad_diags
@@ -927,7 +922,7 @@ IF (PrintStatus == Prstatus_Diag) THEN
   CALL umPrint(umMessage,src=RoutineName)
 END IF ! PrintStatus = Prstatus_diag
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE asad_init_chemdiag
 
@@ -943,13 +938,11 @@ CHARACTER(LEN=30)            :: asad_cd_uppercase
 INTEGER :: ia,iz,ishift
 INTEGER :: i,ic
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_CD_UPPERCASE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 
 ! required for shift
@@ -969,7 +962,7 @@ END DO
 
 asad_cd_uppercase = ADJUSTL(asad_cd_uppercase)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 RETURN
 END FUNCTION asad_cd_uppercase
 
@@ -984,13 +977,11 @@ INTEGER, INTENT(IN) :: rows
 INTEGER :: l
 
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_5
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_ALLOCATE_CHEMDIAG'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 ! Allocate flux array and initialise
 DO l=1,n_chemdiags
@@ -1003,7 +994,7 @@ DO l=1,n_chemdiags
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
 RETURN
 END SUBROUTINE asad_allocate_chemdiag
 
@@ -1022,13 +1013,12 @@ CHARACTER(LEN=errormessagelength) :: cmessage
 CHARACTER(LEN=72) :: outformat
 INTEGER       :: errcode
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_6
+INTEGER(KIND=vik) :: vnr_handle_7
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_CHEMICAL_DIAGNOSTICS_INIT'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 ! Set up locations of reactions using (an altered version of)
 ! asad_findreaction
@@ -1256,7 +1246,7 @@ DO l=1,n_chemdiags
   END IF           ! Printstatus
 END DO ! i
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
 RETURN
 
 CONTAINS
@@ -1338,13 +1328,10 @@ INTEGER :: nreacts, nprods, iprods, ipargs, jprod
 INTEGER :: cd_findreaction(1:nr)
 INTEGER :: find_count
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='CD_FINDREACTION'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_7, ModuleName//':'//RoutineName)
 
 cd_findreaction(:) = -1 ! set to -1 to see if haven't got it at end
 find_count = 0
@@ -1408,8 +1395,7 @@ search_reactants: DO
     IF ( iprods /= ipargs ) THEN
       j = j + 1
       IF ( j > nreacts ) THEN
-        IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,        &
-                                zhook_handle)
+        IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_7)
         RETURN
       END IF
       CYCLE search_reactants
@@ -1454,7 +1440,7 @@ IF (ALLOCATED(prods)) DEALLOCATE( prods )
 IF (ALLOCATED(inprods)) DEALLOCATE( inprods )
 IF (ALLOCATED(found)) DEALLOCATE(found)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_7)
 RETURN
 END FUNCTION cd_findreaction
 
@@ -1492,16 +1478,14 @@ INTEGER :: l                      ! counter
 
 REAL :: convfac                   ! Conversion from molecules/cm3 to mol/m3
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_8
 
 CHARACTER(LEN=errormessagelength) :: cmessage
 INTEGER                           :: errcode
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_CHEMICAL_DIAGNOSTICS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_8, ModuleName//':'//RoutineName)
 
 IF (ukca_config%l_ukca_asad_full) THEN
   IF (chunk_size /= row_length * rows * model_levels) THEN
@@ -1691,7 +1675,7 @@ END IF ! l_ukca_asad_columns / l_ukca_asad_full
 
 ierr = 0
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_8)
 RETURN
 
 END SUBROUTINE asad_chemical_diagnostics
@@ -1731,13 +1715,11 @@ INTEGER       :: errcode
 
 LOGICAL, SAVE :: firstcall=.TRUE.
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_9
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_EMISSIONS_DIAGNOSTICS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_9, ModuleName//':'//RoutineName)
 
 ierr = -1
 
@@ -1806,7 +1788,7 @@ END DO                    ! l,n_chemdiags
 
 ierr = 0
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_9)
 RETURN
 END SUBROUTINE asad_emissions_diagnostics
 
@@ -1843,13 +1825,11 @@ INTEGER       :: errcode
 LOGICAL, SAVE :: firstcall=.TRUE.
 LOGICAL       :: spec_emitted
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_10
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_3D_EMISSIONS_DIAGNOSTICS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_10, ModuleName//':'//RoutineName)
 
 ierr = -1
 
@@ -1938,7 +1918,7 @@ END DO                    ! l,n_chemdiags
 
 ierr = 0
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_10)
 RETURN
 END SUBROUTINE asad_3d_emissions_diagnostics
 
@@ -1952,13 +1932,11 @@ INTEGER, INTENT(OUT) :: ierr
 
 INTEGER :: l
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_11
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_TROPOSPHERIC_MASK'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_11, ModuleName//':'//RoutineName)
 
 ierr = 1
 
@@ -1976,7 +1954,7 @@ END IF
 
 ierr = 0
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_11)
 RETURN
 END SUBROUTINE asad_tropospheric_mask
 
@@ -2016,13 +1994,11 @@ INTEGER :: l,m                    ! counters
 LOGICAL, SAVE :: firstcall_tendency=.TRUE.
 LOGICAL, SAVE :: firstcall_STE=.TRUE.
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_12
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_TENDENCY_STE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_12, ModuleName//':'//RoutineName)
 
 
 ierr = 1
@@ -2087,7 +2063,7 @@ END DO       ! l=1,n_chemdiags
 
 ierr = 0
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_12)
 RETURN
 END SUBROUTINE asad_tendency_ste
 
@@ -2105,13 +2081,11 @@ INTEGER, INTENT(OUT) :: ierr                                 ! error code
 
 INTEGER :: l                      ! counter
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_13
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_MASS_DIAGNOSTIC'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_13, ModuleName//':'//RoutineName)
 
 ierr = -1
 
@@ -2128,7 +2102,7 @@ END DO                    ! l,n_chemdiags
 
 ierr = 0
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_13)
 RETURN
 END SUBROUTINE asad_mass_diagnostic
 ! #####################################################################
@@ -2152,16 +2126,14 @@ REAL, INTENT(IN) :: fpsc2_full(chunk_size)
 
 INTEGER :: l                                   ! counter
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_14
 
 CHARACTER(LEN=errormessagelength) :: cmessage
 INTEGER                           :: errcode
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_PSC_DIAGNOSTIC'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_14, ModuleName//':'//RoutineName)
 ierr = -1
 
 IF (ukca_config%l_ukca_asad_full) THEN
@@ -2264,7 +2236,7 @@ END IF ! l_ukca_asad_columns / l_ukca_asad_full
 
 ierr = 0
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_14)
 RETURN
 END SUBROUTINE asad_psc_diagnostic
 
@@ -2290,13 +2262,11 @@ INTEGER :: l,m                   ! counters
 
 LOGICAL, SAVE :: firstcall=.TRUE.
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_15
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_OUTPUT_TRACER'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_15, ModuleName//':'//RoutineName)
 
 ierr = 1
 
@@ -2335,7 +2305,7 @@ END DO      ! l=1,n_chemdiags
 
 ierr = 0
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_15)
 RETURN
 END SUBROUTINE asad_output_tracer
 
@@ -2354,13 +2324,11 @@ INTEGER, INTENT(OUT) :: ierr
 
 INTEGER :: l
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_16
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_LIGHTNING_DIAGNOSTICS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_16, ModuleName//':'//RoutineName)
 
 ierr = -1
 
@@ -2384,7 +2352,7 @@ END DO
 
 ierr = 0
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_16)
 RETURN
 END SUBROUTINE asad_lightning_diagnostics
 

@@ -85,7 +85,8 @@ USE ukca_diagnostics_master_mod,  ONLY: master_diag_list, bound_info,          &
                                         set_diagnostic_availabilities
 USE asad_flux_dat,                ONLY: asad_load_default_fluxes
 
-USE yomhook,  ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -111,16 +112,14 @@ INTEGER :: n_available
 
 ! Dr Hook
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
 
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'INIT_DIAGNOSTICS'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -190,7 +189,7 @@ IF (error_code_ptr <= 0) THEN
 
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE init_diagnostics

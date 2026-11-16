@@ -121,7 +121,8 @@ USE asad_mod,            ONLY: prod, slos, y, rk, prk,                         &
                                nprdx2, nprdx3, ntabfp, frpx,                   &
                                nldepx, nnfrp, jpspec, jpnr
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: kl
@@ -157,9 +158,7 @@ INTEGER :: iend
 
 REAL :: fr
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_PRLS'
 
@@ -167,7 +166,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_PRLS'
 !       1.  Initialise variables.
 !           ---------- ----------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 DO js = 1, jpspec
   DO jl = 1, kl
     prod(jl,js) = 0.0
@@ -298,7 +297,7 @@ IF ( ldepem ) THEN
 
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_prls
 END MODULE asad_prls_mod

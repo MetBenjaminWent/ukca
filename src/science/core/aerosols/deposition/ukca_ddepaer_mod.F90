@@ -240,7 +240,8 @@ USE ukca_ddepaer_coeff_mod,  ONLY: alpha, cr, yr, ls_ice, ls_ocean, ls_soil,   &
 USE ukca_vgrav_av_k_mod,     ONLY: ukca_vgrav_av_k
 USE ukca_um_legacy_mod,      ONLY: vkman, gg => g, rgas => r
 USE ukca_types_mod,          ONLY: log_small
-USE yomhook,                 ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -314,14 +315,12 @@ REAL    :: dz(nbox)
 
 !--------------------------------------------------------------------
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DDEPAER'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -673,7 +672,7 @@ DO imode=1,nmodes
   END IF ! if mode present
 END DO ! loop over modes
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_ddepaer
 

@@ -54,9 +54,8 @@ USE ukca_um_legacy_mod,      ONLY:                                             &
     len_stlist, stash_pseudo_levels, num_stash_pseudo, stindex, stlist,        &
     si, si_last, sf, pdims, copydiag, set_pseudo_list
 
-USE yomhook,                 ONLY:                                             &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 
 IMPLICIT NONE
@@ -96,14 +95,12 @@ REAL :: vd(row_length,rows,ntype,jpdd)   ! deposition velocity
 
 REAL :: r_nodep = 1.0e40
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DDCALC'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 
 !     Set all arrays to zero
@@ -328,7 +325,7 @@ IF ( ukca_config%l_enable_diag_um ) THEN
   END DO   ! loop over ndepd
 END IF     ! l_enable_diag_um
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_ddcalc
 END MODULE ukca_ddcalc_mod

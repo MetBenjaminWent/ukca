@@ -37,7 +37,8 @@
 MODULE ukca_hetero_mod
 
 
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -197,13 +198,11 @@ REAL :: mm_arr(13) ! relevent molar mass for each reaction
 
 REAL :: amu        ! atomic mass unit (kg)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_HETERO'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !! The uptake coefficients for reactions 1-5 on NAT and ice are those
 !! recommended in "Chemical Kinetics and Photochemical Data for use in
@@ -708,7 +707,7 @@ END IF
 ! save the solid phase hno3 to add back after end of the chemistry timestep
 sphno3 = shno3
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_hetero
 
@@ -732,13 +731,11 @@ REAL :: theta_hbr                         ! surface coverage HBr
 
 INTEGER :: jl
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_BR_GAMMA'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Equations are IUPAC recommendations and can be found in
 ! Crowley et al. 2010, Atmos. Chem. Physics. (ref. to page numbers)
@@ -777,7 +774,7 @@ DO jl=kstart, kend
   gam_br(jl,7) = 0.02 * theta_hbr
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_br_gamma
 
@@ -859,13 +856,11 @@ REAL :: small_value
 REAL, PARAMETER :: min_value=1.0e-15
 INTEGER :: jl
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SHI_LIQUID_AEROSOL'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! initialise to zero
 gam3arr(:,:)= 0.0
@@ -1105,7 +1100,7 @@ DO jl=kstart, kend
 
 END DO !(jl=kstart, kend)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE ukca_shi_liquid_aerosol
 
@@ -1168,9 +1163,7 @@ INTEGER, SAVE :: ihno3=0
 LOGICAL, SAVE :: firstcall = .TRUE.
 LOGICAL, SAVE :: first_pass = .TRUE.
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SOLIDPHASE'
 
@@ -1179,7 +1172,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SOLIDPHASE'
 !           1.  Add amount of HONO2 back to main ASAD arrays.
 !               --- ------ -- ----- ---- -- ---- ---- -------
 !
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 ! OMP CRITICAL will only allow one thread through this code at a time,
 ! while the other threads are held until completion.
 !$OMP CRITICAL (ukca_solidphase_init)
@@ -1202,7 +1195,7 @@ END IF
 f(1:n_points,ihno3) = f(1:n_points,ihno3) +                                    &
                  sphno3(1:n_points)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE ukca_solidphase
 
@@ -1354,9 +1347,7 @@ REAL :: chocl(kchmlev)
 REAL :: psc1sa(kchmlev)
 REAL :: psc2sa(kchmlev)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_5
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CALCKPSC'
 
@@ -1367,7 +1358,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CALCKPSC'
 !          1.  INITIALISE RATES TO ZERO
 !              ---------- ----- -- ----
 !
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 akpsc1(kstart:kend) = 0.0
 akpsc2(kstart:kend) = 0.0
 akpsc3(kstart:kend) = 0.0
@@ -1487,7 +1478,7 @@ IF ( lppsc .OR. lpsa ) THEN
   !
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
 RETURN
 END SUBROUTINE ukca_calckpsc
 
@@ -1584,9 +1575,7 @@ REAL :: pindx(noph2o)
 REAL :: tindx(notemp)
 REAL :: c(noph2o,notemp)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_6
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_EQCOMP'
 
@@ -1759,7 +1748,7 @@ DATA (c(i,28),i=1,16)/                                                         &
 !          1.  REACTION PROBABILITY FOR CLONO2 + H2O
 !              -------- ----------- --- ------ - ---
 !
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 hshcl(:)  = 0.0
 rpcncl(:) = 0.0
@@ -1839,7 +1828,7 @@ IF (lphocl) THEN
   END DO
 END IF
 !
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
 RETURN
 END SUBROUTINE ukca_eqcomp
 
@@ -1864,16 +1853,14 @@ INTEGER, INTENT(OUT) :: jx
 ! Local variables
 INTEGER :: i
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_7
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_POSITION'
 
 !
 !     --------------------------------------------------------------------
 !
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_7, ModuleName//':'//RoutineName)
 ier = 1
 IF ( iorder == 0 ) THEN
   IF ( x < xc(1) ) THEN
@@ -1903,7 +1890,7 @@ END IF
 !
 !     --------------------------------------------------------------------
 !
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_7)
 RETURN
 END SUBROUTINE ukca_position
 
@@ -1937,14 +1924,12 @@ REAL :: zbt
 REAL :: zhno3eq
 REAL :: zh2oeq
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_8
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_PSCPRES'
 
 !
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_8, ModuleName//':'//RoutineName)
 shno3(kstart:kend) = 0.0
 sh2o (kstart:kend) = 0.0
 fpsc1(kstart:kend) = 0.0
@@ -2004,7 +1989,7 @@ DO jl=kstart,kend
   END IF
 END DO
 !
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_8)
 RETURN
 END SUBROUTINE ukca_pscpres
 ! =======================================================================

@@ -39,7 +39,8 @@ SUBROUTINE ukca_sediment(rows, row_length, model_levels,                       &
                   L_stratosphere)
 !
 
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -74,13 +75,11 @@ REAL :: psc2(row_length, rows)
 REAL :: sh2o(row_length, rows, model_levels)
 ! Local copy of ice cloud fraction- masked out in troposphere.
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SEDIMENT'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! do sedimentation. Don't do it at bottom level.
 ! any limiting of NAT formation will already have been considered in the
@@ -126,7 +125,7 @@ DO k=2,model_levels
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_sediment
 END MODULE ukca_sediment_mod

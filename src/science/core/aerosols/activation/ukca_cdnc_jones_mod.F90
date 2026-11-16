@@ -46,9 +46,8 @@ USE ukca_um_legacy_mod,      ONLY:                                             &
     log_v,                                                                     &
     umErf
 
-USE yomhook,          ONLY:                                                    &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -75,13 +74,11 @@ REAL    :: ccn_1_exp(nbox)    ! exp of ccn_1
 
 REAL, PARAMETER :: cdnmin = 5.0 ! Min CDN (no/cm^-3)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER   :: RoutineName='UKCA_CDNC_JONES'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! This is the Jones method for calculating CDNC, see doi:10.1038/370450a0
 CALL log_v(nmodes,glomap_variables_local%sigmag,log_sigmag)
@@ -124,7 +121,7 @@ DO i = 1, nbox
 END DO
 !$OMP END PARALLEL DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_cdnc_jones
 

@@ -10,7 +10,8 @@
 MODULE acsdbrm_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Description:
@@ -35,7 +36,8 @@ CONTAINS
 SUBROUTINE acsdbrm(t,adbrm)
 USE ukca_parpho_mod, ONLY: jpwav
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 REAL, INTENT(IN) :: t               ! Temperature in kelvin.
@@ -57,13 +59,11 @@ REAL, SAVE :: b(29) = [                                                        &
   0.0073240, 0.0081658, 0.0092548, 0.0114284, 0.0132280,                       &
   0.0146400, 0.0157800, 0.0179040, 0.0227640 ]
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSDBRM'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 IF (first) THEN
   adbrm298 = adbrm(65:93)
   first = .FALSE.
@@ -72,7 +72,7 @@ END IF
 tc = MIN(MAX(t,250.0),348.0) - 298.0
 adbrm(65:93) = adbrm298 * EXP(b*tc)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE acsdbrm

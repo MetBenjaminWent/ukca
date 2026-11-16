@@ -63,7 +63,8 @@ SUBROUTINE ukca_calcminmaxgc(str_at,nbox,nchemg,gc)
 USE ukca_setup_indices, ONLY: condensable
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Diag
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Arguments
@@ -80,14 +81,12 @@ REAL    :: gcmin
 REAL    :: gcmax
 REAL    :: gcmean
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CALCMINMAXGC'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO jv=1,nchemg
   IF (condensable(jv)) THEN
@@ -114,7 +113,7 @@ DO jv=1,nchemg
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_calcminmaxgc
 END MODULE ukca_calcminmaxgc_mod

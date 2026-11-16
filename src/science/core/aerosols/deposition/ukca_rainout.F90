@@ -155,7 +155,8 @@ USE ukca_setup_indices,  ONLY: nmasnuscsunucsol,                               &
                                nmasnuscmpaitins, nmasnuscmpaccins,             &
                                nmasnuscdusupins, nmasnuscmpsupins
 
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 USE ukca_um_legacy_mod, ONLY: umErf
 
@@ -235,13 +236,11 @@ REAL    :: dp
 REAL    :: dp2
 REAL    :: maxfracn
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_RAINOUT'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -636,7 +635,7 @@ DO jl=1,nbox
 
 END DO ! Loop over gridboxes
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_rainout
 END MODULE ukca_rainout_mod

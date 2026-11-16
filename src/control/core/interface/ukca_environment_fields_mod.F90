@@ -48,7 +48,8 @@
 
 MODULE ukca_environment_fields_mod
 
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,            ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -501,12 +502,10 @@ INTEGER :: i
 INTEGER :: j
 
 ! Dr Hook
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'LOCATE_LAND_POINTS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Determine land point indices
 row_length = SIZE(land_sea_mask, DIM=1)
@@ -532,7 +531,7 @@ DO i = 1, SIZE(environ_field_info)
     environ_field_info(i)%ubound_dim1 = land_points
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE locate_land_points
 
@@ -552,12 +551,10 @@ IMPLICIT NONE
 INTEGER :: i
 
 ! Dr Hook
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'CLEAR_LAND_ONLY_FIELDS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 DO i = 1, SIZE(environ_field_info)
   IF (environ_field_info(i)%l_land_only) THEN
@@ -598,7 +595,7 @@ IF (ALLOCATED(ibvoc_methanol)) DEALLOCATE(ibvoc_methanol)
 IF (ALLOCATED(ibvoc_terpene)) DEALLOCATE(ibvoc_terpene)
 IF (ALLOCATED(ibvoc_isoprene)) DEALLOCATE(ibvoc_isoprene)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE clear_land_only_fields
 

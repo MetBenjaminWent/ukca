@@ -10,7 +10,8 @@
 MODULE ludcmp_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -36,7 +37,8 @@ CONTAINS
 SUBROUTINE ludcmp(a,n,np,indx,d)
 USE ereport_mod, ONLY: ereport
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 USE errormessagelength_mod, ONLY: errormessagelength
 IMPLICIT NONE
@@ -65,14 +67,12 @@ REAL :: vv(nmax)
 
 CHARACTER(LEN=errormessagelength) :: cmessage           ! Error message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='LUDCMP'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 d=1.0
 DO i=1,n
   aamax=0.0
@@ -133,7 +133,7 @@ DO j=1,n
   END IF
 END DO
 IF (a(n,n) == 0.0) a(n,n)=var_tiny
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ludcmp
 END MODULE ludcmp_mod

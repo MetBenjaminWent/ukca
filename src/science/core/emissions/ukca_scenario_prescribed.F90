@@ -69,7 +69,8 @@ USE ukca_scenario_common_mod, ONLY: ich2br2, i_cfcl3, i_cf2cl2, i_cf2clcfcl2,  &
                        ukca_set_lbc_index, ukca_lump_lbcs, ukca_set_lbc_mmr
 
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
-USE yomhook,           ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,          ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -81,15 +82,13 @@ LOGICAL, INTENT(IN)      :: perform_lumping        ! T for lumping of lbc's
 LOGICAL, SAVE :: first = .TRUE.
 
 ! local variables
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SCENARIO_PRESCRIBED'
 
 
 ! Body of subroutine
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (first) THEN
   ! output UKCA environment values from parent model
@@ -215,7 +214,7 @@ END IF
 CALL ukca_set_lbc_mmr(n_lbc_specs, lbc_mmr)
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_scenario_prescribed
 END MODULE ukca_scenario_prescribed_mod

@@ -10,7 +10,8 @@
 MODULE acso3w_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -35,7 +36,8 @@ CHARACTER(LEN=*), PARAMETER, PRIVATE :: ModuleName='ACSO3W_MOD'
 CONTAINS
 SUBROUTINE acso3w(jw,t,jpwav,ao3)
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -71,13 +73,11 @@ REAL,PARAMETER :: c(3,19) = RESHAPE([                                          &
 INTEGER,PARAMETER :: n(19) = [ (18,i=1,8), (19,i=1,3), (20,i=1,3),             &
  (21,i=1,3), (22,i=1,2) ]
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSO3W'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !     Check if the calculation is required.
 IF ( (jw >= 84) .AND. (jw <= 102) ) THEN
@@ -95,7 +95,7 @@ IF ( (jw >= 84) .AND. (jw <= 102) ) THEN
     *(10.0**(-n(jj)))
 
 END IF
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE acso3w

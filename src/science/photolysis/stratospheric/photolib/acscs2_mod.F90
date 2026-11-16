@@ -10,7 +10,8 @@
 MODULE acscs2_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -36,7 +37,8 @@ CONTAINS
 SUBROUTINE acscs2(acs2)
 USE ukca_parpho_mod, ONLY: jpwav
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Absorption cross-section of CS2 in cm^2 for temperature T for each
@@ -55,19 +57,17 @@ REAL, PARAMETER :: acs2d(jpwav) = [                                            &
   1.38,  0.49,  0.35,  0.24,  0.25,  0.12,  0.01,  0.02,                       &
   (0.0,i=1,96)]
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSCS2'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Linear interpolation between the cross sections given.
 acs2 = 1.0e-20 * acs2d
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE acscs2
 END MODULE acscs2_mod

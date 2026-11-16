@@ -35,7 +35,8 @@ USE errormessagelength_mod, ONLY: errormessagelength
 USE ereport_mod,            ONLY: ereport
 USE umPrintMgr,             ONLY: umPrint, umMessage
 USE parkind1,               ONLY: jprb, jpim      ! for Dr Hook tracing
-USE yomhook,                ONLY: lhook, dr_hook  ! for Dr Hook tracing
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 PRIVATE
@@ -76,14 +77,12 @@ IMPLICIT NONE
 ! Number of elements
 INTEGER, INTENT(IN) :: nbox
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_DIAGS_ALLOC'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Allocate diagnostic field for copy of aerosol water array if required
 IF (.NOT. ALLOCATED(mdwat_diag) .AND.                                          &
@@ -93,7 +92,7 @@ IF (.NOT. ALLOCATED(mdwat_diag) .AND.                                          &
 IF (.NOT. ALLOCATED(wetdp_diag) .AND. l_ukca_pm_diags)                         &
   ALLOCATE(wetdp_diag(nbox,nmodes))
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE ukca_mode_diags_alloc
@@ -175,14 +174,12 @@ REAL    :: md(nbox,nmodes,glomap_variables%ncp)
 LOGICAL (KIND=log_small) :: mask1(nbox)              ! To mask negatives
 CHARACTER(LEN=errormessagelength)   :: cmessage      ! Error return message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_DIAGS'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -289,7 +286,7 @@ END IF
 IF (ALLOCATED(wetdp_diag)) DEALLOCATE(wetdp_diag)
 IF (ALLOCATED(mdwat_diag)) DEALLOCATE(mdwat_diag)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 
 END SUBROUTINE ukca_mode_diags
@@ -554,14 +551,12 @@ REAL    :: aerosol_total_load(row_length,rows,                                 &
                                             ! total aerosol load of each
                                             ! component + h2o (kg.m^-2)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='MODE_DIAGS_CMIP6'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -863,7 +858,7 @@ IF (sf(item,section)) THEN
     stash_levels,num_stash_levels+1)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE mode_diags_cmip6
 
@@ -971,14 +966,12 @@ REAL, ALLOCATABLE :: pm_wet(:,:)         ! Total PM wet mass by size category
 REAL, ALLOCATABLE :: pm_component(:,:,:) ! Component contributions to PM by
                                          ! component number and size category
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='MODE_DIAGS_PM'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 section = stashcode_glomap_sec
 tsection = stashcode_glomap_sec*1000
@@ -1112,7 +1105,7 @@ DEALLOCATE(pm_dry)
 DEALLOCATE(pm_wet)
 DEALLOCATE(pm_component)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE mode_diags_pm
 

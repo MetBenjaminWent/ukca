@@ -46,7 +46,8 @@
 
 MODULE photol_environment_mod
 
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,            ONLY: jprb, jpim
 
 USE photol_fieldname_mod,  ONLY: fieldname_len,                                &
@@ -156,8 +157,6 @@ END TYPE photol_envfld_type
 TYPE(photol_envfld_type), PUBLIC, SAVE :: photol_env_fields(n_max_fields)
 
 ! Dr Hook parameters
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
 
 CHARACTER(LEN=*), PARAMETER :: ModuleName='PHOTOL_ENVIRONMENT_MOD'
 
@@ -187,11 +186,10 @@ CHARACTER(LEN=maxlen_procname), OPTIONAL, INTENT(OUT) :: error_routine
 CHARACTER(LEN=maxlen_message) :: cmessage
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'PHOTOL_INIT_ENVIRON_REQ'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in,                &
-                        zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -209,8 +207,7 @@ photol_env_fields(:)%fld_group_type = group_undefined
 IF ( photol_config%i_photol_scheme == i_scheme_nophot ) THEN
   l_photol_environ_req_available = .TRUE.
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out,             &
-                          zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -405,8 +402,7 @@ IF ( n_fields > n_max_fields ) THEN
   CALL error_report(photol_config%i_error_method, error_code_ptr, cmessage,    &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out,             &
-                          zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -416,8 +412,7 @@ l_photol_environ_req_available = .TRUE.
 ! Added for now to debug
 CALL photol_print_environ_list()
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out,               &
-                        zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE photol_init_environ_req
@@ -461,11 +456,10 @@ INTEGER, POINTER :: error_code_ptr
 CHARACTER(LEN=maxlen_message) :: err_msg
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'PHOTOL_GET_ENVIRON_VARLIST'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in,                &
-                        zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code_ptr => errcode
 
@@ -482,8 +476,7 @@ IF ( .NOT. l_photol_environ_req_available ) THEN
   CALL error_report(photol_config%i_error_method, error_code_ptr, err_msg,     &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out,             &
-                          zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
   RETURN
 END IF
 
@@ -531,8 +524,7 @@ IF (PRESENT(varnames_fullhtphot_real_ptr)) THEN
   varnames_fullhtphot_real_ptr => environ_fldnames_fullhtphot_real
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out,               &
-                        zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE photol_get_environ_varlist
 

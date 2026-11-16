@@ -122,7 +122,8 @@ USE ereport_mod,          ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 
 USE parkind1,             ONLY: jpim, jprb      ! DrHook
-USE yomhook,              ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 USE ukca_diurnal_isop_ems_mod, ONLY: ukca_diurnal_isop_ems
 USE ukca_light_ctl_mod, ONLY: ukca_light_ctl
@@ -332,15 +333,13 @@ CHARACTER (LEN=errormessagelength) :: cmessage   ! Error message
 INTEGER            :: ierr       ! Req. for ASAD diags (do not initialise here)
 INTEGER, SAVE      :: inox       ! Index of NOx tracer for ASAD 3D diags
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_EMISS_CTL'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -1288,7 +1287,7 @@ IF (ukca_config%l_ukca_persist_off) THEN
 
 END IF  !  ukca_config%l_ukca_persist_off
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_emiss_ctl
@@ -1298,7 +1297,8 @@ SUBROUTINE regrid_jules_emi(                                                   &
   emission, land_fraction, emission_2D)
 
 USE parkind1,             ONLY: jpim, jprb      ! DrHook
-USE yomhook,              ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 !
@@ -1322,16 +1322,14 @@ REAL,             INTENT(IN)    :: land_fraction  (1:row_length, 1:rows)
 REAL,             INTENT(OUT)   :: emission_2D    (row_length, rows)
 
 ! Local variables
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 INTEGER                         :: ii, jj, ll
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='REGRID_JULES_EMI'
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Initialise emission_2D
 DO jj = 1, rows
@@ -1352,7 +1350,7 @@ DO ll = 1, land_points
   emission_2D (ii,jj) = emission_2D (ii,jj) * land_fraction(ii,jj)
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 
 RETURN
 END SUBROUTINE regrid_jules_emi

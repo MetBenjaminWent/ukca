@@ -99,7 +99,8 @@ USE ukca_emiss_mode_mod,     ONLY: aero_ems_species
 
 USE ukca_day_of_week_mod,    ONLY: day_of_week    ! Calculate day of week
 USE parkind1,                ONLY: jprb, jpim     ! DrHook
-USE yomhook,                 ONLY: lhook, dr_hook ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod,             ONLY: ereport
 USE errormessagelength_mod,  ONLY: errormessagelength
 USE umPrintMgr,  ONLY: umPrint, umMessage, PrintStatus, PrStatus_Normal
@@ -257,9 +258,7 @@ CHARACTER (LEN=10), SAVE, ALLOCATABLE  :: nm_tracer(:)
                     ! temporarily holds tracer name from advt
 REAL, PARAMETER     :: small_number  = 0.00001 ! to compare real numbers
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_ADD_EMISS'
 
@@ -268,7 +267,7 @@ INTEGER                            :: item      ! stash item
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -1153,7 +1152,7 @@ IF (ALLOCATED(hourly_scaling_all_2d)) DEALLOCATE(hourly_scaling_all_2d)
 IF (ALLOCATED(tmp3dems)) DEALLOCATE(tmp3dems)
 
 firstcall = .FALSE.
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_add_emiss

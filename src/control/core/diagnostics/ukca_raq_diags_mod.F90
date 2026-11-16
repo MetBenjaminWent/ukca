@@ -52,7 +52,8 @@ USE ukca_chem_raq,   ONLY: ndd_o3,   ndd_no2,    ndd_hono2,  ndd_h2o2,         &
 USE get_noy_mod,  ONLY: get_noy
 USE get_nmvoc_mod,  ONLY: get_nmvoc
 USE parkind1, ONLY: jprb,  jpim
-USE yomhook,  ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 USE ukca_um_legacy_mod, ONLY: len_stlist, stindex, stlist, num_stash_levels,   &
                               stash_levels, si, sf, si_last, copydiag_3d
@@ -89,13 +90,11 @@ INTEGER, PARAMETER :: sect = 50   ! stash section for UKCA diagnostics
 
 REAL :: tmp_diags(row_length, rows, model_levels)
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_RAQ_DIAGS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 im_index = 1
 
@@ -734,7 +733,7 @@ IF (sf(item,sect)) THEN
        stash_levels,num_stash_levels+1)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_raq_diags

@@ -28,7 +28,8 @@ MODULE ukca_conserve_mod
 
 USE ukca_config_specification_mod, ONLY: ukca_config
 
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus,                         &
@@ -153,14 +154,12 @@ REAL, ALLOCATABLE :: corrfac(:,:,:)
 INTEGER           :: errcode        ! error code
 CHARACTER(LEN=errormessagelength) :: cmessage       !   "   message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CONSERVE'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 IF (firstcall) THEN
 
   IF (ntracers /= jpctr) THEN
@@ -665,7 +664,7 @@ ELSE    ! direction = F
   IF (ALLOCATED(corrfac)) DEALLOCATE(corrfac)
 END IF   ! direction
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_conserve
 

@@ -48,7 +48,8 @@ SUBROUTINE ukca_light_ctl(                                                     &
 
 USE ukca_um_legacy_mod,    ONLY: gg => g
 USE ukca_constants,        ONLY: c_no2, c_n
-USE yomhook,               ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,              ONLY: jprb, jpim
 USE asad_chem_flux_diags,  ONLY: L_asad_use_chem_diags,                        &
     L_asad_use_light_diags_tot, L_asad_use_light_diags_c2c,                    &
@@ -141,9 +142,7 @@ REAL :: cloud2cloud_flash_rate(row_length, rows)
 REAL :: total_N(row_length, rows)
 
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_LIGHT_CTL'
 
@@ -168,7 +167,7 @@ ext_ic = 0.0
 
 ! Find heights of model half levels
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Find heights of model levels
 
@@ -300,7 +299,7 @@ DO k = 1,p_levels
   no2_to_air(:,:,k) = n_gridbox (:,:,k)*c_no2/c_n/mass
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_light_ctl
 END MODULE ukca_light_ctl_mod

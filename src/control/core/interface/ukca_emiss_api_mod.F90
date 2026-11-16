@@ -47,7 +47,8 @@ USE ukca_error_mod,        ONLY: maxlen_message, maxlen_procname,              &
 USE ereport_mod,           ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 USE parkind1,              ONLY: jpim, jprb      ! DrHook
-USE yomhook,               ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -70,8 +71,6 @@ PUBLIC :: ukca_get_emission_varlist, ukca_register_emission,                   &
           ukca_set_emission, get_registered_ems_info
 
 ! Dr Hook parameters
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
 
 CHARACTER(LEN=*), PARAMETER, PRIVATE :: ModuleName='UKCA_EMISS_API_MOD'
 
@@ -113,12 +112,12 @@ INTEGER :: n, n_species, icp
 LOGICAL :: lmode_emiss(nmodes)
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_GET_EMISSION_VARLIST'
 
 ! End of header
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Nullify pointer before use
 emiss_species => NULL()
@@ -137,7 +136,7 @@ IF (.NOT. l_ukca_config_available) THEN
     error_message = 'No UKCA configuration has been set up'
   IF (PRESENT(error_routine)) error_routine = RoutineName
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -178,7 +177,7 @@ END DO      ! loop over all species
 emiss_species => em_spec
 num_per_species => n_per_species
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_get_emission_varlist
 
@@ -240,13 +239,13 @@ INTEGER :: errcode
 CHARACTER(LEN=errormessagelength) :: cmessage
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_REGISTER_EMISSION'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Check for availability of UKCA configuration data
 IF (.NOT. l_ukca_config_available) THEN
@@ -367,7 +366,7 @@ IF ( ANY(aero_ems_species == tracer_name) ) THEN
   END DO      ! Loop over modes
 END IF        ! MODE emission
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 
 RETURN
 END SUBROUTINE ukca_register_emission
@@ -396,12 +395,12 @@ INTEGER :: i
 INTEGER :: ecount
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='GET_REGISTERED_EMS_INFO'
 
 ! End of header
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 n_2d_ems = 0
 n_3d_ems = 0
@@ -419,7 +418,7 @@ DO i = 1, n_ems_registered
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 
 RETURN
 END SUBROUTINE get_registered_ems_info
@@ -466,12 +465,12 @@ INTEGER :: errcode
 CHARACTER(LEN=errormessagelength) :: cmessage
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SET_EMISSION'
 
 ! End of header
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 ! Check that the index given to identify the emission is in range
 
@@ -632,7 +631,7 @@ IF ( PRESENT(vert_scaling) ) THEN
   END IF
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 RETURN
 
 END SUBROUTINE ukca_set_emission

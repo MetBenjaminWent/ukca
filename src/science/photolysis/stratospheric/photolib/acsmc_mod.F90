@@ -10,7 +10,8 @@
 MODULE acsmc_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -45,7 +46,8 @@ CHARACTER(LEN=*), PARAMETER, PRIVATE :: ModuleName='ACSMC_MOD'
 CONTAINS
 SUBROUTINE acsmc(t,jpwav,wavenm,amc)
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -81,15 +83,13 @@ REAL :: lam3
 REAL :: lam4
 REAL :: arg
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSMC'
 
 
 !     Check that temperature is in range.
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 tc = t
 IF ( tc > 300.0 ) tc = 300.0
 IF ( tc < 210.0 ) tc = 210.0
@@ -108,7 +108,7 @@ DO jw = 45 , 67
   amc(jw) = 10.0**arg
 
 END DO
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE acsmc

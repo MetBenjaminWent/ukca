@@ -78,7 +78,8 @@ USE ukca_missing_data_mod, ONLY: imdi
 
 USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname
 
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -134,15 +135,13 @@ LOGICAL :: l_check_group(n_diag_group)   ! True to check group for active
 ! Ozone column (from model level to top of atmosphere) in Dobson Unit
 REAL :: o3col_du(row_length, rows, model_levels)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DIAGS_OUTPUT_CTL'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -249,7 +248,7 @@ DO i = 1, SIZE(available_diag_varnames)
 
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE ukca_diags_output_ctl

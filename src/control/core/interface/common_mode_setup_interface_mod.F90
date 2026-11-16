@@ -79,9 +79,8 @@ USE umPrintMgr,                      ONLY:                                     &
     umPrint,                                                                   &
     umMessage
 
-USE yomhook,                         ONLY:                                     &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -100,12 +99,10 @@ LOGICAL, INTENT(IN) :: l_dust_mp_ageing
 INTEGER                           :: errcode  ! error code
 CHARACTER(LEN=errormessagelength) :: cmessage ! error message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER   :: RoutineName='COMMON_MODE_SETUP_INTERFACE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 SELECT CASE(i_mode_setup_in)
 CASE (i_suss_4mode) ! 1
@@ -204,7 +201,7 @@ CASE DEFAULT
   CALL ereport(RoutineName,errcode,cmessage)
 END SELECT
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 END SUBROUTINE common_mode_setup_interface
 
 END MODULE common_mode_setup_interface_mod

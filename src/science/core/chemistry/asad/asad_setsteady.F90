@@ -95,7 +95,8 @@ USE asad_mod, ONLY: ctype, h_in_ss,                                            &
                     nssi, nsspi, nsspt, nssri, nssrt, nssrx, nsst,             &
                     o1d_in_ss, o3p_in_ss, speci
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod, ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
 
@@ -117,15 +118,13 @@ INTEGER :: issx(jpssr)
 CHARACTER(LEN=errormessagelength) :: cmessage        ! error message
 INTEGER :: errcode                   ! variable passed to ereport
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_SETSTEADY'
 
 
 ! Zero all arrays
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 nsst=0
 nssi=0
 indss=0
@@ -251,7 +250,7 @@ DO ix=1,nsst
 END DO
 
 9999 CONTINUE
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_setsteady
 END MODULE asad_setsteady_mod

@@ -95,7 +95,8 @@ USE ukca_constants, ONLY: mmw
 USE ukca_um_legacy_mod, ONLY: umErf
 
 USE parkind1,               ONLY: jpim, jprb      ! DrHook
-USE yomhook,                ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -156,15 +157,13 @@ REAL :: dbar(nbox)          ! Geometric mean diameter of particles in mode
 REAL :: erf_arg(nbox)       ! Argument vector for error function
 REAL :: lowfrac(nbox)       ! Fraction of mass below size cutoff
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0  ! DrHook tracing entry
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1  ! DrHook tracing exit
-REAL    (KIND=jprb)            :: zhook_handle   ! DrHook tracing
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_PM_DIAGS'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -251,7 +250,7 @@ DO imode = 1,nmodes
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_pm_diags
 

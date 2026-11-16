@@ -77,9 +77,8 @@ USE ukca_mode_setup,                    ONLY:                                  &
 USE ukca_volume_mode_mod,               ONLY:                                  &
     ukca_volume_mode
 
-USE yomhook,                            ONLY:                                  &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -187,11 +186,9 @@ REAL(KIND=real_umphys) :: mdwat( n_points, nmodes )
 REAL(KIND=real_umphys) ::  ccn_1d( n_points )
 
 CHARACTER(LEN=*), PARAMETER   :: RoutineName='GLOMAP_CLIM_INTERFACE'
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialise fields
 cdnc_1d(:)    = 0.0
@@ -253,7 +250,7 @@ END IF
 CALL ukca_cdnc_jones( n_points, act_radius, drydp, nd,                         &
                       glomap_variables_climatology, ccn_1d, cdnc_1d )
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE glomap_clim_interface
 

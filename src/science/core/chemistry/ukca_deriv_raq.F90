@@ -45,7 +45,8 @@ USE asad_mod, ONLY: jpspec, jphk, jppj, jpdd, jpdw
 USE ukca_config_specification_mod, ONLY: ukca_config
 
 USE ukca_config_constants_mod, ONLY: avogadro
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 USE ukca_um_legacy_mod, ONLY: oneover_v
 
@@ -89,13 +90,11 @@ REAL :: yp(n_pnts,jpspec)     ! previous species concn
 REAL :: tmp1(n_pnts)          ! work array for vector reciprocal
 REAL :: tmp2(n_pnts)          ! work array for vector reciprocal
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DERIV_RAQ'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 recip_avogad = 1.0 / avogadro
 
@@ -1131,7 +1130,7 @@ DO j = 1, icnt_wd
   wdflux (:,j) = wdflux (:,j) / n_be_calls
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_deriv_raq
 END MODULE ukca_deriv_raq_mod

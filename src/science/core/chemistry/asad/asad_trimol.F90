@@ -55,7 +55,8 @@ SUBROUTINE asad_trimol(n_points)
 USE asad_mod,        ONLY: rk, at, ntrkx, spt, t300, t, peps,                  &
                            tnd, f, wp, specf, jpcspf, jptk
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ukca_um_legacy_mod, ONLY: exp_v, powr_v, oneover_v
 
 IMPLICIT NONE
@@ -86,9 +87,7 @@ REAL :: nf2                        ! Covers a small change to nf
 LOGICAL, SAVE :: first = .TRUE.
 LOGICAL, SAVE :: first_pass = .TRUE.
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_TRIMOL'
 
@@ -106,7 +105,7 @@ REAL :: inv_t(1:n_points)
 !       1.  Calculate trimolecular rate coefficients
 !           --------- ------------ ---- ------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 iho2  = 0
 in2o5   = 0
 ino2no3 = 0
@@ -241,7 +240,7 @@ ELSE IF (ih2o == 0 .AND. iho2 /= 0) THEN
   END DO
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_trimol
 END MODULE asad_trimol_mod

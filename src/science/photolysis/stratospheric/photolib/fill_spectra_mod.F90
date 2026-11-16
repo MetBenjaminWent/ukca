@@ -10,7 +10,8 @@
 MODULE fill_spectra_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -44,20 +45,19 @@ USE ukca_crossec_mod, ONLY: accl4, ach2o, acl2o2, amcfm, acnita,               &
   quanta, ach4 , wavecm, wavenm, aobro, ahono,                                 &
   amena, achbr3, adbrm
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Local variables
 INTEGER :: i
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FILL_SPECTRA'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 wavenm(1:108) = [                                                              &
   1.215e+02,1.167e+02,1.173e+02,1.179e+02,1.187e+02,1.194e+02,                 &
   1.202e+02,1.208e+02,1.216e+02,1.223e+02,1.231e+02,1.238e+02,                 &
@@ -716,7 +716,7 @@ adbrm = [                                                                      &
   1.40543e-21, 7.17753e-22, 3.52979e-22, 1.68479e-22,                          &
   7.85898e-23, (0.0,i=1,110) ]
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE fill_spectra

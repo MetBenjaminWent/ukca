@@ -116,7 +116,8 @@ USE ukca_mode_setup, ONLY:                                                     &
     mode_nuc_sol,                                                              &
     mode_acc_sol
 
-USE yomhook,         ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,        ONLY: jprb, jpim
 USE ereport_mod,     ONLY: ereport
 USE umPrintMgr,      ONLY: umPrint, umMessage
@@ -168,13 +169,11 @@ INTEGER :: i
 CHARACTER(LEN=errormessagelength) :: cmessage
 INTEGER           :: errcode
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CALC_DRYDIAM'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables_local%
 !           have been included here to make the code easier to read
@@ -316,7 +315,7 @@ DO imode=1,nmodes
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_calc_drydiam
 END MODULE ukca_calc_drydiam_mod

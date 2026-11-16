@@ -42,7 +42,8 @@ SUBROUTINE aer_no3_2bindu (row_length, rows, nlevs, ptsphy, nssmodes,          &
 USE ukca_um_legacy_mod,   ONLY: drep, rho_dust => rhop
 USE ukca_constants,       ONLY: rpi => pi
 USE parkind1,             ONLY: jpim, jprb      ! DrHook
-USE yomhook,              ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: row_length
@@ -120,13 +121,11 @@ REAL, PARAMETER :: pfrac_ca=0.05               ! Fraction of dust that is Ca2+
 REAL, PARAMETER :: drep_N_mean(2) = [ 0.299287e-6, 5.806452e-6 ]
 
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='AER_NO3_2BINDU'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ptss(:,:,:,:) = 0.0
 pthno3(:,:,:) = 0.0
@@ -276,7 +275,7 @@ DO jk = 1,nlevs
 END DO !jk
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE aer_no3_2bindu
 
@@ -292,7 +291,8 @@ SUBROUTINE aer_no3_6bindu (row_length, rows, nlevs, ptsphy, nssmodes,          &
 USE ukca_um_legacy_mod,   ONLY: drep, rho_dust => rhop
 USE ukca_constants,       ONLY: rpi => pi
 USE parkind1,             ONLY: jpim, jprb      ! DrHook
-USE yomhook,              ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: row_length
@@ -376,13 +376,11 @@ REAL, PARAMETER :: drep_N_mean(6) =                                            &
                    [ 0.881697e-07, 0.278817e-06, 0.881697e-06,                 &
                       0.278817e-05, 0.881697e-05, 0.278817e-04 ]
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='AER_NO3_6BINDU'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ptss(:,:,:,:) = 0.0
 pthno3(:,:,:) = 0.0
@@ -555,7 +553,7 @@ DO jk = 1,nlevs
   END DO !jj
 END DO !jk
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 
 END SUBROUTINE aer_no3_6bindu
 
@@ -570,7 +568,8 @@ SUBROUTINE aer_no3_ukcadu (row_length, rows, nlevs, ptsphy, nssmodes,          &
 
 USE ukca_constants,       ONLY: rpi => pi
 USE parkind1,             ONLY: jpim, jprb      ! DrHook
-USE yomhook,              ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: row_length
@@ -650,13 +649,11 @@ REAL, PARAMETER :: zdmolec = 4.5e-10           !molec diameter in m
 REAL, PARAMETER :: zavg = 6.02217e+23          ! Avogadro number [mol-1]
 REAL, PARAMETER :: pfrac_ca=0.05               ! Fraction of dust that is Ca2+
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='AER_NO3_UKCADU'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Initialise arrays
 ptss(:,:,:,:) = 0.0
@@ -805,7 +802,7 @@ DO jk = 1,nlevs
   END DO !jj
 END DO !jk
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 
 END SUBROUTINE aer_no3_ukcadu
 

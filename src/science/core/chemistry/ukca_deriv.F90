@@ -39,7 +39,8 @@ SUBROUTINE ukca_deriv(nr, n_be_calls, n_pnts,                                  &
 
 USE asad_mod, ONLY: jpspec, jppj
 USE ukca_config_specification_mod, ONLY: ukca_config
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -75,13 +76,11 @@ REAL :: l2(n_pnts)                         ! working array
 REAL :: l3(n_pnts)                         ! working array
 REAL :: yp(n_pnts,jpspec)                  ! previous species concn
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DERIV'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO n = 1, n_be_calls           ! loop over chemical timesteps
 
@@ -664,7 +663,7 @@ DO n = 1, n_be_calls           ! loop over chemical timesteps
 
 END DO  ! n_be_calls
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_deriv
 END MODULE ukca_deriv_mod

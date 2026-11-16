@@ -62,7 +62,8 @@ USE asad_mod,        ONLY: cdt, ctype, dpd, dpw, f, frpx,                      &
                            p, rk, speci, spj, spt, y, ydot,                    &
                            jpspec, jpcspf, jptk, jppj
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod, ONLY: ereport
 
 USE ukca_um_legacy_mod, ONLY: mype
@@ -160,14 +161,12 @@ INTEGER :: iter
 ! k mod 5, precomputed
 INTEGER, SAVE :: mod5(0:prodmax)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_BEDRIV'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 ! OMP CRITICAL will only allow one thread through this code at a time,
 ! while the other threads are held until completion.
 !$OMP CRITICAL (asad_bedriv_init)
@@ -604,7 +603,7 @@ DO j = 1, jpcspf
 END DO
 
 ! finish BE step
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_bedriv
 END MODULE asad_bedriv_mod

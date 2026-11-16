@@ -46,7 +46,8 @@ CONTAINS
 
 SUBROUTINE ukca_binapara(nbox,t_in,rh_in,h2so4_in,jveh,rc)
 
-USE yomhook,  ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 USE ukca_um_legacy_mod, ONLY: exp_v, log_v
 
@@ -86,16 +87,14 @@ REAL :: ntot_out(nbox)                 ! temporary array
 REAL :: jveh_out(nbox)                 ! temporary array
 REAL :: rc_out(nbox)                   ! temporary array
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_BINAPARA'
 
 REAL :: logrha(nbox)                   ! LOG(rh)
 REAL :: logh2so4a(nbox)                ! LOG(h2so4)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Perform check on whether Temp, RH and H2SO4 are out of bounds
 
@@ -279,7 +278,7 @@ DO jl=1,nbox
 
 END DO       ! jl
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_binapara
 

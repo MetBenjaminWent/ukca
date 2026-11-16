@@ -43,7 +43,8 @@ USE ukca_um_legacy_mod, ONLY: vkman
 USE ukca_constants,     ONLY: pi_over_180, fxb, fxc
 USE asad_mod, ONLY: depvel, jpdd
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -89,16 +90,14 @@ REAL :: cs_hour_ang            ! cosine hour angle
 REAL :: tloc  (p_fieldda)      ! local time
 REAL :: daylen(p_fieldda)      ! local daylength
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DDEPRT'
 
 
 !       Initialise dryrt to zero
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 dryrt(:,:) = 0.0
 
 DO i = 1,p_fieldda  ! Loop over spatial scale
@@ -209,7 +208,7 @@ DO ns = 1,jpdd                     ! Loop over deposited species
   END DO                     ! End of loop over spatial points
 END DO                       ! End of loop over deposited species
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_ddeprt
 END MODULE ukca_ddeprt_mod

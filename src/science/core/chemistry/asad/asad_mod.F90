@@ -26,7 +26,8 @@ MODULE asad_mod
 
 USE ukca_config_specification_mod, ONLY: ukca_config, int_method_nr
 
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 
 USE ukca_missing_data_mod, ONLY: imdi
@@ -375,13 +376,11 @@ SUBROUTINE asad_mod_pre_setup_init()
 
 IMPLICIT NONE
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_MOD_PRE_SETUP_INIT'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! All arrays within ASAD which previously were of size jpctr have been
 ! resized to jpcspf, unless they specifically refer to number of transported
@@ -401,7 +400,7 @@ IF (.NOT. ALLOCATED(family)) ALLOCATE(family(jpspec))
 IF (.NOT. ALLOCATED(speci)) ALLOCATE(speci(jpspec))
 IF (.NOT. ALLOCATED(ctype)) ALLOCATE(ctype(jpspec))
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_mod_pre_setup_init
 
@@ -416,15 +415,13 @@ IMPLICIT NONE
 INTEGER, INTENT(IN) :: n_points
 
 LOGICAL, SAVE :: firstcall=.TRUE.
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_MOD_INIT'
 
 !$OMP THREADPRIVATE(firstcall)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 ! nullify prod and slos on firstcall to give DISSASSOCIATED attribute
 IF (firstcall) THEN
   NULLIFY(prod)
@@ -628,7 +625,7 @@ slos => pd(:,jpspec+1:2*jpspec)
 deriv(:,:,:) = 1.0      ! Temp fix for deriv being uninitialised in first
                         ! solver iteration
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE asad_mod_init
 
@@ -643,13 +640,11 @@ IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: n_points
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_MOD_INIT_SPATIAL_VARS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Set integration method (1 = IMPACT; 3 = N-R solver; 5 = Backward-Euler)
 method = ukca_config%ukca_int_method
@@ -746,7 +741,7 @@ za(:)     = 0.0
 rk(:,:)   = 0.0
 prk(:,:)  = 0.0
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE asad_mod_init_spatial_vars
 
@@ -762,11 +757,9 @@ IMPLICIT NONE
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'ASAD_MOD_DEALLOC_SPATIAL_VARS'
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 ! Set integration method (1 = IMPACT; 3 = N-R solver; 5 = Backward-Euler)
 method = ukca_config%ukca_int_method
@@ -813,7 +806,7 @@ IF (ALLOCATED(deriv)) DEALLOCATE(deriv)
 IF (ALLOCATED(co3)) DEALLOCATE(co3)
 IF (ALLOCATED(pd)) DEALLOCATE(pd)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 
 END SUBROUTINE asad_mod_dealloc_spatial_vars
 

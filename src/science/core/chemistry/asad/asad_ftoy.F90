@@ -144,7 +144,8 @@ USE asad_mod,            ONLY: f, y, prod, slos, ratio, qa,                    &
                                jsro2, nlfro2, jpspec, jpro2
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod, ONLY: ereport
 
 USE umPrintMgr, ONLY: umPrint
@@ -208,9 +209,7 @@ LOGICAL, SAVE :: gonce  = .TRUE.
 LOGICAL, SAVE :: first_pass = .TRUE.
 LOGICAL, SAVE :: gdepem = .FALSE.
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_FTOY'
 
@@ -218,7 +217,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_FTOY'
 !       1.  Initialise.
 !           -----------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 
 ! initalise ints
@@ -329,7 +328,7 @@ END IF
 !       1.2 If there are no family or steady species then exit
 
 IF ( nstst == 0) THEN
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -352,7 +351,7 @@ IF ( ofirst ) CALL asad_fyself(n_points)
 
 IF (iter == 0) THEN
   CALL asad_fyfixr(n_points)
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -528,7 +527,7 @@ DO jit = 1, iter
     IF ( .NOT. gconv ) EXIT
   END DO
   IF (gconv) THEN
-    IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
 
@@ -543,7 +542,7 @@ END DO    ! End of iterations
 
 !       9. Convergence achieved or max. iterations reached.
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_ftoy
 

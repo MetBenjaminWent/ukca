@@ -55,7 +55,8 @@ USE ukca_constants,        ONLY: c_oh, c_o3, c_no3, c_ho2
 USE ukca_environment_fields_mod,     ONLY: o3_offline, oh_offline,             &
                            no3_offline, ho2_offline
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod, ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 
@@ -81,9 +82,7 @@ INTEGER :: j                      ! Loop variable
 
 CHARACTER (LEN=errormessagelength) :: cmessage
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 REAL                          :: fro2(klen) ! Total RO2 concentration
                                             ! (molecules/cm3)
@@ -93,7 +92,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_INICNT_COL'
 
 !     1.  Copy water, CO2, and offline oxidants (if required) into ASAD array.
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (species(1:4) == 'CO2 ' .AND. ukca_config%l_chem_environ_co2_fld) THEN
   !  The CO2 field is set to the UM prognostic if it is available and
@@ -150,7 +149,7 @@ END IF
 ! Convert to molecules/cm^3 from vmr
 y_out(:) = y_out(:)*tnd(:)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE asad_inicnt_col

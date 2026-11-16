@@ -10,7 +10,8 @@
 MODULE acsh2so4_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -36,7 +37,8 @@ CONTAINS
 SUBROUTINE acsh2so4(ah2so4)
 USE ukca_parpho_mod, ONLY: jpwav
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Absorption cross-section of H2SO4 in cm^2 for temperature T for each
@@ -57,17 +59,15 @@ REAL,PARAMETER :: ah2so4d(jpwav) = [                                           &
   0.39,   0.39,   0.14,   0.14,   0.05,   0.05,                                &
   (0.0,i=1,133) ]
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSH2SO4'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 ! Linear interpolation between the cross sections given.
 ah2so4 = 1.0e-20 * ah2so4d *0.016  ! S. Bekki data
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE acsh2so4
 END MODULE acsh2so4_mod

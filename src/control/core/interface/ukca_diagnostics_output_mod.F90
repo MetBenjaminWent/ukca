@@ -54,7 +54,8 @@ USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname,                     &
                           errcode_diag_mismatch, errcode_ukca_internal_fault,  &
                           errcode_value_unknown, error_report
 
-USE yomhook,        ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,       ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -62,8 +63,6 @@ IMPLICIT NONE
 PRIVATE
 
 ! Dr Hook parameters
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
 
 CHARACTER(LEN=*), PARAMETER :: ModuleName = 'UKCA_DIAGNOSTICS_OUTPUT_MOD'
 
@@ -101,13 +100,13 @@ INTEGER :: i
 INTEGER :: i_master
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UPDATE_SKIPPED_DIAG_FLAGS'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO group = 1, n_diag_group
   DO i = 1, diagnostics%n_request(group)
@@ -121,7 +120,7 @@ DO group = 1, n_diag_group
   END DO
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE update_skipped_diag_flags
 
@@ -161,13 +160,13 @@ LOGICAL, INTENT(OUT) :: l_active_requests           ! True if active requests
 INTEGER :: group
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SEEK_ACTIVE_REQUESTS'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 i_diag_req = 0
 l_active_requests = .FALSE.
@@ -193,7 +192,7 @@ DO group = 1, n_diag_group
 
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE seek_active_requests
 
@@ -239,13 +238,13 @@ CHARACTER(LEN=maxlen_procname), OPTIONAL, INTENT(OUT) :: error_routine
 INTEGER :: i
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UPDATE_DIAGNOSTICS_2D_REAL'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -274,7 +273,7 @@ IF (diagnostics%n_request(dgroup_flat_real) > 0) THEN
 
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE update_diagnostics_2d_real
 
@@ -319,13 +318,13 @@ INTEGER :: group
 INTEGER :: i
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UPDATE_DIAGNOSTICS_3D_REAL'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -360,7 +359,7 @@ DO group = 1, n_diag_group
 
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE update_diagnostics_3d_real
 
@@ -403,13 +402,13 @@ CHARACTER(LEN=maxlen_message) :: message_txt  ! Buffer for output message
 CHARACTER(LEN=maxlen_diagname) :: diag_name
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_5
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UPDATE_DIAG_FIELD'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -516,7 +515,7 @@ IF (error_code_ptr > 0) THEN
                     RoutineName, msg_out=error_message, locn_out=error_routine)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
 RETURN
 END SUBROUTINE update_diag_field
 
@@ -589,13 +588,13 @@ INTEGER :: i
 INTEGER :: i_master
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_6
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'BLANK_OUT_MISSING_DIAGS'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -620,7 +619,7 @@ DO group = 1, n_diag_group
           'Invalid no. of dimensions for diagnostic output',                   &
           RoutineName, msg_out=error_message, locn_out=error_routine)
         IF (lhook) THEN
-          CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+          CALL vernier_stop(vnr_handle_6)
         END IF
         RETURN
       END SELECT
@@ -628,7 +627,7 @@ DO group = 1, n_diag_group
   END DO
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
 RETURN
 END SUBROUTINE blank_out_missing_diags
 

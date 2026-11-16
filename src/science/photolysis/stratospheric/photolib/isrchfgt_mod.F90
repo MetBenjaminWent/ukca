@@ -10,7 +10,8 @@
 MODULE isrchfgt_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -41,7 +42,8 @@ CHARACTER(LEN=*), PARAMETER, PRIVATE :: ModuleName='ISRCHFGT_MOD'
 CONTAINS
 INTEGER FUNCTION isrchfgt(n,xx,x)
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: n       ! Length of array XX
@@ -53,13 +55,11 @@ INTEGER :: jl
 INTEGER :: ju
 INTEGER :: jm
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ISRCHFGT'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !     Initialize upper & lower limits.
 jl = 0
@@ -74,7 +74,7 @@ DO WHILE ( ju-jl > 1 )
   END IF
 END DO
 isrchfgt = jl + 1
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END FUNCTION isrchfgt

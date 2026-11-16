@@ -349,9 +349,8 @@ USE umPrintMgr,                              ONLY:                             &
     umPrint,                                                                   &
     umMessage
 
-USE yomhook,                                 ONLY:                             &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 
 IMPLICIT NONE
@@ -505,16 +504,14 @@ REAL :: s_cond_s(nbox)
 
 CHARACTER(LEN=errormessagelength) :: cmessage
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_AERO_STEP'
 
 !
 !     CHECKMD_ND set to 1/0 for whether/not to check for
 !                values of ND, MD and MDT out of range.
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -1205,7 +1202,7 @@ DO imts=1,nmts
   !
 END DO ! end loop over NMTS
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_aero_step
 END MODULE ukca_aero_step_mod

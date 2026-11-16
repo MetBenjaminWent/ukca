@@ -346,7 +346,8 @@ USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname,                     &
                           i_error_method_warn_and_return
 
 USE parkind1,               ONLY: jpim, jprb      ! DrHook
-USE yomhook,                ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -608,15 +609,13 @@ LOGICAL :: l_strat_scheme_selected ! True if a Stratospheric scheme is
 
 REAL :: sum_solinsol_hygro_ratio   ! Sum of solinsol hygroscopicity ratios (=1)
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0  ! DrHook tracing entry
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1  ! DrHook tracing exit
-REAL    (KIND=jprb)            :: zhook_handle   ! DrHook tracing
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SETUP'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Use parent supplied argument for return code. Note that this argument is
 ! redundant if UKCA is configured to abort on error and may be made optional
@@ -664,7 +663,7 @@ ELSE
 END IF
 
 IF (error_code_ptr > 0) THEN
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -1296,8 +1295,8 @@ IF (ukca_config%i_ukca_chem /= i_ukca_chem_off) THEN
         error_message =                                                        &
           'Missing one or more option codes for interpreting i_photol_scheme'
       IF (PRESENT(error_routine)) error_routine = RoutineName
-      IF (lhook)                                                               &
-        CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+      IF (LPROF_UKCA)                                                               &
+        CALL vernier_stop(vnr_handle_1)
       RETURN
     END IF
 
@@ -1795,7 +1794,7 @@ CALL init_tracer_req( ukca_config,                                             &
                       error_message=error_message,                             &
                       error_routine=error_routine)
 IF (error_code_ptr > 0) THEN
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -1823,7 +1822,7 @@ CALL init_diagnostics(error_code_ptr, ukca_config, advt,                       &
                       error_message=error_message,                             &
                       error_routine=error_routine)
 IF (error_code_ptr > 0) THEN
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -1833,7 +1832,7 @@ CALL init_environment_req(ukca_config, glomap_config,                          &
                           ctype, error_code_ptr, error_message=error_message,  &
                           error_routine=error_routine)
 IF (error_code_ptr > 0) THEN
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -1843,7 +1842,7 @@ CALL clear_environment_fields()
 ! Set flag to show that a valid UKCA configuration is set up
 l_ukca_config_available = .TRUE.
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE ukca_setup

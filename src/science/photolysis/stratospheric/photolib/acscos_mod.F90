@@ -10,7 +10,8 @@
 MODULE acscos_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -38,7 +39,8 @@ CONTAINS
 SUBROUTINE acscos(t, aocs)
 USE ukca_parpho_mod, ONLY: jpwav
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -71,13 +73,11 @@ REAL, PARAMETER :: acos225(jpwav) = [                                          &
   .178,.0900,.0419,.0199,.0101,.0048,.0021,.0009,.0005,.0002,                  &
   (0.0,i=1,112)]
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSCOS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !     Check that temperature is in range.
 tc = MAX(MIN (t, 295.0), 225.0)
@@ -87,7 +87,7 @@ arg = (tc - 225.0)/70.0
 aocs = 1.0e-20 *                                                               &
   (acos295 * arg + acos225 * (1.0 - arg))
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE acscos
 END MODULE acscos_mod

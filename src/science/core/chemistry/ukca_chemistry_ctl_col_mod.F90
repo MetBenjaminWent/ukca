@@ -91,7 +91,8 @@ USE ukca_config_specification_mod, ONLY: ukca_config
 
 USE ukca_ntp_mod,       ONLY: ntp_type, dim_ntp, name2ntpindex
 
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 USE ereport_mod, ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint
@@ -234,9 +235,7 @@ LOGICAL :: l_autotune_local
 LOGICAL :: stratflag(model_levels)
 LOGICAL :: have_nat1d(model_levels)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEMISTRY_CTL_COL'
 
@@ -244,7 +243,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEMISTRY_CTL_COL'
 TYPE(autotune_type), ALLOCATABLE, SAVE :: autotune_state
 #endif
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 #if !defined(LFRIC)
 ! Set up automatic segment size tuning
@@ -743,7 +742,7 @@ IF (l_autotune_segments) THEN
 END IF
 #endif
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_chemistry_ctl_col
 

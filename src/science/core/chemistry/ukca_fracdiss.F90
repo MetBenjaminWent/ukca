@@ -37,7 +37,8 @@ USE asad_mod,             ONLY: ddhr, dhr, kd298, k298, jpeq, jpdw
 USE ukca_config_constants_mod, ONLY: rmol, avogadro
 USE ukca_constants,       ONLY: m_air
 USE parkind1,             ONLY: jprb, jpim
-USE yomhook,              ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -83,13 +84,11 @@ REAL :: p1(row_length,rows)                    ! p1
 REAL :: p2(row_length,rows)                    ! p2
 REAL :: p3(row_length,rows)                    ! p3
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_FRACDISS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 inv_298 = 1.0/298.0
 
@@ -179,7 +178,7 @@ DO k=1,model_levels
                avogadro)**2)
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE ukca_fracdiss

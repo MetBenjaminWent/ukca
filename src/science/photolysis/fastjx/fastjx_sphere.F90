@@ -77,7 +77,8 @@ CONTAINS
 
 SUBROUTINE fastjx_sphere(gmu,rz,amf2,l1_)
 
-USE yomhook,  ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -99,15 +100,13 @@ REAL                 :: rq2(2*l1_+1)           ! Ratio of distances
 
 ! Loop variables
 INTEGER  ::   i, j, ii, l2
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_SPHERE'
 
 !---------------------------------------------------
 ! End of header
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Calculate heights for edges of split ctm-layers
 l2 = 2*l1_
@@ -174,7 +173,7 @@ DO j = 1,2*l1_+1
   END DO    ! ii
 END DO    ! j
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE fastjx_sphere
 END MODULE fastjx_sphere_mod

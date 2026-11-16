@@ -178,7 +178,8 @@ USE ukca_setup_indices, ONLY: nmascoagsuintr12,                                &
          mh2so4
 
 USE ukca_mode_check_artefacts_mod, ONLY: ukca_mode_check_mdt
-USE yomhook,          ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,         ONLY: jprb, jpim
 USE ukca_solvecoagnucl_v_mod, ONLY: ukca_solvecoagnucl_v
 USE ukca_types_mod,   ONLY: logical_32
@@ -246,14 +247,12 @@ REAL    :: xxx(nbox)
 REAL    :: delh2so4_nucl(nbox)
 REAL, PARAMETER :: xxx_eps=1.0e-3
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_COAGWITHNUCL'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -896,7 +895,7 @@ DO imode=1,nmodes
   END IF ! IF(MODE(IMODE)
 END DO ! LOOP IMODE
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_coagwithnucl
 END MODULE ukca_coagwithnucl_mod

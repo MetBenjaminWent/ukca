@@ -72,7 +72,8 @@ SUBROUTINE ukca_set_config_defs()
 USE ukca_config_specification_mod, ONLY: ukca_config, glomap_config
 USE asad_mod,                ONLY: jpro2
 USE parkind1,                ONLY: jprb, jpim
-USE yomhook,                 ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod,             ONLY: ereport
 USE ukca_missing_data_mod,   ONLY: rmdi
 USE errormessagelength_mod,  ONLY: errormessagelength
@@ -87,13 +88,11 @@ INTEGER :: errcode                ! Variable passed to ereport
 CHARACTER (LEN=errormessagelength) :: cmessage        ! Error message
 
 ! Dr Hook
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SET_CONFIG_DEFS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !     Set max fluxdiags to zero initially
 nmax_strat_fluxdiags = 0
@@ -559,7 +558,7 @@ n_use_tracers   = n_chem_tracers + n_mode_tracers +                            &
 n_use_emissions = n_chem_emissions + n_mode_emissions +                        &
                   n_3d_emissions
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE ukca_set_config_defs

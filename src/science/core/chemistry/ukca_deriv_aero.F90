@@ -40,7 +40,8 @@ SUBROUTINE ukca_deriv_aero(nr_therm, n_be_calls, theta_field_size,             &
 USE asad_mod, ONLY: jpspec, jppj
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -82,13 +83,11 @@ REAL :: yp(theta_field_size,jpspec) ! initial concentrations
 
 INTEGER :: i,j,n              ! loop counters
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DERIV_AERO'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialise sulphur oxidation fluxes
 delta_SO2_wetox_H2O2(:) = 0.0
@@ -686,7 +685,7 @@ DO n = 1, n_be_calls
 
 END DO  ! n_be_calls
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 

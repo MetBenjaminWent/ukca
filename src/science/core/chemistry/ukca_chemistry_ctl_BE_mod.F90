@@ -86,7 +86,8 @@ USE ukca_constants,       ONLY: c_h2o
 USE ukca_environment_fields_mod,   ONLY: surf_wetness
 USE ukca_config_specification_mod, ONLY: ukca_config
 
-USE yomhook,              ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,             ONLY: jprb, jpim
 USE ereport_mod,          ONLY: ereport
 USE umPrintMgr,           ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
@@ -194,14 +195,12 @@ REAL :: zwetrt2(theta_field_size,model_levels,jpdw) ! wet dep rate
 REAL :: zwetrt(theta_field_size,jpspec)             ! wet dep rates (s-1)
 REAL :: zdryrt(theta_field_size,jpspec)             ! dry dep rates (s-1)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEMISTRY_CTL_BE'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 nr = jpbk + jptk + jphk
 secs_per_step = REAL(chem_timestep)
@@ -396,7 +395,7 @@ IF (ALLOCATED(ystore)) DEALLOCATE(ystore)
 WHERE (tracer(:,n_h2o2) > h2o2_offline(:))                                     &
        tracer(:,n_h2o2) = h2o2_offline(:)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_chemistry_ctl_be
 
@@ -416,7 +415,8 @@ USE asad_mod,            ONLY: p, t, wp, spb, spt, sph, nbrkx, ntrkx, nhrkx,   &
 USE ukca_missing_data_mod, ONLY: rmdi, imdi
 USE umPrintMgr,          ONLY: umPrint, umMessage
 USE ereport_mod,         ONLY: ereport
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,            ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -449,13 +449,11 @@ CHARACTER(LEN=72) :: cmessage            ! Error message
 
 LOGICAL, SAVE     :: first = .TRUE.      ! True for first call to routine
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEMCO_BE_OFFLINE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Copy pressure, temperature and water vapour into module variables
 npnts = theta_field_size
@@ -611,7 +609,7 @@ IF (first) THEN
 END IF
 
 first = .FALSE.
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_chemco_be_offline
 
@@ -652,7 +650,8 @@ SUBROUTINE ukca_deriv_offline(nr, n_be_calls, theta_field_size, dts, y,        &
 
 USE asad_mod, ONLY: jpspec
 USE ukca_um_legacy_mod, ONLY: oneover_v
-USE yomhook,         ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,        ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -687,13 +686,11 @@ REAL :: tmp2(theta_field_size)             ! work array for vector reciprocal
 
 REAL :: f_inv                              ! inverse of n_be_calls
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DERIV_OFFLINE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 npnts = theta_field_size
 
@@ -818,7 +815,7 @@ DO n = 1, n_be_calls           ! loop over chemical timesteps
 END DO  ! n_be_calls
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 
 RETURN
 END SUBROUTINE ukca_deriv_offline

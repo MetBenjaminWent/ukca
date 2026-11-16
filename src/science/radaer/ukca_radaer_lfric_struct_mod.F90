@@ -161,7 +161,8 @@ SUBROUTINE allocate_radaer_lfric_struct(ukca_radaer, glomap_variables)
 
 USE ukca_mode_setup, ONLY: nmodes, ncp_max, cp_no3, glomap_variables_type
 USE parkind1,        ONLY: jprb, jpim
-USE yomhook,         ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 TYPE(ukca_radaer_lfric_struct), INTENT(IN OUT) :: ukca_radaer
@@ -169,13 +170,11 @@ TYPE(glomap_variables_type),    INTENT(IN)     :: glomap_variables
 
 INTEGER :: ncp
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ALLOCATE_RADAER_LFRIC_STRUCT'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 
 ncp                          = glomap_variables%ncp
@@ -217,7 +216,7 @@ IF (.NOT. ALLOCATED(ukca_radaer%i_mode))                                       &
 IF (.NOT. ALLOCATED(ukca_radaer%idx_cpnt_mode))                                &
       ALLOCATE(ukca_radaer%idx_cpnt_mode(nmodes,ncp_max))
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 END SUBROUTINE allocate_radaer_lfric_struct
 
 END MODULE ukca_radaer_lfric_struct_mod

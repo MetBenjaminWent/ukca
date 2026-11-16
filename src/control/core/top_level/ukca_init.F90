@@ -89,7 +89,8 @@ USE umPrintMgr,            ONLY: umPrint, umMessage,                           &
                                  PrintStatus, PrStatus_Oper
 USE ereport_mod,           ONLY: ereport
 USE parkind1,              ONLY: jprb, jpim
-USE yomhook,               ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE errormessagelength_mod, ONLY: errormessagelength
 
 IMPLICIT NONE
@@ -104,13 +105,11 @@ INTEGER                       :: timestep      ! Dynamical timestep
 INTEGER, PARAMETER            :: ichem_ver132 = 132  ! To identify chemical vn
 CHARACTER(LEN=errormessagelength)     :: cmessage=' '  ! Error message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INIT'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Check the logical switches
 CALL check_settings(ukca_config, glomap_config)
@@ -330,7 +329,7 @@ ELSE
 
 END IF    ! ukca_config%_ukca_mode
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_init
 
@@ -375,7 +374,8 @@ USE umPrintMgr,            ONLY: PrStatus_Normal,PrintStatus,newline,          &
 USE errormessagelength_mod, ONLY: errormessagelength
 USE ereport_mod,           ONLY: ereport
 USE parkind1,              ONLY: jprb, jpim
-USE yomhook,               ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -389,11 +389,9 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='CHECK_SETTINGS'
 CHARACTER (LEN=errormessagelength) :: cmessage   ! Error message
 INTEGER                            :: errcode    ! Variable passed to ereport
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 errcode = 0                   ! Initialise
 
@@ -996,7 +994,7 @@ IF (ukca_config%i_ukca_chem /= i_ukca_chem_off .AND.                           &
   CALL ereport(RoutineName,errcode,cmessage)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE check_settings
 

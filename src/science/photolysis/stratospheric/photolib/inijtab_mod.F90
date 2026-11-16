@@ -10,7 +10,8 @@
 MODULE inijtab_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE umPrintMgr, ONLY:                                                          &
     umPrint,                                                                   &
     umMessage
@@ -143,7 +144,8 @@ USE acsno_mod, ONLY: acsno
 USE acssr_mod, ONLY: acssr
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 USE fastjx_data, ONLY: solcyc_quanta
 USE photol_solflux_mod, ONLY: photol_solflux
@@ -218,13 +220,11 @@ REAL :: tau                ! dummy variable for solar cycle routine
 REAL :: quanta_cyc (jpwav) ! solar cyclical component of quanta
 REAL :: quanta_in (jpwav)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='INIJTAB'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Read standard atmosphere data from string variable
 DO l=1,nin
@@ -560,7 +560,7 @@ DO jo=1,jpo3p
 
   !     End of O3 profile loop.
 END DO
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 

@@ -36,7 +36,8 @@ SUBROUTINE ukca_ch4_stratloss(n_be_calls, n_pnts,                              &
                     vol, dts,                                                  &
                     y, stratloss)
 
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 USE ukca_config_constants_mod, ONLY: avogadro
 
@@ -61,13 +62,11 @@ REAL :: p(n_pnts)
 REAL :: l(n_pnts)
 REAL :: yp(n_pnts)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CH4_STRATLOSS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO n = 1, n_be_calls
 
@@ -83,7 +82,7 @@ DO n = 1, n_be_calls
 
 END DO  ! n_be_calls
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_ch4_stratloss
 END MODULE ukca_ch4_stratloss_mod

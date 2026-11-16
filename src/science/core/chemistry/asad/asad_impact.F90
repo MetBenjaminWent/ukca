@@ -97,7 +97,8 @@ USE asad_mod,        ONLY: cdt, ctype, ej, f, fdot, jpif,                      &
                            nspi, peps, pmintnd, ptol, rk, y, jpcspf
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 
 USE asad_diffun_mod, ONLY: asad_diffun
@@ -148,9 +149,7 @@ LOGICAL, SAVE :: gfirst = .TRUE.
 LOGICAL, SAVE :: first_pass = .TRUE.
 LOGICAL :: not_first_call = .FALSE.
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_IMPACT'
 
@@ -161,7 +160,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_IMPACT'
 !       Crude way of determining if photolysis is on or not.
 !       Needs improving.
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 inl = 0
 DO jl = 1, n_points
   IF ( rk(jl,nprkx(1)) > peps ) THEN
@@ -365,14 +364,14 @@ DO jit = 1, ukca_config%nrsteps
     IF ( .NOT. gconv ) EXIT
   END DO
   IF (gconv) THEN
-    IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
 END DO           ! End of NR (jit) loop
 
 !       9.1  Convergence achieved or max. no. of iterations reached
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_impact
 END MODULE asad_impact_mod

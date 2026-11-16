@@ -145,7 +145,8 @@ USE ukca_mode_setup,      ONLY: nmodes
 
 USE ukca_setup_indices,   ONLY: mh2o2f
 USE ukca_config_specification_mod, ONLY: ukca_config, glomap_variables
-USE yomhook,              ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,             ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -231,14 +232,12 @@ REAL, PARAMETER :: k1_o3        =  3.7e5
 REAL, PARAMETER :: k2_o3        =  1.5e9
 REAL, PARAMETER :: jperkcal     =  4.187e3
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_WETOX'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -403,7 +402,7 @@ DO jl=1,nbox
 
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_wetox
 END MODULE ukca_wetox_mod

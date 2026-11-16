@@ -44,7 +44,8 @@ USE ukca_config_constants_mod, ONLY: rho_water, avogadro
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE asad_mod,         ONLY: peps, jpeq, jpspec
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -87,15 +88,13 @@ REAL :: zo(n_pnts), zi(n_pnts), arg2(n_pnts)
 REAL :: zfc(n_pnts), zr(n_pnts)
 REAL :: faq(n_pnts,jpspec)           ! total dissolved fraction
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEMCO'
 
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 IF (ukca_config%l_ukca_aerchem) THEN
   faq(:,:) = fdiss(:,:,1) + fdiss(:,:,2)
   ! convert clw in kg/kg to volume ratio
@@ -1116,7 +1115,7 @@ IF (ukca_config%l_ukca_aerchem) THEN
 END IF    ! l_ukca_aerchem
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_chemco
 END MODULE ukca_chemco_mod

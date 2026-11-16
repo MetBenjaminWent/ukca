@@ -40,7 +40,8 @@ USE ukca_constants,   ONLY: m_c, m_c5h8, m_ch3oh, m_ch4, m_dms,                &
                             m_me2co, m_monoterp, m_n, m_nh3, m_no,             &
                             m_no2, m_s, m_so2
 USE parkind1,         ONLY: jpim, jprb     ! DrHook
-USE yomhook,          ONLY: lhook, dr_hook ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -108,15 +109,13 @@ CHARACTER (LEN=errormessagelength) :: cmessage  ! error message
 ! different value (e.g. 1, 2, 3, ...) depending on the conventions.
 LOGICAL :: l_ref_snap_prof
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='VERTICAL_EMISS_FACTORS'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ierror = 0
 
@@ -357,7 +356,7 @@ IF (l_ref_snap_prof) THEN
     vert_scaling_3d  (1:row_length, 1:rows, 1:model_levels) )
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE vertical_emiss_factors
@@ -387,15 +386,13 @@ REAL,              INTENT(OUT) :: hourly_scaling (0:23)
 INTEGER                            :: ierror
 CHARACTER (LEN=errormessagelength) :: cmessage
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='HOURLY_EMISS_FACTORS'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ierror = 0
 
@@ -527,7 +524,7 @@ IF (ierror > 0) THEN
   CALL ereport ('HOURLY_EMISS_FACTORS', ierror, cmessage)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 
 RETURN
 END SUBROUTINE hourly_emiss_factors
@@ -556,15 +553,13 @@ REAL,              INTENT(OUT) :: daily_scaling(7) ! Daily factors for day of
 INTEGER                            :: ierror
 CHARACTER (LEN=errormessagelength) :: cmessage
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='DAILY_EMISS_FACTORS'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ierror = 0
 
@@ -658,7 +653,7 @@ IF (ierror > 0) THEN
   CALL ereport ('DAILY_EMISS_FACTORS', ierror, cmessage)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 
 RETURN
 END SUBROUTINE daily_emiss_factors
@@ -728,15 +723,13 @@ LOGICAL             :: l_special_units  ! To indicate that special units are
                                         ! found in the standard_/long_name
 CHARACTER (LEN=maxlen_emiss_units) :: special_units
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='BASE_EMISS_FACTORS'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 ierror = 0
 
@@ -888,7 +881,7 @@ IF (ierror > 0) THEN
   CALL ereport ('BASE_EMISS_FACTORS', ierror, cmessage)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 
 RETURN
 END SUBROUTINE base_emiss_factors
@@ -922,9 +915,7 @@ REAL,               INTENT(OUT) :: base_scaling  ! scaling factor
 INTEGER                       :: ierror
 CHARACTER(errormessagelength) :: cmessage    ! Error return message
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_5
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='GET_BASE_SCALING'
 
@@ -932,7 +923,7 @@ REAL, PARAMETER :: ocfact = 1.4    ! Factor to convert from C to POM
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 ierror = 0
 
@@ -1019,7 +1010,7 @@ IF (ierror > 0) THEN
   CALL ereport ('GET_BASE_SCALING', ierror, cmessage)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
 
 RETURN
 END SUBROUTINE get_base_scaling
@@ -1072,9 +1063,7 @@ INTEGER :: i, j, k, l        ! loop variables
 REAL :: cell_lev1, cell_lev2 ! lowest & higest altitude (m) of a model grid cell
 REAL :: ref_lev1,  ref_lev2  ! idem for a layer in a reference profile
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_6
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='REGRID_VERTIC_PROFS'
 
@@ -1083,7 +1072,7 @@ LOGICAL, PARAMETER :: test_vertprof = .FALSE.
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 ! Loops over all model grid cells to calculate the emission contribution
 ! for each of them. Values stored in vert_scaling_3d.
@@ -1155,7 +1144,7 @@ IF (test_vertprof) THEN
   CALL umPrint(umMessage,src='regrid_vertic_profs')
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
 
 RETURN
 END SUBROUTINE regrid_vertic_profs

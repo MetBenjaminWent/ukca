@@ -47,7 +47,8 @@ SUBROUTINE asad_fyself(n_points)
 
 USE asad_mod,        ONLY: qa, rk, nstst, nlstst, nspi, jpnr
 USE parkind1,        ONLY: jprb, jpim
-USE yomhook,         ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: n_points    ! No of spatial points
@@ -60,9 +61,7 @@ INTEGER :: jr                      ! Loop variable
 INTEGER :: js                      ! Index
 INTEGER :: isp                     ! Index
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_FYSELF'
 
@@ -70,7 +69,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_FYSELF'
 !       1.  Initialisation
 !           --------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 DO j = 1, nstst
   js = nlstst(j)
   DO jl = 1, n_points
@@ -90,7 +89,7 @@ DO jr = 1, jpnr
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_fyself
 END MODULE asad_fyself_mod

@@ -41,7 +41,8 @@ SUBROUTINE ukca_photol(prt,n_points)
 
 USE asad_mod,        ONLY:  rk, nprkx, jppj
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: n_points         ! No of spatial points
@@ -53,13 +54,11 @@ REAL, INTENT(IN) :: prt(n_points,jppj)  ! Photolysis rates
 INTEGER :: jl                           ! Loop variable
 INTEGER :: jr                           ! Loop variable
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_PHOTOL'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO jl = 1, n_points
   DO jr = 1, jppj
@@ -67,7 +66,7 @@ DO jl = 1, n_points
   END DO
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_photol
 END MODULE ukca_photol_mod

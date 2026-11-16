@@ -76,7 +76,8 @@ USE fastjx_data, ONLY: amf2, atau, atau0, dm_3d, dm_block,                     &
                        sw_band_aer, sw_phases, szafac,                         &
                        tqq, tz_3d, tz_block, u0, w_, wl
 
-USE yomhook,  ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 USE fastjx_extral_mod, ONLY: fastjx_extral
 USE fastjx_jratet_mod, ONLY: fastjx_jratet
@@ -155,9 +156,7 @@ INTEGER :: i, j, k, l, ix, kmie
 REAL :: o3_ix(lpar+1)
 REAL :: dm_ix(lpar+1)
 REAL :: tz_ix(lpar+1)
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_PHOTOJ'
 
@@ -165,7 +164,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_PHOTOJ'
 ! ************************************
 ! End of Header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialise to 0.
 zj(:,:) = 0.0
@@ -387,7 +386,7 @@ DO ix = 1, kpcx
 END DO ! xy
 !$OMP END PARALLEL DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE fastjx_photoj
 END MODULE fastjx_photoj_mod

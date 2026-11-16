@@ -116,7 +116,8 @@ SUBROUTINE ukca_solvecoagnucl_v(nv,mask,a,b,c,nd,dtz,deln)
 !
 !--------------------------------------------------------------------
 
-USE yomhook,  ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 USE ereport_mod, ONLY: ereport
 USE ukca_types_mod, ONLY: integer_32, logical_32
@@ -166,13 +167,11 @@ REAL    :: eps_ab
 REAL    :: eps_d
 CHARACTER(LEN=errormessagelength) :: cmessage        ! error message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SOLVECOAGNUCL_V'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 eps_ab=1.0e-20
 eps_d=eps_ab*eps_ab
@@ -291,7 +290,7 @@ IF (SUM(ierr(:)) > 0) THEN
   CALL ereport('UKCA_SOLVECOAGNUCL_V',i,'IERR>0')
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_solvecoagnucl_v
 END MODULE ukca_solvecoagnucl_v_mod

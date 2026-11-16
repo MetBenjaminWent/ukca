@@ -51,7 +51,8 @@ USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname,                     &
                           errcode_value_invalid, error_report,                 &
                           i_error_method_abort
 
-USE yomhook,  ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -66,8 +67,6 @@ PUBLIC ukca_set_diagnostic_requests, ukca_update_diagnostic_requests,          &
 TYPE(diag_requests_type), TARGET, PUBLIC :: diag_requests(n_diag_group)
 
 ! Dr Hook parameters
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
 
 CHARACTER(LEN=*), PARAMETER :: ModuleName = 'UKCA_DIAGNOSTIC_REQUESTS_MOD'
 
@@ -162,13 +161,13 @@ INTEGER :: n_req_fullht_real
 CHARACTER(LEN=maxlen_message) :: message_txt  ! Buffer for output message
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_SET_DIAGNOSTIC_REQUESTS'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Use parent supplied argument for return code
 error_code_ptr => error_code
@@ -185,7 +184,7 @@ IF (.NOT. l_ukca_config_available) THEN
   CALL error_report(i_error_method_abort, error_code_ptr,                      &
          'No UKCA configuration has been set up', RoutineName,                 &
          msg_out=error_message, locn_out=error_routine)
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -286,7 +285,7 @@ IF (error_code_ptr > 0 .AND. message_txt /= '') THEN
                     RoutineName, msg_out=error_message, locn_out=error_routine)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_set_diagnostic_requests
 
@@ -341,13 +340,13 @@ CHARACTER(LEN=maxlen_diagname), ALLOCATABLE :: varnames_checked(:)
 CHARACTER(LEN=maxlen_message) :: message_txt  ! Buffer for output message
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_DIAG_REQUESTS'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -365,7 +364,7 @@ IF (SIZE(status_flags) /= n_req) THEN
     ' diagnostic requests'
   CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt,   &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
   RETURN
 END IF
 
@@ -389,7 +388,7 @@ DO i = 1, n_req
     CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt, &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
     IF (lhook) THEN
-      CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+      CALL vernier_stop(vnr_handle_2)
     END IF
     RETURN
   ELSE
@@ -407,7 +406,7 @@ DO i = 1, n_req
     CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt, &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
     IF (lhook) THEN
-      CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+      CALL vernier_stop(vnr_handle_2)
     END IF
     RETURN
   END IF
@@ -430,7 +429,7 @@ DO i = 1, n_req
                           message_txt, RoutineName, msg_out=error_message,     &
                           locn_out=error_routine)
         IF (lhook) THEN
-          CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+          CALL vernier_stop(vnr_handle_2)
         END IF
         RETURN
       END IF
@@ -450,7 +449,7 @@ DO i = 1, n_req
            ''' is not recognised',                                             &
            RoutineName, msg_out=error_message, locn_out=error_routine)
     IF (lhook) THEN
-      CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+      CALL vernier_stop(vnr_handle_2)
     END IF
     RETURN
   END IF
@@ -465,7 +464,7 @@ diag_requests(group)%varnames = varnames
 diag_requests(group)%status_flags = status_flags
 diag_requests(group)%i_master = i_master
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE set_diag_requests
 
@@ -529,13 +528,13 @@ INTEGER, POINTER :: error_code_ptr
 LOGICAL :: l_status_flags_present
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_UPDATE_DIAGNOSTIC_REQUESTS'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Use parent supplied argument for return code
 error_code_ptr => error_code
@@ -550,7 +549,7 @@ IF (.NOT. l_ukca_config_available) THEN
   CALL error_report(i_error_method_abort, error_code_ptr,                      &
          'No UKCA configuration has been set up', RoutineName,                 &
          msg_out=error_message, locn_out=error_routine)
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
   RETURN
 END IF
 
@@ -586,7 +585,7 @@ IF (.NOT. l_status_flags_present) THEN
                      msg_out=error_message, locn_out=error_routine)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE ukca_update_diagnostic_requests
 
@@ -629,13 +628,13 @@ INTEGER :: i
 CHARACTER(LEN=maxlen_message) :: message_txt  ! Buffer for output message
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UPDATE_DIAG_REQUESTS'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -665,7 +664,7 @@ END IF
 IF (error_code_ptr > 0) THEN
   CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt,   &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
   RETURN
 END IF
 
@@ -689,7 +688,7 @@ DO i = 1, n_req
                         message_txt, RoutineName,                              &
                         msg_out=error_message, locn_out=error_routine)
       IF (lhook) THEN
-        CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+        CALL vernier_stop(vnr_handle_4)
       END IF
       RETURN
     END IF
@@ -711,7 +710,7 @@ DO i = 1, n_req
                           message_txt, RoutineName,                            &
                           msg_out=error_message, locn_out=error_routine)
         IF (lhook) THEN
-          CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+          CALL vernier_stop(vnr_handle_4)
         END IF
         RETURN
       END IF
@@ -728,7 +727,7 @@ END DO
 ! Return updated status flag array
 status_flags = diag_requests(group)%status_flags
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE update_diag_requests
 

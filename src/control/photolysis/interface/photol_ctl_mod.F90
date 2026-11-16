@@ -75,7 +75,8 @@ USE ukca_um_strat_photol_mod,  ONLY: strat_photol
 USE ukca_um_dissoc_mod,        ONLY: strat_photol_init, strat_photol_dealloc
 
 ! UM profiling and error handling
-USE yomhook,                  ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,                 ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -165,16 +166,14 @@ REAL                    :: r_secs_per_step
 LOGICAL, SAVE           :: l_ukca_photin_called = .FALSE.
 
 ! DrHook variables
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='PHOTOL_CTL'
 
 ! Error handling for routines called here
 CHARACTER(LEN=maxlen_message) :: err_message   ! Error return message
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! -- body of subroutine begins here -- !
 error_code_ptr = 0
@@ -185,7 +184,7 @@ IF (PRESENT(error_routine)) error_routine = ''
 photol_rates(:,:,:,:) = 0.0
 ! if photolysis is off exit photol_ctl
 IF (photol_config%i_photol_scheme == photolysis_off) THEN
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -207,7 +206,7 @@ IF ( .NOT. photol_config%l_environ_ztop ) THEN
                       err_message, RoutineName, msg_out=error_message,         &
                       locn_out=error_routine)
 
-    IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
 
@@ -249,8 +248,7 @@ IF (photol_config%i_photol_scheme == photolysis_fastjx) THEN
   IF (error_code_ptr > 0) THEN
     IF (ALLOCATED(photol_rates_fastjx)) DEALLOCATE(photol_rates_fastjx)
 
-    IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out,           &
-                            zhook_handle)
+    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
 
@@ -273,8 +271,7 @@ IF (photol_config%l_strat_chem) THEN
     IF (ALLOCATED(photol_rates_fastjx)) DEALLOCATE(photol_rates_fastjx)
     CALL strat_photol_dealloc()
 
-    IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out,           &
-                            zhook_handle)
+    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
 END IF
@@ -333,8 +330,7 @@ DO k = 1, model_levels
                      err_message, RoutineName, msg_out=error_message,          &
                      locn_out=error_routine)
 
-              IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, &
-                                      zhook_handle)
+              IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
               RETURN
             END IF
           ELSE
@@ -390,7 +386,7 @@ IF (photol_config%l_environ_jo2b) THEN
   END DO
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE photol_ctl
 

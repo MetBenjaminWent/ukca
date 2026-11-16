@@ -10,7 +10,8 @@
 MODULE acsbrcl_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -39,7 +40,8 @@ CONTAINS
 SUBROUTINE acsbrcl(temp,jpwav,wavenm,abrcl)
 USE ukca_config_constants_mod, ONLY: boltzmann
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -70,16 +72,14 @@ REAL :: tc
 
 INTEGER :: jw
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSBRCL'
 
 
 
 !     Check that temperature is in range.
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 tc = temp
 tc=MIN(tc, 300.0)
 tc=MAX(tc, 200.0)
@@ -94,7 +94,7 @@ DO jw = 60,136
     + a2*SQRT(tant)*EXP(-b2*tant*(LOG(c2/lam))**2.0)                           &
     + a3*SQRT(tant)*EXP(-b3*tant*(LOG(c3/lam))**2.0)
 END DO
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE acsbrcl

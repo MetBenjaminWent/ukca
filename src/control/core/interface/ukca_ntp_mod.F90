@@ -53,7 +53,8 @@
 MODULE ukca_ntp_mod
 
 ! Standard UM modules used
-USE yomhook,                ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,               ONLY: jprb, jpim
 USE ereport_mod,            ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
@@ -204,8 +205,6 @@ IMPLICIT NONE
 PRIVATE
 
 ! Dr hook variables/parameters
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
 
 ! subroutines/functions which are public
 PUBLIC ntp_init, ukca_get_ntp_varlist, ntp_copy_in_1d, ntp_copy_in_3d,         &
@@ -268,9 +267,9 @@ CHARACTER(LEN=*), PARAMETER :: uninitialised_name = 'Not set!!!!!!!!!!!!!'
                                        ! Missing data string for NTP name
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'NTP_INIT'
 CHARACTER(LEN=errormessagelength)   :: cmessage   ! Error return message
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Set dummy varname to do an error check at the end
 all_ntp(:)%varname    = uninitialised_name
@@ -613,7 +612,7 @@ END DO
 ! Set flag to show availability of all_ntp array
 l_all_ntp_available = .TRUE.
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE ntp_init
 
@@ -642,9 +641,9 @@ CHARACTER(LEN=errormessagelength)   :: cmessage      ! Error return message
 ! and incremented by one on each call to this routine.
 INTEGER, SAVE :: ntp_index = 0
 INTEGER       :: errcode                                   ! error code
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! increment the location we store information to
 ntp_index = ntp_index + 1
@@ -661,7 +660,7 @@ END IF
 all_ntp(ntp_index)%varname = varname
 all_ntp(ntp_index)%l_required = ntp_req(varname)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 
 END SUBROUTINE add_ntp_item
 
@@ -699,9 +698,9 @@ LOGICAL, POINTER :: mode (:)
 
 ! Local variables
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'NTP_REQ'
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -940,7 +939,7 @@ ELSE
   END SELECT
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 
 RETURN
 
@@ -1024,9 +1023,9 @@ INTEGER :: i_ntp    ! Index of NTP variable in data field array
 INTEGER :: i        ! Loop counter
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'NTP_COPY_IN_1D'
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -1039,7 +1038,7 @@ IF (.NOT. l_all_ntp_available) THEN
     error_message =                                                            &
       'Non-transported prognostics requirement has not been initialised'
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
   RETURN
 END IF
 
@@ -1059,7 +1058,7 @@ IF (n_data /= n_reqvar) THEN
     error_message =                                                            &
       'Number of non-transported prognostics fields does not match requirement'
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
   RETURN
 END IF
 
@@ -1077,7 +1076,7 @@ IF (n_reqvar > 0) THEN
         'The non-transported prognostics fields have one or more invalid ' //  &
         'array bounds'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
     RETURN
   END IF
 
@@ -1094,7 +1093,7 @@ IF (n_reqvar > 0) THEN
 
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 
 END SUBROUTINE ntp_copy_in_1d
 
@@ -1137,9 +1136,9 @@ INTEGER :: i_ntp    ! Index of NTP variable in data field array
 INTEGER :: i        ! Loop counter
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'NTP_COPY_IN_3D'
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_5
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -1152,7 +1151,7 @@ IF (.NOT. l_all_ntp_available) THEN
     error_message =                                                            &
       'Non-transported prognostics requirement has not been initialised'
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
   RETURN
 END IF
 
@@ -1172,7 +1171,7 @@ IF (n_data /= n_reqvar) THEN
     error_message =                                                            &
       'Number of non-transported prognostics fields does not match requirement'
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
   RETURN
 END IF
 
@@ -1192,7 +1191,7 @@ IF (n_reqvar > 0) THEN
         'The non-transported prognostics fields have one or more invalid ' //  &
         'array bounds'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
     RETURN
   END IF
 
@@ -1210,7 +1209,7 @@ IF (n_reqvar > 0) THEN
 
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
 
 END SUBROUTINE ntp_copy_in_3d
 
@@ -1234,9 +1233,9 @@ INTEGER :: i_ntp   ! Index of NTP variable in data field array
 INTEGER :: i       ! Loop counter
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'NTP_COPY_OUT_1D'
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_6
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 ! Copy data from all_ntp structure
 i_ntp = 0
@@ -1247,7 +1246,7 @@ DO i = 1, dim_ntp
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
 
 END SUBROUTINE ntp_copy_out_1d
 
@@ -1273,9 +1272,9 @@ INTEGER :: i_ntp   ! Index of NTP variable in data field array
 INTEGER :: i       ! Loop counter
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'NTP_COPY_OUT_3D'
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_7
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_7, ModuleName//':'//RoutineName)
 
 ! Copy data from all_ntp structure
 i_ntp = 0
@@ -1287,7 +1286,7 @@ DO i = 1, dim_ntp
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_7)
 
 END SUBROUTINE ntp_copy_out_3d
 
@@ -1305,9 +1304,9 @@ IMPLICIT NONE
 
 INTEGER :: i
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'PRINT_ALL_NTP'
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_8
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_8, ModuleName//':'//RoutineName)
 
 ! Print header
 WRITE(umMessage,'(A)') ' ==========================='
@@ -1331,7 +1330,7 @@ DO i =1, dim_ntp
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_8)
 
 END SUBROUTINE print_all_ntp
 
@@ -1349,15 +1348,15 @@ IMPLICIT NONE
 INTEGER :: i   ! Loop counter
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'NTP_DEALLOC'
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_9
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_9, ModuleName//':'//RoutineName)
 
 DO i = 1, SIZE(all_ntp)
   IF (ALLOCATED(all_ntp(i)%data_3d)) DEALLOCATE(all_ntp(i)%data_3d)
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_9)
 
 END SUBROUTINE ntp_dealloc
 
@@ -1379,9 +1378,9 @@ INTEGER :: i
 INTEGER :: errcode                                   ! error code
 CHARACTER(LEN=errormessagelength)   :: cmessage      ! Error return message
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'NAME2NTPINDEX'
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_10
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_10, ModuleName//':'//RoutineName)
 
 ! set a default value. If it is still this at the end, the search has failed.
 name2ntpindex = -999
@@ -1401,7 +1400,7 @@ IF (name2ntpindex == -999) THEN
   CALL ereport(RoutineName,errcode,cmessage)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_10)
 
 RETURN
 

@@ -26,7 +26,8 @@
 
 MODULE ukca_environment_rdim_mod
 
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,            ONLY: jprb, jpim
 
 USE ukca_fieldname_mod,  ONLY:                                                 &
@@ -248,8 +249,6 @@ PUBLIC set_env_2d_from_0d_real, set_env_2d_from_0d_integer,                    &
        set_env_4d_from_2d_real
 
 ! Dr Hook parameters
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
 
 CHARACTER(LEN=*), PARAMETER :: ModuleName='UKCA_ENVIRONMENT_RDIM_MOD'
 
@@ -288,10 +287,10 @@ INTEGER :: j1
 INTEGER :: j2
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_ENV_2D_FROM_0D_REAL'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code = 0
 
@@ -405,7 +404,7 @@ CASE DEFAULT
   error_code = errcode_env_field_unknown
 END SELECT
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE set_env_2d_from_0d_real
 
@@ -436,10 +435,10 @@ INTEGER :: j1
 INTEGER :: j2
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_ENV_2D_FROM_0D_INTEGER'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code = 0
 
@@ -473,7 +472,7 @@ CASE DEFAULT
   error_code = errcode_env_field_unknown
 END SELECT
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE set_env_2d_from_0d_integer
 
@@ -504,10 +503,10 @@ INTEGER :: j1
 INTEGER :: j2
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_ENV_2D_FROM_0D_LOGICAL'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 error_code = 0
 
@@ -537,7 +536,7 @@ CASE DEFAULT
   error_code = errcode_env_field_unknown
 END SELECT
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE set_env_2d_from_0d_logical
 
@@ -576,10 +575,10 @@ INTEGER :: k1
 INTEGER :: k2
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_ENV_3D_FROM_1D_REAL'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 error_code = 0
 
@@ -796,7 +795,7 @@ CASE DEFAULT
   error_code = errcode_env_field_unknown
 END SELECT
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE set_env_3d_from_1d_real
 
@@ -837,10 +836,10 @@ INTEGER :: n1
 INTEGER :: n2
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_5
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_ENV_4D_FROM_2D_REAL'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 error_code = 0
 
@@ -867,7 +866,7 @@ CASE DEFAULT
   error_code = errcode_env_field_unknown
 END SELECT
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
 RETURN
 END SUBROUTINE set_env_4d_from_2d_real
 

@@ -52,7 +52,8 @@ USE ukca_config_constants_mod, ONLY: rmol, rho_so4
 USE ukca_um_legacy_mod,  ONLY: log_v, exp_v, powr_v, l_glomap_clim_radaer
 USE ukca_constants,      ONLY: mmsul
 USE parkind1,            ONLY: jprb, jpim
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 USE ukca_config_specification_mod, ONLY: glomap_config
 
@@ -114,9 +115,7 @@ REAL, PARAMETER :: surften=0.0728
 REAL, PARAMETER :: bminatm=2.0e-8
 REAL, PARAMETER :: bmaxatm=2.0e-6
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_VAPOUR'
 
@@ -128,7 +127,7 @@ REAL :: tmp2_out(nbox)
 REAL :: wts_m40(nbox)
 REAL :: tmp4(nbox)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Loop around all the boxes
 DO jl=1,nbox
@@ -238,7 +237,7 @@ DO jl=1,nbox
 END DO  ! end loop around boxes
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_vapour
 END MODULE ukca_vapour_mod

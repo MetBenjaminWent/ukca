@@ -27,7 +27,8 @@
 ! .. Subroutine Interface:
 MODULE ukca_impc_scav_dust_mod
 
-USE yomhook,            ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,           ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -180,13 +181,11 @@ LOGICAL (KIND=logical_32) :: mask(nbox)
 INTEGER :: ilow,iupp,jlow,jupp,k
 INTEGER :: imode, icp, jl, iprecip
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_IMPC_SCAV_DUST'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -434,7 +433,7 @@ IF (iextra_checks > 1 ) THEN !do this only when ie_c = 2
   END DO
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_impc_scav_dust
 
@@ -452,13 +451,11 @@ IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: verbose ! flag to indicate level of verbosity
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_IMPC_SCAV_DUST_INIT'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! New dust impaction scavenging scheme - this module
 IF (.NOT. ALLOCATED(scav_coeff_num))                                           &
@@ -1795,7 +1792,7 @@ scav_coeff_mass(1:ncol,22, 5) = [                                              &
       2.7338469e-03,2.8609875e-03,2.8365528e-03,3.0653482e-03,4.1933884e-03,   &
       7.5001904e-03,1.5545671e-02 ]
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_impc_scav_dust_init
 
@@ -1809,18 +1806,16 @@ SUBROUTINE ukca_impc_scav_dust_dealloc()
 
 IMPLICIT NONE
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_IMPC_SCAV_DUST_DEALLOC'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 IF (ALLOCATED(scav_coeff_num)) DEALLOCATE (scav_coeff_num)
 IF (ALLOCATED(scav_coeff_mass)) DEALLOCATE (scav_coeff_mass)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE ukca_impc_scav_dust_dealloc
 

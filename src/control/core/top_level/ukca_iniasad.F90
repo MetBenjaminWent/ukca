@@ -44,7 +44,8 @@ USE asad_mod,             ONLY: ldepd, ldepw, ih_o3, ih_h2o2,                  &
                                 jpctr, jpspec, jpro2, jpcspf, jpbk,            &
                                 jptk, jppj, jphk, jpnr, jpdd, jpdw
 USE parkind1,             ONLY: jprb, jpim
-USE yomhook,              ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod,          ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
 
@@ -63,13 +64,11 @@ INTEGER :: jerr(jpspec)         ! For error analysis
 
 CHARACTER (LEN=errormessagelength) :: cmessage  ! Error message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INIASAD'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (printstatus >= prstatus_oper) THEN
   WRITE(umMessage,'(A)') 'ASAD initialised using:'
@@ -146,7 +145,7 @@ END IF
 
 CALL asad_cinit()
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_iniasad
 
@@ -156,25 +155,24 @@ SUBROUTINE ukca_iniasad_spatial_vars(npoints)
 
 USE asad_mod,             ONLY: asad_mod_init_spatial_vars
 USE parkind1,             ONLY: jprb, jpim
-USE yomhook,              ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: npoints   ! no of spatial points
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INIASAD_SPATIAL_VARS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 !$OMP PARALLEL
 CALL asad_mod_init_spatial_vars(npoints)
 !$OMP END PARALLEL
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_iniasad_spatial_vars
 
@@ -184,23 +182,22 @@ SUBROUTINE ukca_delasad_spatial_vars()
 
 USE asad_mod,             ONLY: asad_mod_dealloc_spatial_vars
 USE parkind1,             ONLY: jprb, jpim
-USE yomhook,              ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DELASAD_SPATIAL_VARS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 !$OMP PARALLEL
 CALL asad_mod_dealloc_spatial_vars()
 !$OMP END PARALLEL
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE ukca_delasad_spatial_vars
 

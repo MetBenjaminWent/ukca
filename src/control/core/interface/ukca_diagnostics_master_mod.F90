@@ -82,7 +82,8 @@ SUBROUTINE create_master_diagnostics_list(error_code_ptr, error_message,       &
 !   Create and initialise master diagnostics list.
 ! ----------------------------------------------------------------------
 
-USE yomhook,   ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,  ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -102,16 +103,14 @@ CHARACTER(LEN=maxlen_message) :: message_txt  ! Buffer for output message
 
 ! Dr Hook
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
 
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'CREATE_MASTER_DIAGNOSTICS_LIST'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -141,11 +140,11 @@ IF (n /= n_diag_tot) THEN
   error_code_ptr = errcode_ukca_internal_fault
   CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt,   &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE create_master_diagnostics_list
@@ -214,7 +213,8 @@ USE ukca_config_specification_mod, ONLY: ukca_config_spec_type,                &
 USE ukca_chem_defs_mod, ONLY: ratj_defs
 USE asad_flux_dat,      ONLY: asad_chemical_fluxes, stashcode_ukca_chem_diag
 
-USE yomhook,   ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,  ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -243,16 +243,14 @@ INTEGER :: j
 
 ! Dr Hook
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
 
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_DIAGNOSTIC_AVAILABILITIES'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -311,7 +309,7 @@ DO i = 1, SIZE(master_diag_list)
           master_diag_list(i)%varname, RoutineName,                            &
           msg_out=error_message, locn_out=error_routine)
         IF (lhook) THEN
-          CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+          CALL vernier_stop(vnr_handle_2)
         END IF
         RETURN
       END IF
@@ -324,7 +322,7 @@ DO i = 1, SIZE(master_diag_list)
 
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 
 END SUBROUTINE set_diagnostic_availabilities

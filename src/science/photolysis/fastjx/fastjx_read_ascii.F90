@@ -32,7 +32,8 @@ USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper,          &
                       PrStatus_Diag
 USE ereport_mod, ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
-USE yomhook,     ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -81,15 +82,13 @@ CHARACTER (LEN=errormessagelength) :: cmessage
 INTEGER :: errcode                    ! error code
 
 INTEGER :: i, j, k                      ! Loop variables
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_RD_MIE_FILE'
 
 ! ***********************************
 ! End of Header
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !Open data file containing aerosol/cloud data
 OPEN (nj1,FILE=namfil,STATUS='OLD',FORM='FORMATTED',ACTION='READ')
@@ -143,7 +142,7 @@ END DO ! aerosols
 ! Close file
 CLOSE(nj1)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE fastjx_rd_mie_file
 
@@ -189,15 +188,13 @@ INTEGER ::  n_xsections_read               ! No of cross sections read in (nqqq)
 INTEGER ::  n_wl_bins                      ! No of wavelength bins (nwww)
 INTEGER ::  n_xsections                    ! number of x-sections (nqrd)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_RD_XXX_FILE'
 
   ! *****************************
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
   !----------spectral data----set for new format data J-ver8.3------------------
 !         note that NJVAL = # J-values, but
@@ -399,7 +396,7 @@ IF (numwvl /= wx_) THEN
   END IF
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE fastjx_rd_xxx_file
 

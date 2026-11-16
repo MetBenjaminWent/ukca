@@ -49,7 +49,8 @@ USE ukca_cspecies,          ONLY: c_species, n_no, n_no3, n_no2, n_n2o5,       &
 USE ereport_mod,            ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 USE parkind1,               ONLY: jpim,  jprb     ! DrHook
-USE yomhook,                ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -71,15 +72,13 @@ REAL,    INTENT(OUT) :: noy_3d (row_length, rows, model_levels)
 INTEGER                            :: ierr      ! Arguments for
 CHARACTER (LEN=errormessagelength) :: cmessage  ! ereport
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0  ! DrHook tracing entry
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1  ! DrHook tracing exit
-REAL    (KIND=jprb)            :: zhook_handle   ! DrHook tracing
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='GET_NOY'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ierr           = 0
 noy_3d (:,:,:) = 0
@@ -107,7 +106,7 @@ ELSE
   CALL ereport ('GET_NOY', ierr, cmessage)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 

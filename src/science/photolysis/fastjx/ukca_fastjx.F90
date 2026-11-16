@@ -85,7 +85,8 @@ USE ukca_missing_data_mod,   ONLY: imdi
 USE umPrintMgr,              ONLY: umMessage, umPrint, PrintStatus,            &
                                    PrStatus_Diag
 
-USE yomhook,                 ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,                ONLY: jprb, jpim
 USE fastjx_set_aer_mod,      ONLY: fastjx_set_aer
 USE fastjx_solar2_mod,       ONLY: fastjx_solar2
@@ -176,9 +177,8 @@ CHARACTER(LEN=maxlen_message) :: err_message
 
 ! First time?
 LOGICAL                       :: first=.TRUE.
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_FASTJX'
 
@@ -186,7 +186,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_FASTJX'
 ! *************************************
 ! End of Header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 err_message = ''
@@ -278,7 +278,7 @@ CALL fastjx_set_limits(error_code_ptr, row_length, rows, model_levels, jppj,   &
         error_message=error_message, error_routine=error_routine)
 IF ( error_code_ptr > 0 ) THEN
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 CALL fastjx_allocate_memory(row_length, rows)
@@ -292,7 +292,7 @@ CALL fastjx_set_aer(error_code_ptr, error_message=error_message,               &
 
 IF ( error_code_ptr > 0 ) THEN
   CALL fastjx_deallocate_memory
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -467,7 +467,7 @@ END SELECT
 ! Tidy up at the end
 CALL fastjx_deallocate_memory
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 CONTAINS
@@ -501,16 +501,13 @@ REAL :: ods(1:row_length,1:rows,1:model_levels)
   ! Conversion factor from kg to molecules
 REAL :: masfac
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_SET_ARRAYS'
 
 
 ! *************************************************
 ! EOH
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! rz in cm
 rz_3d(:,:,1)              =                                                    &
@@ -683,7 +680,7 @@ o3_3d(:,:,(model_levels+1))     = o3_3d(:,:,model_levels)
 ! Multiply by molecules per m2 to get it in units fastj wants
 o3_3d                           = o3_3d*dm_3d
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE fastjx_set_arrays
 

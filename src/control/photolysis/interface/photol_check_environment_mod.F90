@@ -49,7 +49,8 @@ USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname, error_report,       &
                           errcode_value_unknown, errcode_env_req_uninit,       &
                           errcode_env_field_mismatch, errcode_env_field_missing
 ! Dr Hook modules
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,            ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -73,8 +74,6 @@ INTERFACE check_environ_group
 END INTERFACE check_environ_group
 
 ! Dr Hook parameters
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
 
 CHARACTER(LEN=*), PARAMETER :: ModuleName = 'PHOTOL_CHECK_ENVIRONMENT_MOD'
 
@@ -98,11 +97,11 @@ CHARACTER(LEN=maxlen_message) :: err_msg
 INTEGER :: n, n_missing
 
 ! Dr Hook data
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='CHK_ENV_FIELDS_LIST'
 ! ------------------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 err_msg = ''
@@ -130,7 +129,7 @@ IF ( error_code_ptr /= 0 .OR. n_missing > 0 ) THEN
 
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE check_env_fields_list
 
@@ -153,11 +152,11 @@ CHARACTER(LEN=maxlen_message) :: err_msg
 INTEGER :: n_flds_in, n_flds_req
 
 ! Dr Hook data
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName='CHK_ENVGROUP_SCALAR_REAL'
 ! ------------------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code_ptr= 0
 IF (PRESENT(error_message)) error_message = ''
@@ -168,7 +167,7 @@ IF ( .NOT. ALLOCATED(environ_fldnames_scalar_real) .OR.                        &
      SIZE(environ_fldnames_scalar_real) == 0 ) THEN
   l_fields_this_group = .FALSE.   ! Assume no fields of this type required
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
   RETURN
 END IF
 
@@ -187,7 +186,7 @@ ELSE
 END IF
 
 ! No other dimensions to check
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE check_envgroup_scalar_real
 
@@ -212,11 +211,11 @@ CHARACTER(LEN=maxlen_message) :: err_msg
 INTEGER :: n_flds_in, n_flds_req
 
 ! Dr Hook data
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 CHARACTER(LEN=*), PARAMETER :: RoutineName='CHK_ENVGROUP_FLAT_INTEGER'
 ! ------------------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 error_code_ptr= 0
 err_msg = ''
@@ -228,7 +227,7 @@ IF ( .NOT. ALLOCATED(environ_fldnames_flat_integer) .OR.                       &
      SIZE(environ_fldnames_flat_integer) == 0 ) THEN
   l_fields_this_group = .FALSE.   ! Assume no fields of this type required
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
   RETURN
 END IF
 
@@ -242,7 +241,7 @@ IF ( n_flds_in /= n_flds_req ) THEN
   CALL error_report(photol_config%i_error_method, error_code_ptr, err_msg,     &
           RoutineName, msg_out=error_message, locn_out=error_routine)
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
   RETURN
 ELSE
   l_fields_this_group = .TRUE.   ! Some fields of this type required
@@ -258,7 +257,7 @@ IF ( SIZE(flds_in, DIM=1) /= dim_x .OR. SIZE(flds_in, DIM=2) /= dim_y) THEN
          RoutineName, msg_out=error_message, locn_out=error_routine)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE check_envgroup_flat_integer
 
@@ -282,11 +281,11 @@ CHARACTER(LEN=maxlen_message) :: err_msg
 INTEGER :: n_flds_in, n_flds_req
 
 ! Dr Hook data
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 CHARACTER(LEN=*), PARAMETER :: RoutineName='CHK_ENVGROUP_FLAT_REAL'
 ! ------------------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 error_code_ptr= 0
 err_msg = ''
@@ -298,7 +297,7 @@ IF ( .NOT. ALLOCATED(environ_fldnames_flat_real) .OR.                          &
      SIZE(environ_fldnames_flat_real) == 0 ) THEN
   l_fields_this_group = .FALSE.   ! Assume no fields of this type required
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
   RETURN
 END IF
 
@@ -312,7 +311,7 @@ IF ( n_flds_in /= n_flds_req ) THEN
   CALL error_report(photol_config%i_error_method, error_code_ptr, err_msg,     &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
   RETURN
 ELSE
   l_fields_this_group = .TRUE.   ! Some fields of this type required
@@ -329,7 +328,7 @@ IF ( SIZE(flds_in, DIM=1) /= dim_x .OR. SIZE(flds_in, DIM=2) /= dim_y) THEN
 
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE check_envgroup_flat_real
 
@@ -355,11 +354,11 @@ CHARACTER(LEN=maxlen_message) :: err_msg
 INTEGER :: n_flds_in, n_flds_req, zdim
 
 ! Dr Hook data
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_5
 CHARACTER(LEN=*), PARAMETER :: RoutineName='CHK_ENVGROUP_FULLHT_REAL'
 ! ------------------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 error_code_ptr= 0
 err_msg = ''
@@ -375,7 +374,7 @@ IF ( (group_name == 'fullht_real' .AND.                                        &
        SIZE(environ_fldnames_fullht0_real) == 0) ) ) THEN
   l_fields_this_group = .FALSE.   ! Assume no fields of this type required
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
   RETURN
 END IF
 
@@ -397,7 +396,7 @@ ELSE
   CALL error_report(photol_config%i_error_method, error_code_ptr, err_msg,     &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
   RETURN
 END IF
 IF ( n_flds_in /= n_flds_req ) THEN
@@ -407,7 +406,7 @@ IF ( n_flds_in /= n_flds_req ) THEN
   CALL error_report(photol_config%i_error_method, error_code_ptr, err_msg,     &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
   RETURN
 ELSE
   l_fields_this_group = .TRUE.   ! Some fields of this type required
@@ -424,7 +423,7 @@ IF ( SIZE(flds_in, DIM=1) /= dim_x .OR. SIZE(flds_in, DIM=2) /= dim_y .OR.     &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
 RETURN
 END SUBROUTINE check_envgroup_fullht_real
 
@@ -450,11 +449,11 @@ CHARACTER(LEN=maxlen_message) :: err_msg
 INTEGER :: n_flds_in, n_flds_req
 
 ! Dr Hook data
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_6
 CHARACTER(LEN=*), PARAMETER :: RoutineName='CHK_ENVGROUP_FULLHTPHOT_REAL'
 ! ------------------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 error_code_ptr= 0
 err_msg = ''
@@ -467,7 +466,7 @@ IF ( group_name == 'fullhtphot_real' .AND.                                     &
        SIZE(environ_fldnames_fullhtphot_real) == 0) ) THEN
   l_fields_this_group = .FALSE.   ! Assume no fields of this type required
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
   RETURN
 END IF
 
@@ -483,7 +482,7 @@ IF ( n_flds_in /= n_flds_req ) THEN
   CALL error_report(photol_config%i_error_method, error_code_ptr, err_msg,     &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
   RETURN
 ELSE
   l_fields_this_group = .TRUE.   ! Some fields of this type required
@@ -500,7 +499,7 @@ IF ( SIZE(flds_in, DIM=1) /= dim_x .OR. SIZE(flds_in, DIM=2) /= dim_y .OR.     &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
 RETURN
 END SUBROUTINE check_envgroup_fullhtphot_real
 

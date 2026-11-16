@@ -27,9 +27,8 @@ USE ukca_option_mod,         ONLY:                                             &
     i_ukca_radaer_prescribe_ssa,                                               &
     do_not_prescribe
 
-USE yomhook,                 ONLY:                                             &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -93,13 +92,11 @@ CHARACTER(LEN=errormessagelength), INTENT(OUT) :: cmessage
 INTEGER :: i, j, k
 
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*),   PARAMETER :: RoutineName='UKCA_RADAER_POPULATE_LUT'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialise error code
 icode = 0
@@ -111,21 +108,21 @@ icode = 0
 IF (n_x > npd_x) THEN
   icode = 1
   cmessage='Look-up table dimension exceeds built-in limit (X).'
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
 IF (n_nr > npd_nr) THEN
   icode = 1
   cmessage='Look-up table dimension exceeds built-in limit (NR).'
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
 IF (n_ni > npd_ni) THEN
   icode = 1
   cmessage='Look-up table dimension exceeds built-in limit (NI).'
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -239,7 +236,7 @@ DO i = 1, n_x
                                          volume_fraction(i-1)
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_radaer_populate_lut

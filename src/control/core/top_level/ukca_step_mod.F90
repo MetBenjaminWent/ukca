@@ -46,7 +46,8 @@ USE ukca_main1_mod, ONLY: ukca_main1
 USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname
 
 ! Dr Hook modules
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,            ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -56,8 +57,6 @@ PRIVATE
 PUBLIC ukca_step
 
 ! Dr Hook parameters
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
 
 CHARACTER(LEN=*), PARAMETER :: ModuleName = 'UKCA_STEP_MOD'
 
@@ -151,11 +150,11 @@ INTEGER, POINTER :: error_code_ptr
 TYPE(diagnostics_type) :: diagnostics
 
 ! Dr Hook data
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_STEP_1D_DOMAIN'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Use parent supplied argument for return code.
 ! Note that this argument is redundant if UKCA is configured to abort on error
@@ -247,7 +246,7 @@ CALL ntp_dealloc()
 CALL tracer_dealloc()
 CALL diag_status_dealloc(diagnostics)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_step_1d_domain
 
@@ -321,11 +320,11 @@ INTEGER, POINTER :: error_code_ptr
 TYPE(diagnostics_type) :: diagnostics
 
 ! Dr Hook data
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_STEP_3D_DOMAIN'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Use parent supplied argument for return code.
 ! Note that this argument is redundant if UKCA is configured to abort on error
@@ -420,7 +419,7 @@ CALL ntp_dealloc()
 CALL tracer_dealloc()
 CALL diag_status_dealloc(diagnostics)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_step_3d_domain
 

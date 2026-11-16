@@ -82,7 +82,8 @@ CONTAINS
 SUBROUTINE fastjx_miesct(fj,fjt,fjb, pomega,fz,ztau,zflux,rfl,u0,nd)
 
 USE fastjx_data, ONLY: w_, m_, m2_, n_, emu, wt
-USE yomhook,  ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -110,15 +111,14 @@ REAL :: pm(m_,m2_)
 REAL :: pm0(m2_)
 
 INTEGER :: i, im                            ! Loop variables
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_MIESCT'
 
 ! End of Header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO i = 1,m_
   CALL legnd0 (emu(i),pm0,m2_)
@@ -135,7 +135,7 @@ END DO
 ! ---blkslv now CALLed with all the wavelength arrays (k=1:w_)
 CALL blkslv(fj,pomega,fz,ztau,zflux,rfl,pm,pm0,fjt,fjb, nd)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 !###########################################################################
@@ -156,13 +156,10 @@ REAL,    INTENT(OUT) :: pl(n)
 
 INTEGER              :: i
 REAL                 :: den
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='LEGND0'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 !---always does pl(2) = p[1]
 pl(1) = 1.0e0
@@ -174,7 +171,7 @@ DO i = 3,n
 END DO
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 
 END SUBROUTINE legnd0
@@ -221,15 +218,13 @@ REAL                 :: sumbx
 REAL                 :: sumt
 
 INTEGER              :: i, j, k, l
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='BLKSLV'
 
 ! End of Header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 DO k=1,w_
   CALL gen_id (pomega(1,1,k),fz(1,k),ztau(1,k),zflux(k),rfl(k),                &
@@ -365,7 +360,7 @@ DO k = 1,w_
   fjbot(k) = 4.0e0*sumb - sumbx
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE blkslv
 
@@ -414,9 +409,7 @@ REAL :: d2
 REAL :: surfac
 
 INTEGER :: i, j, l1,l2,ll
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='GEN_ID'
 
@@ -424,7 +417,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='GEN_ID'
 !---------------------------------------------
 ! End of Header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 !---------upper boundary:  2nd-order terms
 l1 = 1
@@ -694,7 +687,7 @@ DO i = 1,m_
 
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE gen_id
 
@@ -711,16 +704,14 @@ REAL, INTENT(OUT) :: a(4,4,w_)
 
 INTEGER :: k
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_5
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='MATINW'
 
 ! ****************************
 ! End of Header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 a(:,:,:) = b(:,:,:)
 
@@ -778,7 +769,7 @@ DO k=1,w_
   a(4,3,k) = a(4,4,k)*a(4,3,k)
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
 
 RETURN
 END SUBROUTINE matinw

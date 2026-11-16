@@ -27,7 +27,8 @@ MODULE ukca_activ_mod
 !  -------
 
 
-USE yomhook,  ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -50,13 +51,11 @@ REAL,    INTENT(OUT) :: binwidth(kbdim, model_levels, nbins)
 REAL,    INTENT(OUT) :: linarr(kbdim, model_levels, nbins)
 
 INTEGER :: i,j,k
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACTIVMKLIN'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO k = 1, nbins
   DO i=1, model_levels
@@ -67,7 +66,7 @@ DO k = 1, nbins
   END DO
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE activmklin
 !-------------------------------------------------------------------------
@@ -92,14 +91,12 @@ REAL,    INTENT(OUT) :: pdfarr(kbdim, model_levels, nbins)
 REAL                :: tmp1(kbdim, model_levels, nbins)
 REAL                :: tmp1_out(kbdim, model_levels, nbins)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACTIVMKSKEW'
 INTEGER :: i, j, k
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 DO k=1, nbins
   DO i=1, model_levels
@@ -123,7 +120,7 @@ DO k=1, nbins
   END DO
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 
 RETURN
 END SUBROUTINE activmkskew
@@ -141,14 +138,12 @@ INTEGER, INTENT(OUT) :: closeind
 REAL,    INTENT(OUT) :: closeval
 
 REAL    :: subarr(nbins)
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACTIVCLOSEST'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Subtract the value you wish to compare from
 ! the whole array you are comparing it to and
@@ -164,7 +159,7 @@ closeind = MINLOC(ABS(subarr(1:nbins)), DIM=1)
 ! *closeind contains the location of that value
 closeval = arrayin(closeind)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 
 RETURN
 END SUBROUTINE activclosest

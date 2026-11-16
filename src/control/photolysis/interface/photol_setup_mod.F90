@@ -150,7 +150,8 @@ USE ukca_error_mod,        ONLY: maxlen_message, maxlen_procname,              &
 USE umPrintMgr,            ONLY: umMessage, umPrint
 
 USE parkind1,               ONLY: jpim, jprb      ! DrHook
-USE yomhook,                ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -254,15 +255,13 @@ CHARACTER(LEN=maxlen_message) :: var_missing
 LOGICAL :: l_missing
 INTEGER :: nvar_missing
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0  ! DrHook tracing entry
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1  ! DrHook tracing exit
-REAL    (KIND=jprb)            :: zhook_handle   ! DrHook tracing
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='PHOTOL_SETUP'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Set defaults for output arguments
 error_code_ptr => error_code
@@ -289,7 +288,7 @@ IF ( i_photol_scheme /= i_scheme_nophot        .AND.                           &
   CALL error_report(photol_config%i_error_method, error_code_ptr, err_message, &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 ELSE
   photol_config%i_photol_scheme = i_photol_scheme
@@ -470,8 +469,7 @@ IF ( i_photol_scheme == i_scheme_fastjx ) THEN
     CALL error_report(photol_config%i_error_method, error_code_ptr,            &
                       err_message, RoutineName, msg_out=error_message,         &
                       locn_out=error_routine)
-    IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out,           &
-                            zhook_handle)
+    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
   ! Solar cylc data - if scheme chosen
@@ -506,8 +504,7 @@ IF ( i_photol_scheme == i_scheme_fastjx ) THEN
     CALL error_report(photol_config%i_error_method, error_code_ptr,            &
                       err_message, RoutineName, msg_out=error_message,         &
                       locn_out=error_routine)
-    IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out,           &
-                            zhook_handle)
+    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
   photol_config%njval = njval
@@ -573,7 +570,7 @@ l_photol_config_available = .TRUE.
 CALL photol_init_environ_req(error_code_ptr, error_message=error_message,      &
                              error_routine=error_routine)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE photol_setup

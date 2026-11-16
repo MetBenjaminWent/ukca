@@ -68,7 +68,8 @@ CONTAINS
 
 SUBROUTINE fastjx_set_aer(error_code_ptr, error_message, error_routine)
 
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 
 USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname,                     &
@@ -89,15 +90,13 @@ CHARACTER(LEN=maxlen_procname), OPTIONAL, INTENT(OUT) :: error_routine
 CHARACTER(LEN=maxlen_message) :: cmessage         ! Error message
 INTEGER                       :: i                ! Loop variable
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_SET_AER'
 
 ! ********************************
 ! EOH
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialise aerosol index
 
@@ -123,14 +122,13 @@ DO i = 1,mx
         miedx(i), ' ', naa
     CALL error_report(photol_config%i_error_method, error_code_ptr, cmessage,  &
             RoutineName, locn_out=error_routine, msg_out=error_message )
-    IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out,           &
-                            zhook_handle)
+    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF   ! miedx range
 
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE fastjx_set_aer
 END MODULE fastjx_set_aer_mod

@@ -10,7 +10,8 @@
 MODULE ei1_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE umPrintMgr, ONLY: umMessage, umPrint
 IMPLICIT NONE
 
@@ -37,7 +38,8 @@ CHARACTER(LEN=*), PARAMETER, PRIVATE :: ModuleName='EI1_MOD'
 CONTAINS
 REAL FUNCTION ei1(x)
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Function interface
@@ -75,15 +77,13 @@ REAL :: x2
 REAL :: x3
 REAL :: x4
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='EI1'
 
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 IF ( x < 0.0 ) THEN
   WRITE(umMessage,'(1X,A,1X,E12.5)')                                           &
   '** EI1 WARNING ** Negative argument >',x
@@ -116,7 +116,7 @@ ELSE IF ( (x > 10.0) .AND. (x < xmax) ) THEN
 ELSE IF ( x >= xmax ) THEN
   ei1 = 0.0
 END IF
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END FUNCTION ei1

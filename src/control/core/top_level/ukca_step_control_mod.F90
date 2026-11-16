@@ -40,7 +40,8 @@
 MODULE ukca_step_control_mod
 
 ! Dr Hook modules
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,            ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -50,8 +51,6 @@ PRIVATE
 PUBLIC ukca_step_control
 
 ! Dr Hook parameters
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
 
 CHARACTER(LEN=*), PARAMETER :: ModuleName = 'UKCA_STEP_CONTROL_MOD'
 
@@ -238,10 +237,10 @@ LOGICAL, ALLOCATABLE :: tmp_2d_logical(:,:)
 CHARACTER(LEN=maxlen_fieldname), POINTER :: varnames(:)
 
 ! Dr Hook data
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_STEP_CONTROL_1D_DOMAIN'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -859,7 +858,7 @@ IF (error_code <= 0) THEN
 
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_step_control_1d_domain
 
@@ -1030,10 +1029,10 @@ LOGICAL, ALLOCATABLE :: tmp_2d_logical(:,:)
 CHARACTER(LEN=maxlen_fieldname), POINTER :: varnames(:)
 
 ! Dr Hook data
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_STEP_CONTROL_3D_DOMAIN'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -1736,7 +1735,7 @@ IF (error_code <= 0) THEN
 
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_step_control_3d_domain
 

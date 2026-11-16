@@ -60,7 +60,8 @@ SUBROUTINE asad_fyfixr(n_points)
 USE asad_mod,       ONLY: y, f, ratio, linfam, nlmajmin, jpif,                 &
                           moffam, madvtr, majors, ctype
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: n_points
@@ -76,9 +77,7 @@ INTEGER :: ifam    ! Index
 INTEGER :: imaj    ! Index
 INTEGER :: itr     ! Index
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_FYFIXR'
 
@@ -86,7 +85,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_FYFIXR'
 !       1.  Calculate major species of family
 !           --------- ----- ------- -- ------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 istart = nlmajmin(1)
 iend   = nlmajmin(2)
 DO j = istart, iend
@@ -119,7 +118,7 @@ DO j = istart, iend
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_fyfixr
 END MODULE asad_fyfixr_mod

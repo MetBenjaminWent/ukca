@@ -64,7 +64,8 @@ SUBROUTINE ukca_radaer_compute_aod(                                            &
    )
 
 USE parkind1, ONLY: jpim, jprb
-USE yomhook,  ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE conversions_mod, ONLY: pi
 USE ukca_radaer_lut_read_in, ONLY: ukca_radaer_get_lut_index
 
@@ -261,9 +262,7 @@ INTEGER :: this_mode_type
 !
 LOGICAL :: l_in_stratosphere
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_RADAER_COMPUTE_AOD'
 
@@ -271,7 +270,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_RADAER_COMPUTE_AOD'
 !
 !
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO n = 1, npd_aod_wavel
   DO i_prof = 1, npd_profile
@@ -531,7 +530,7 @@ DO i_mode = 1, n_ukca_mode
 
 END DO ! i_mode
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_radaer_compute_aod

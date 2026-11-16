@@ -10,7 +10,8 @@
 MODULE ukca_tbjs_mod
 USE ukca_parpho_mod, ONLY: jplev,jpchi,jptem,jpo3p
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 

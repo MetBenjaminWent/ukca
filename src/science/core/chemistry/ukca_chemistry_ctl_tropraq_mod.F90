@@ -89,7 +89,8 @@ USE ukca_ntp_mod,         ONLY: ntp_type, dim_ntp, name2ntpindex
 USE ukca_chemco_raq_mod,  ONLY: ukca_chemco_raq
 USE ukca_deriv_raqaero_mod, ONLY: ukca_deriv_raqaero
 
-USE yomhook,              ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,             ONLY: jprb, jpim
 USE ereport_mod,          ONLY: ereport
 USE umPrintMgr,           ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
@@ -255,14 +256,12 @@ REAL :: ntp_data(tot_n_pnts,dim_ntp)
 ! 1-D masks for troposphere and NAT height limitation
 LOGICAL :: stratflag(theta_field_size)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEMISTRY_CTL_TROPRAQ'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 nr = nr_therm + nr_phot
 
 IF (firstcall) THEN
@@ -707,7 +706,7 @@ IF (ukca_config%l_enable_diag_um .AND. ukca_config%l_ukca_raq) THEN
        len_stashwork, stashwork)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_chemistry_ctl_tropraq
 

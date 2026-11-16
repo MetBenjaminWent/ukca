@@ -51,7 +51,8 @@ SUBROUTINE ukca_scenario_ctl(n_boundary_vals, lbc_spec,                        &
                              i_year, i_day_number,                             &
                              lbc_mmr, perform_lumping)
 
-USE yomhook,               ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,              ONLY: jprb, jpim
 USE ereport_mod,           ONLY: ereport
 USE umPrintMgr, ONLY: umPrint, umMessage, PrStatus_Oper, PrintStatus
@@ -83,13 +84,11 @@ CHARACTER(LEN=errormessagelength) :: cmessage
 ! loop variable for diagnostic output
 INTEGER :: i
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SCENARIO_CTL'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 SELECT CASE (ukca_config%i_strat_lbc_source)
 CASE (i_strat_lbc_env)
@@ -132,7 +131,7 @@ END IF
 
 L_first = .FALSE.
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_scenario_ctl

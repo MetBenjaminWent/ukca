@@ -89,7 +89,8 @@ USE ukca_constants,        ONLY: mmw,      &  ! H2O molecular weight kg/mol
 USE ukca_config_constants_mod, ONLY: rmol,      & ! molar gas constant
                                      rho_water    ! density H2O kg/m^3
 
-USE yomhook,               ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,              ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -160,13 +161,11 @@ REAL :: zb(kbdim,nmodes)         ! hygroscopicity parameter B of the Koehler eqn
 ! REAL, PARAMETER :: amd   = 28.970   ! [not needed]
 ! REAL, PARAMETER :: tmelt = 273.15   ! [not needed]
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_FIXEDS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -307,7 +306,7 @@ DO jmod=1, nmodes
   END IF                 ! jmod
 END DO                    ! jmod
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_fixeds

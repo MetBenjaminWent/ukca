@@ -29,7 +29,8 @@
 MODULE ukca_offline_oxidants_diags_mod
 
 USE parkind1,         ONLY: jpim, jprb      ! DrHook
-USE yomhook,          ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -38,8 +39,6 @@ PRIVATE
 
 PUBLIC :: ukca_offline_oxidants_diags
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
 
 CHARACTER(LEN=*), PARAMETER, PRIVATE ::                                        &
   ModuleName='UKCA_OFFLINE_OXIDANTS_DIAGS_MOD'
@@ -93,11 +92,11 @@ INTEGER :: k                              ! loop index
 
 REAL :: field3d(row_length,rows,model_levels)  ! To contain 3d diagnostic
 
-REAL (KIND=jprb)   :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_OFFLINE_OXIDANTS_DIAGS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 im_index = 1
 
@@ -165,7 +164,7 @@ DO item = 206,210
 
 END DO       ! item
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE ukca_offline_oxidants_diags
 

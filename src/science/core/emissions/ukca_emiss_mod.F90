@@ -55,7 +55,8 @@ USE umPrintMgr,            ONLY: umPrint, umMessage, PrintStatus,              &
                                  PrStatus_Normal, newline
 
 USE parkind1,              ONLY: jpim, jprb      ! DrHook
-USE yomhook,               ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -162,15 +163,13 @@ INTEGER :: this_cp_cl
 INTEGER :: this_cp_bc
 INTEGER :: this_cp_oc
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_ONL_EMISS_INIT'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -1502,7 +1501,7 @@ END IF
 
 emissions(num_cdf_em_flds+1:num_em_flds)%l_update = .FALSE.
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 
@@ -1541,15 +1540,13 @@ INTEGER :: this_cp_cl
 INTEGER :: this_cp_bc
 INTEGER :: this_cp_oc
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_EMISS_SPATIAL_VARS_INIT'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 component   => glomap_variables%component
 mode        => glomap_variables%mode
@@ -1892,7 +1889,7 @@ END IF
 
 emissions(num_cdf_em_flds+1:num_em_flds)%l_update = .FALSE.
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 
 RETURN
 
@@ -1954,15 +1951,13 @@ REAL    :: mm_da  !  Molar mass of dry air (kg/mol) =avc*zboltz/ra
 REAL    :: factor  !  converts from partcls per m2/s to kg/m2/s
 REAL    :: lstdev  !  log(stdev)
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_EMISS_UPDATE_MODE'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Call ukca_def_mode_emiss to obtain emission mask, mode fraction, diameter
 ! and stdev for each mode, as well as component emissions applied to (=icp).
@@ -2012,7 +2007,7 @@ DO imode = 1, nmodes
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 
 RETURN
 END SUBROUTINE ukca_emiss_update_mode
@@ -2062,15 +2057,13 @@ INTEGER :: moment_step = moment_mass - moment_number
 CHARACTER (LEN=errormessagelength) :: cmessage    ! Error message
 INTEGER                            :: ierror      ! Error code
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_EMISS_MODE_MAP'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 nlev = emiss_levs
 
@@ -2113,7 +2106,7 @@ DO imode = 1, nmodes
   END IF  ! lmode_emiss(imode) and component(imode,icp)
 END DO  ! nmodes
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 
 RETURN
 END SUBROUTINE ukca_emiss_mode_map

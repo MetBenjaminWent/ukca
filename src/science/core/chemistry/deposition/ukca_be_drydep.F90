@@ -38,7 +38,8 @@ SUBROUTINE ukca_be_drydep(k, n_pnts, nlev_with_ddep2, dryrt, odryrt)
 USE asad_mod,          ONLY:  ndepd, nldepd, jpspec, jpdd
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -59,14 +60,12 @@ INTEGER :: i                              ! Loop variable
 INTEGER :: js                             ! Loop variable
 INTEGER :: nspec                          ! Pointer for species
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_BE_DRYDEP'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 DO js = 1, jpspec
   DO i = 1, n_pnts
     odryrt(i,js) = 0.0
@@ -99,7 +98,7 @@ ELSE
 
 END IF   ! End of IF (l_ukca_intdd) statement
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_be_drydep
 END MODULE ukca_be_drydep_mod

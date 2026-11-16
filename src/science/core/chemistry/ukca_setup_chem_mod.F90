@@ -55,7 +55,8 @@ USE ukca_missing_data_mod, ONLY: imdi
 USE ereport_mod,     ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Diag
 USE parkind1,        ONLY: jprb, jpim
-USE yomhook,         ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 USE ukca_chem_offline, ONLY: ndry_offline, nwet_offline
 USE ukca_chem_aer,     ONLY: ndry_aer_aer, nwet_aer_aer
@@ -70,13 +71,11 @@ IMPLICIT NONE
 CHARACTER (LEN=errormessagelength) :: cmessage        ! Error message
 INTEGER            :: errcode         ! Variable passed to ereport
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SETUP_CHEM'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 
 SELECT CASE (ukca_config%i_ukca_chem)
@@ -452,7 +451,7 @@ IF (PrintStatus >= PrStatus_Diag) THEN
   CALL umPrint(umMessage,src='ukca_setup_chem_mod')
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE ukca_setup_chem
 

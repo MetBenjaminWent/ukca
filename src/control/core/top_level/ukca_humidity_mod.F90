@@ -24,7 +24,8 @@
 
 MODULE ukca_humidity_mod
 
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,            ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -35,8 +36,6 @@ PRIVATE
 PUBLIC ukca_vmrsat_liq, ukca_vmr_clear_sky
 
 ! Dr Hook parameters
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
 
 CHARACTER(LEN=*), PARAMETER :: ModuleName='UKCA_HUMIDITY_MOD'
 
@@ -115,10 +114,10 @@ INTEGER :: errcode                               ! Error flag
 CHARACTER(LEN=errormessagelength) :: cmessage    ! Error return message
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_VMRSAT_LIQ'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (PRESENT(vmr_sat) .AND. (.NOT. PRESENT(pres))) THEN
   errcode = 1
@@ -162,7 +161,7 @@ DO k = 1, model_levels
   END DO
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_vmrsat_liq
 
@@ -211,10 +210,10 @@ INTEGER :: j
 INTEGER :: k
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_VMR_CLEAR_SKY'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 DO k = 1, model_levels
   DO j = 1, rows
@@ -230,7 +229,7 @@ DO k = 1, model_levels
   END DO
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END FUNCTION ukca_vmr_clear_sky
 

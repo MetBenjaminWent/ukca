@@ -62,9 +62,8 @@ USE parkind1,                        ONLY:                                     &
 USE ukca_mode_setup,                 ONLY:                                     &
     nmodes
 
-USE yomhook,                         ONLY:                                     &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -149,13 +148,11 @@ REAL(KIND=real_umphys) :: nmr1d( n_points, nmodes )
 ! Aerosol mass mixing ratio ( kg / kg of air )
 REAL(KIND=real_umphys) :: mmr1d( n_points, nmodes, ncp )
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER   :: RoutineName='GLOMAP_CLIM_CALC_MD_MDT_ND'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Calculate aird
 CALL glomap_clim_calc_aird( n_points, p_theta_levels_1d, t_theta_levels_1d,    &
@@ -179,7 +176,7 @@ CALL ukca_calc_md_mdt_nd ( i_glomap_clim_setup_in, n_points,                   &
                            glomap_variables_climatology,                       &
                            aird, mmr1d, nmr1d, md, mdt, nd )
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE glomap_clim_calc_md_mdt_nd
 END MODULE glomap_clim_calc_md_mdt_nd_mod

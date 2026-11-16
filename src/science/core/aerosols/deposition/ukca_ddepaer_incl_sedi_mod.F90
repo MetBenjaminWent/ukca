@@ -273,9 +273,8 @@ USE ukca_types_mod,          ONLY:                                             &
     log_small
 
 
-USE yomhook,                 ONLY:                                             &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 
 IMPLICIT NONE
@@ -381,13 +380,11 @@ REAL, PARAMETER :: dtsedi(nmodes) =                                            &
 REAL :: p_ratio(nbox)
 REAL :: p_ratio_out(nbox)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER   :: RoutineName='UKCA_DDEPAER_INCL_SEDI'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -826,7 +823,7 @@ DO imode=1,nmodes
   END IF ! IF MODE(IMODE)
 END DO ! loop over modes
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_ddepaer_incl_sedi
 

@@ -75,7 +75,8 @@ USE ukca_mode_setup,    ONLY:                                                  &
     mode_cor_insol,                                                            &
     mode_sup_insol
 
-USE yomhook,  ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 USE umPrintMgr, ONLY: umMessage
 
@@ -132,13 +133,11 @@ REAL    :: mdtmax                  ! max MDT value for each mode
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_CHECK_ARTEFACTS'
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 !-----------------------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -336,7 +335,7 @@ IF (verbose > 1) THEN
   END DO
 END IF ! if VERBOSE > 1
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_mode_check_artefacts
 
@@ -362,7 +361,8 @@ USE ukca_mode_setup,    ONLY:                                                  &
     mode_cor_insol,                                                            &
     mode_sup_insol
 
-USE yomhook,  ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 USE ukca_types_mod, ONLY: logical_32
 
@@ -400,13 +400,11 @@ REAL    :: mdtmax                  ! max MDT value for each mode
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_CHECK_MDT'
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 !-----------------------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -492,7 +490,7 @@ DO icp=1,ncp
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_mode_check_mdt
 

@@ -59,7 +59,8 @@ USE umPrintMgr,          ONLY: umPrint, umMessage, PrintStatus, PrStatus_Normal
 USE ukca_missing_data_mod, ONLY: rmdi, imdi
 
 USE parkind1,            ONLY: jpim, jprb      ! DrHook
-USE yomhook,             ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -198,9 +199,7 @@ INTEGER :: jmode          ! loop index
 INTEGER :: this_cp_oc
 INTEGER :: this_cp_bc
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DEF_MODE_EMISS'
 
@@ -208,7 +207,7 @@ CHARACTER (LEN=errormessagelength) :: cmessage
 INTEGER                            :: ierror      ! Error code
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -419,7 +418,7 @@ IF (PRESENT(mode_frac_out)) mode_frac_out = mode_frac
 IF (PRESENT(mode_diam_out)) mode_diam_out = mode_diam
 IF (PRESENT(mode_stdev_out)) mode_stdev_out = mode_stdev
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_def_mode_emiss

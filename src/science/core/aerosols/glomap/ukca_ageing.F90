@@ -149,7 +149,8 @@ USE ukca_setup_indices, ONLY: condensable,                                     &
         nmasagedmpintr52, nmasagedmpintr63, nmasagedmpintr74,                  &
         nmasagedmpintr84
 
-USE yomhook,            ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,           ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -197,14 +198,12 @@ REAL    :: ndinsnew
 REAL    :: ndsolnew
 REAL    :: f_mm(glomap_variables%ncp)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_AGEING'
 
 !
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -480,7 +479,7 @@ DO imode=mode_ait_insol,topmode ! loop over insoluble modes
   END IF ! if insoluble mode is present (IMODE=5,7)
 END DO ! Loop IMODE=5,topmode
 !
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_ageing
 END MODULE ukca_ageing_mod

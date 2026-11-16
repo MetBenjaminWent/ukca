@@ -66,7 +66,8 @@ MODULE ukca_setup_indices
 
 
 
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -629,13 +630,11 @@ IMPLICIT NONE
 ! MAIN ARRAY LENGTHS AND SWITCHES
 !
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_NOCHEM'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 nchemg=0           ! # of gas phase chemistry tracers
 ichem=0            ! 1/0 = gas phase chemistry tracers on/off
@@ -866,7 +865,7 @@ ics2oh  =  0
 ih2soh  =  0
 icosoh  =  0
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_indices_nochem
 
@@ -880,13 +879,11 @@ IMPLICIT NONE
 ! MAIN ARRAY LENGTHS AND SWITCHES
 !
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_ORGV1_SOTO3'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 nchemg=11          ! # of gas phase chemistry tracers
 ichem=1            ! 1/0 = gas phase chemistry tracers on/off
@@ -1123,7 +1120,7 @@ icosoh  =  7
 !
 !----------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE UKCA_INDICES_ORGV1_SOto3
 
@@ -1137,13 +1134,11 @@ IMPLICIT NONE
 ! MAIN ARRAY LENGTHS AND SWITCHES
 !
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_ORGV1_SOTO3_NO3'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 nchemg=13          ! # of gas phase chemistry tracers
 ichem=1            ! 1/0 = gas phase chemistry tracers on/off
@@ -1380,7 +1375,7 @@ icosoh  =  7
 !
 !----------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE UKCA_INDICES_ORGV1_SOto3_NO3
 
@@ -1394,13 +1389,11 @@ IMPLICIT NONE
 ! MAIN ARRAY LENGTHS AND SWITCHES
 !
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_ORGV1_SOTO3_NO3_ISOP'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 nchemg=14          ! # of gas phase chemistry tracers
 ichem=1            ! 1/0 = gas phase chemistry tracers on/off
@@ -1637,7 +1630,7 @@ icosoh  =  7
 !
 !----------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE UKCA_INDICES_ORGV1_SOto3_NO3_ISOP
 
@@ -1656,13 +1649,11 @@ IMPLICIT NONE
 ! MAIN ARRAY LENGTHS AND SWITCHES
 !
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_5
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_ORGV1_SOTO3_ISOP'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 nchemg=12          ! # of gas phase chemistry tracers
 ichem=1            ! 1/0 = gas phase chemistry tracers on/off
@@ -1896,7 +1887,7 @@ ics2oh  =  5
 ih2soh  =  6
 icosoh  =  7
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
 
 RETURN
 END SUBROUTINE UKCA_INDICES_ORGV1_SOto3_ISOP
@@ -1913,13 +1904,11 @@ IMPLICIT NONE
 ! MAIN ARRAY LENGTHS AND SWITCHES
 !
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_6
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_ORGV1_SOto3_SOLINSOL'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 nchemg=11          ! # of gas phase chemistry tracers
 ichem=1            ! 1/0 = gas phase chemistry tracers on/off
@@ -2156,7 +2145,7 @@ icosoh  =  7
 !
 !----------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
 RETURN
 END SUBROUTINE UKCA_INDICES_ORGV1_SOto3_SOLINSOL
 
@@ -2165,13 +2154,11 @@ SUBROUTINE UKCA_INDICES_ORGV1_SOto3_COUPL
 
 IMPLICIT NONE
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_7
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_ORGV1_SOTO3_COUPL'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_7, ModuleName//':'//RoutineName)
 
 ! Main array lengths and switches
 
@@ -2412,7 +2399,7 @@ ics2oh  =128
 ih2soh  =129
 icosoh  =130
 !
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_7)
 RETURN
 END SUBROUTINE UKCA_INDICES_ORGV1_SOto3_COUPL
 
@@ -2425,13 +2412,11 @@ IMPLICIT NONE
 !
 ! MAIN ARRAY LENGTHS AND SWITCHES
 !
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_8
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_ORGV1_SOTO6'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_8, ModuleName//':'//RoutineName)
 
 nchemg=11          ! # of gas phase chemistry tracers
 ichem=1            ! 1/0 = gas phase chemistry tracers on/off
@@ -2667,7 +2652,7 @@ icosoh  =  7
 !
 !----------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_8)
 RETURN
 END SUBROUTINE UKCA_INDICES_ORGV1_SOto6
 
@@ -2679,13 +2664,11 @@ IMPLICIT NONE
 !-----------------------------------------------------------
 ! Main array lengths and switches
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_9
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_ORGV1_SOTO6_COUPL'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_9, ModuleName//':'//RoutineName)
 
 nchemg=50          ! # of gas phase chemistry tracers
 ichem=1            ! 1/0 = gas phase chemistry tracers on/off
@@ -2923,7 +2906,7 @@ ics2oh  =128
 ih2soh  =129
 icosoh  =130
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_9)
 RETURN
 END SUBROUTINE UKCA_INDICES_ORGV1_SOto6_COUPL
 
@@ -2936,13 +2919,11 @@ IMPLICIT NONE
 !
 ! MAIN ARRAY LENGTHS AND SWITCHES
 !
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_10
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_SV1'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_10, ModuleName//':'//RoutineName)
 
 nchemg=9           ! # of gas phase chemistry tracers
 ichem=1            ! 1/0 = gas phase chemistry tracers on/off
@@ -3175,7 +3156,7 @@ ics2oh  =  5
 ih2soh  =  6
 icosoh  =  7
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_10)
 RETURN
 END SUBROUTINE ukca_indices_sv1
 
@@ -3186,13 +3167,11 @@ IMPLICIT NONE
 !
 !-----------------------------------------------------------
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_11
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_SV1_COUPLED'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_11, ModuleName//':'//RoutineName)
 
 ! Main array lengths and switches
 !
@@ -3431,7 +3410,7 @@ ics2oh  =128
 ih2soh  =129
 icosoh  =130
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_11)
 RETURN
 END SUBROUTINE ukca_indices_sv1_coupled
 
@@ -3442,13 +3421,11 @@ IMPLICIT NONE
 
 !-----------------------------------------------------------
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_12
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_TRAQU38'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_12, ModuleName//':'//RoutineName)
 
 ! Main array lengths and switches
 
@@ -3502,7 +3479,7 @@ npvol53    =38
 !
 !----------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_12)
 RETURN
 END SUBROUTINE ukca_indices_traqu38
 
@@ -3513,13 +3490,11 @@ IMPLICIT NONE
 
 !-----------------------------------------------------------
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_13
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_TRAQU9'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_13, ModuleName//':'//RoutineName)
 
 ! Main array lengths and switches
 
@@ -3574,7 +3549,7 @@ npvol53    = 0 ! not included
 !
 !----------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_13)
 RETURN
 END SUBROUTINE ukca_indices_traqu9
 
@@ -3584,13 +3559,11 @@ SUBROUTINE ukca_indices_sussbcocdu_7mode
 IMPLICIT NONE
 !---------------------------------------------------------------
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_14
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_SUSSBCOCDU_7MODE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_14, ModuleName//':'//RoutineName)
 
 ! Main array lengths and switches
 
@@ -3898,7 +3871,7 @@ nmasagedsointr84= 0 ! no 3M DU in this setup
 !
 !----------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_14)
 RETURN
 END SUBROUTINE ukca_indices_sussbcocdu_7mode
 
@@ -3908,13 +3881,11 @@ SUBROUTINE ukca_indices_sussbcocdu_4mode
 IMPLICIT NONE
 !---------------------------------------------------------------
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_15
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_SUSSBCOCDU_4MODE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_15, ModuleName//':'//RoutineName)
 
 ! MAIN ARRAY LENGTHS AND SWITCHES
 !
@@ -4221,7 +4192,7 @@ nmasagedsointr84= 0 ! no 3M DU in this setup
 !
 !----------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_15)
 RETURN
 END SUBROUTINE ukca_indices_sussbcocdu_4mode
 
@@ -4234,13 +4205,11 @@ IMPLICIT NONE
 ! Main array lengths and switches
 !
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_16
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_SUSSBCOC_5MODE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_16, ModuleName//':'//RoutineName)
 
 ntraer=20          ! # of aerosol advected tracers
 nbudaer=107        ! # of aerosol budget fields
@@ -4544,7 +4513,7 @@ nmasagedduintr84= 0 ! no 3M DU in this setup
 nmasagedocintr84= 0 ! no 3M DU in this setup
 nmasagedsointr84= 0 ! no 3M DU in this setup
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_16)
 RETURN
 END SUBROUTINE ukca_indices_sussbcoc_5mode
 
@@ -4556,13 +4525,11 @@ IMPLICIT NONE
 !
 ! Main array lengths and switches
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_17
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_SUSSBCOC_5MODE_ISOP'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_17, ModuleName//':'//RoutineName)
 
 ntraer=20         ! # of aerosol advected tracers
 nbudaer=112       ! # of aerosol budget fields
@@ -4850,7 +4817,7 @@ nmasprocnhintr23= 0
 nmasprocntintr23= 0
 nmasprocnhintr23= 0
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_17)
 RETURN
 END SUBROUTINE ukca_indices_sussbcoc_5mode_isop
 
@@ -4863,13 +4830,11 @@ IMPLICIT NONE
 !
 ! Main array lengths and switches
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_18
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_SUSSBCOC_4MODE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_18, ModuleName//':'//RoutineName)
 
 ntraer=17          ! # of aerosol advected tracers
 nbudaer=89         ! # of aerosol budget fields
@@ -5174,7 +5139,7 @@ nmasagedocintr84= 0 ! no 3M DU in this setup
 nmasagedsointr84= 0 ! no 3M DU in this setup
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_18)
 RETURN
 END SUBROUTINE ukca_indices_sussbcoc_4mode
 
@@ -5187,13 +5152,11 @@ IMPLICIT NONE
 !
 ! Main array lengths and switches
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_19
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_SUSSBCOCSO_5MODE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_19, ModuleName//':'//RoutineName)
 
 ntraer=23          ! # of aerosol advected tracers
 nbudaer=123        ! # of aerosol budget fields
@@ -5482,7 +5445,7 @@ nmasagedduintr84= 0 ! no 3M DU in this setup
 nmasagedocintr84= 0 ! no 3M DU in this setup
 nmasagedsointr84= 0 ! no 3M DU in this setup
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_19)
 RETURN
 END SUBROUTINE ukca_indices_sussbcocso_5mode
 
@@ -5491,13 +5454,11 @@ SUBROUTINE ukca_indices_sussbcocso_4mode
 
 IMPLICIT NONE
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_20
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_SUSSBCOCSO_4MODE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_20, ModuleName//':'//RoutineName)
 
 ! Main array lengths and switches
 
@@ -5788,7 +5749,7 @@ nmasagedduintr84= 0 ! no 3M DU in this setup
 nmasagedocintr84= 0 ! no 3M DU in this setup
 nmasagedsointr84= 0 ! no 3M DU in this setup
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_20)
 RETURN
 END SUBROUTINE ukca_indices_sussbcocso_4mode
 
@@ -5798,13 +5759,11 @@ SUBROUTINE ukca_indices_suss_4mode
 IMPLICIT NONE
 
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_21
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_SUSS_4MODE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_21, ModuleName//':'//RoutineName)
 
 ! Main array lengths and switches
 ntraer=10          ! # of aerosol advected tracers
@@ -6095,7 +6054,7 @@ nmasagedduintr84= 0 ! no 3M DU in this setup
 nmasagedocintr84= 0 ! no 3M DU in this setup
 nmasagedsointr84= 0 ! no 3M DU in this setup
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_21)
 RETURN
 END SUBROUTINE ukca_indices_suss_4mode
 
@@ -6105,13 +6064,11 @@ SUBROUTINE UKCA_INDICES_DUonly_2MODE
 IMPLICIT NONE
 
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_22
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_DUONLY_2MODE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_22, ModuleName//':'//RoutineName)
 
 ! Main array lengths and switches
 ntraer=4           ! # of aerosol advected tracers
@@ -6397,7 +6354,7 @@ nmasagedduintr84= 0 ! no 3M DU in this setup
 nmasagedocintr84= 0 ! no 3M DU in this setup
 nmasagedsointr84= 0 ! no 3M DU in this setup
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_22)
 RETURN
 END SUBROUTINE UKCA_INDICES_DUonly_2MODE
 
@@ -6410,13 +6367,11 @@ IMPLICIT NONE
 ! Main array lengths and switches
 !
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_23
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_SUSSBCOCNTNH_5MODE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_23, ModuleName//':'//RoutineName)
 
 ! Main array lengths and switches
 ntraer=28          ! # of aerosol advected tracers
@@ -6681,7 +6636,7 @@ nmasagedduintr84= 0 ! no 3M DU in this setup
 nmasagedocintr84= 0 ! no 3M DU in this setup
 nmasagedsointr84= 0 ! no 3M DU in this setup
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_23)
 RETURN
 END SUBROUTINE ukca_indices_sussbcocntnh_5mode
 
@@ -6694,14 +6649,12 @@ IMPLICIT NONE
 ! Main array lengths and switches
 !
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_24
 
 CHARACTER(LEN=*), PARAMETER ::                                                 &
   RoutineName='UKCA_INDICES_SUSSBCOCNTNH_5MODE_ISOP'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_24, ModuleName//':'//RoutineName)
 
 ! Main array lengths and switches
 ntraer=28          ! # of aerosol advected tracers
@@ -6966,7 +6919,7 @@ nmasagedduintr84= 0 ! no 3M DU in this setup
 nmasagedocintr84= 0 ! no 3M DU in this setup
 nmasagedsointr84= 0 ! no 3M DU in this setup
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_24)
 RETURN
 END SUBROUTINE ukca_indices_sussbcocntnh_5mode_isop
 
@@ -6976,13 +6929,11 @@ SUBROUTINE ukca_indices_solinsol_6mode
 IMPLICIT NONE
 !---------------------------------------------------------------
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_25
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_SOLINSOL_6MODE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_25, ModuleName//':'//RoutineName)
 
 ! Main array lengths and switches
 
@@ -7252,7 +7203,7 @@ nmasagedsointr84= 0 ! no 3M DU in this setup
 !
 !----------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_25)
 RETURN
 END SUBROUTINE ukca_indices_solinsol_6mode
 
@@ -7262,14 +7213,12 @@ SUBROUTINE ukca_indices_sussbcocduntnh_8mode_8cpt
 IMPLICIT NONE
 !---------------------------------------------------------------
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_26
 
 CHARACTER(LEN=*), PARAMETER ::                                                 &
   RoutineName='UKCA_INDICES_SUSSBCOCDUNTNH_8MODE_8CPT'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_26, ModuleName//':'//RoutineName)
 
 ! Main array lengths and switches
 ntraer=36          ! # of aerosol advected tracers
@@ -7527,7 +7476,7 @@ nmasmergduintr34=195
 
 !----------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_26)
 RETURN
 END SUBROUTINE ukca_indices_sussbcocduntnh_8mode_8cpt
 
@@ -7537,14 +7486,12 @@ SUBROUTINE ukca_indices_sussbcocduntnh_8mode_8cpt_isop
 IMPLICIT NONE
 !---------------------------------------------------------------
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_27
 
 CHARACTER(LEN=*), PARAMETER ::                                                 &
   RoutineName='UKCA_INDICES_SUSSBCOCDUNTNH_8MODE_8CPT_ISOP'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_27, ModuleName//':'//RoutineName)
 
 ! Main array lengths and switches
 ntraer=36          ! # of aerosol advected tracers
@@ -7810,7 +7757,7 @@ nmascondocicorins = 0 ! No secondary organic from isoprene
 
 !----------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_27)
 RETURN
 END SUBROUTINE ukca_indices_sussbcocduntnh_8mode_8cpt_isop
 
@@ -7821,13 +7768,11 @@ SUBROUTINE ukca_indices_sussbcocdump_8mode
 IMPLICIT NONE
 !---------------------------------------------------------------
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_28
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDICES_SUSSBCOCDUMP_8MODE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_28, ModuleName//':'//RoutineName)
 
 ! Main array lengths and switches
 !CGM - Adding new indices for MPs
@@ -8136,7 +8081,7 @@ nmasagedsointr84= 0 ! secondary organic in OC cpt in this setup
 
 !----------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_28)
 RETURN
 END SUBROUTINE ukca_indices_sussbcocdump_8mode
 END MODULE ukca_setup_indices

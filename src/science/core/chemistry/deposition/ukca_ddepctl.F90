@@ -45,7 +45,8 @@ SUBROUTINE ukca_ddepctl(row_length, rows, bl_levels, ntype,                    &
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE ukca_config_constants_mod, ONLY: tfs, rho_water
 USE asad_mod, ONLY: jpdd
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,            ONLY: jprb, jpim
 
 USE ukca_aerod_mod, ONLY: ukca_aerod
@@ -126,9 +127,7 @@ REAL :: gsf(row_length,rows,ntype)
 REAL:: so4_vd(row_length,rows)
 
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DDEPCTL'
 
@@ -139,7 +138,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DDEPCTL'
 ! Adjust tile fractions so they add up to 1. If gsf has the water tile
 ! fraction = 1.0, set the land fraction to 0.0
 !
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 land_fraction = 0.0
 smr           = 0.0
 lai_ft        = 0.0
@@ -270,7 +269,7 @@ CALL ukca_ddcalc(row_length, rows, bl_levels, ntype,                           &
   npft, timestep, dzl, zbl, gsf, resa, rb, rc,                                 &
   nlev_with_ddep, zdryrt, len_stashwork, stashwork)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 !
 END SUBROUTINE ukca_ddepctl

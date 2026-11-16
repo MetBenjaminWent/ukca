@@ -10,7 +10,8 @@
 MODULE scatcs_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -36,7 +37,8 @@ CHARACTER(LEN=*), PARAMETER, PRIVATE :: ModuleName='SCATCS_MOD'
 CONTAINS
 SUBROUTINE scatcs(jpwav,scs,wavenm)
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -51,15 +53,13 @@ INTEGER :: jw
 REAL :: xlamda
 REAL :: chi
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='SCATCS'
 
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 scs(1:45) = 0.0
 DO jw = 46 , 143
   xlamda  = wavenm(jw)*1.0e-3
@@ -70,7 +70,7 @@ DO jw = 144 , jpwav
   xlamda  = wavenm(jw)*1.0e-3
   scs(jw) = 4.02e-28*(xlamda**(-4.04))
 END DO
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE scatcs

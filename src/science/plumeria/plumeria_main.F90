@@ -74,7 +74,8 @@ USE errormessagelength_mod, ONLY: errormessagelength
 USE, INTRINSIC :: ieee_arithmetic
 
 USE parkind1,             ONLY: jpim, jprb      ! DrHook
-USE yomhook,              ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -120,15 +121,13 @@ INTEGER ::  istep            ! model timestep
 INTEGER ::  hb_istep         ! timestep of inversion level
 INTEGER ::  count_inversion  ! number of inversion levels
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='PLUMERIA_MAIN'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! ----------------------------------------------------------------------
 ! Set default values

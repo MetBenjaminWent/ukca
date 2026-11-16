@@ -51,9 +51,8 @@ USE qsat_mod,                        ONLY:                                     &
     qsat,                                                                      &
     qsat_wat_mix
 
-USE yomhook,                         ONLY:                                     &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -102,12 +101,10 @@ INTEGER :: loop
 ! Arbitrary value just less than one to prevent arithmatic issues later
 REAL, PARAMETER :: less_than_one = 0.999
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*),   PARAMETER :: RoutineName='GLOMAP_CLIM_CALC_RH_FRAC_CLEAR'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 CALL qsat_wat_mix ( qsatmr_wat_1d, t_theta_levels_1d, p_theta_levels_1d,       &
                     n_points )
@@ -136,7 +133,7 @@ DO loop = 1, n_points
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE glomap_clim_calc_rh_frac_clear
 END MODULE glomap_clim_calc_rh_frac_clear_mod

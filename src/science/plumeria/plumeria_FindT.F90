@@ -54,7 +54,8 @@ USE umPrintMgr,             ONLY: umPrint, umMessage
 USE ereport_mod,            ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 USE parkind1,               ONLY: jpim, jprb      ! DrHook
-USE yomhook,                ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -87,15 +88,13 @@ REAL  :: w_freezing  ! Specific humidity at the freezing point
 INTEGER                            :: errcode    ! Error code for ereport
 CHARACTER (LEN=errormessagelength) :: cmessage   ! Error message
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='PLUMERIA_FINDT_INIT'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Set default values
 Cpa_avg  = 1060.0
@@ -209,7 +208,8 @@ USE umPrintMgr,             ONLY: umPrint, umMessage
 USE ereport_mod,            ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 USE parkind1,               ONLY: jpim, jprb      ! DrHook
-USE yomhook,                ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -256,15 +256,13 @@ INTEGER :: i
 INTEGER                            :: errcode    ! Error code for ereport
 CHARACTER (LEN=errormessagelength) :: cmessage   ! Error message
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='PLUMERIA_FINDT'
 
 ! end of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Set default values
 kgmole_air = 8.314 / 286.98         ! Molar weight of air

@@ -81,7 +81,8 @@ SUBROUTINE ukca_vgrav_av_k(nbox,k,dp,sigma,dvisc,mfpa,rhop,                    &
 !--------------------------------------------------------------------
 USE ukca_um_legacy_mod,  ONLY: gg => g
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -104,14 +105,12 @@ REAL :: term2
 REAL :: term3
 REAL :: term4
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_VGRAV_AV_K'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 lnsqsg=LOG(sigma)*LOG(sigma)
 term1=(4.0*REAL(k)+4.0)/2.0
@@ -123,7 +122,7 @@ kng(:)=2.0*mfpa(:)/dp(:)
 pref(:)=rhop(:)*dp(:)*dp(:)*gg/(18.0*dvisc(:))
 vgrav_av(:)=pref(:)*(term3+term4*kng(:))
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_vgrav_av_k
 END MODULE ukca_vgrav_av_k_mod

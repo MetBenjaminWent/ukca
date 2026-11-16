@@ -108,9 +108,8 @@ USE ukca_mode_setup,                 ONLY:                                     &
     nmodes,                                                                    &
     nmodes_list_sussbcoc_5mode
 
-USE yomhook,                         ONLY:                                     &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -131,13 +130,11 @@ LOGICAL, SAVE :: firstcall = .TRUE.  ! first call to this routine t/f
 INTEGER :: imode                      ! counter for modes
 INTEGER :: i,j,k,loop,m               ! counter
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER   :: RoutineName='GLOMAP_CLIM_CALC_DRYDIAM'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! This is not deallocated until ukca_activate
 IF (.NOT. ALLOCATED(drydiam))                                                  &
@@ -217,7 +214,7 @@ IF (ALLOCATED(mdt))                 DEALLOCATE(mdt)
 IF (ALLOCATED(md))                  DEALLOCATE(md)
 IF (ALLOCATED(nd))                  DEALLOCATE(nd)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE glomap_clim_calc_drydiam
 

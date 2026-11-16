@@ -70,7 +70,8 @@ SUBROUTINE fastjx_opmie (dtaux,pomegax,u0,rfl,amf2,jxtra,                      &
 
 USE fastjx_data,    ONLY: atau0, lpar, m2_, n_, w_
 USE ereport_mod,    ONLY: ereport
-USE yomhook,        ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,       ONLY: jprb, jpim
 USE errormessagelength_mod, ONLY: errormessagelength
 USE fastjx_miesct_mod, ONLY: fastjx_miesct
@@ -142,9 +143,7 @@ REAL    :: flxd2(2*(lpar+1),w_)
 
 INTEGER                   :: errcode            ! error code
 CHARACTER (LEN=errormessagelength)        :: cmessage           ! error message
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_OPMIE'
 
@@ -152,7 +151,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_OPMIE'
 !-----------------------------------------------
 ! End of Header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO l2 = 1,(2*(lpar+1)),1
   jaddlv(l2) = jxtra(l2)
@@ -450,7 +449,7 @@ DO k=1,w_
 
 END DO  ! wavelength loop!
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE fastjx_opmie

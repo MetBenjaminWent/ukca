@@ -101,7 +101,8 @@ USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Diag
 USE ereport_mod, ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 
-USE yomhook,               ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,              ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -223,14 +224,12 @@ REAL :: no_ions_div_mm( glomap_variables_local%ncp )
 INTEGER                           :: errcode  ! error code
 CHARACTER(LEN=errormessagelength) :: cmessage ! error message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_ABDULRAZZAK_GHAN'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Allow for the possibility that this routine is called from outside UKCA,
 ! by-passing the UKCA API. This is only allowed if UKCA constants are properly
@@ -669,7 +668,7 @@ DO jk=1, klev
   END DO ! jl
 END DO ! jk
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_abdulrazzak_ghan

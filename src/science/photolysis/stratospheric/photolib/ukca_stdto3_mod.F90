@@ -9,7 +9,8 @@
 ! *****************************COPYRIGHT*******************************
 MODULE ukca_stdto3_mod
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 !
 ! Description:

@@ -238,7 +238,8 @@ USE ukca_ntp_mod,           ONLY: ntp_type, name2ntpindex, dim_ntp
 
 USE errormessagelength_mod, ONLY: errormessagelength
 
-USE yomhook,                ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,               ONLY: jprb, jpim
 USE ukca_iniasad_mod,       ONLY: ukca_iniasad, ukca_iniasad_spatial_vars,     &
                                   ukca_delasad_spatial_vars
@@ -572,9 +573,7 @@ REAL :: factor  ! Temporary working factor
 INTEGER                    :: errcode=0     ! Error flag (0 = OK)
 CHARACTER(LEN=errormessagelength)   :: cmessage      ! Error return message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 #if !defined(LFRIC)
 !Automatic segment size tuning
@@ -588,7 +587,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MAIN1'
 
 !- End of header
 ! ----------------------------------------------------------------------
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! ----------------------------------------------------------------------
 ! 1. Initial set up
@@ -643,7 +642,7 @@ IF (l_first_call) THEN
     IF (PRESENT(error_message))                                                &
       error_message = 'No UKCA configuration has been set up'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
   IF (.NOT. l_environ_req_available) THEN
@@ -651,7 +650,7 @@ IF (l_first_call) THEN
     IF (PRESENT(error_message))                                                &
       error_message = 'No environment field requirement has been set up'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
 END IF
@@ -771,7 +770,7 @@ END IF
 ! Return if any of the sequence of checks above failed
 IF (error_code_ptr /= 0) THEN
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -824,7 +823,7 @@ IF (ukca_config%l_environ_z_top) THEN
         'Difference between z_top_of_model prescribed and expected value = ',  &
         z_top_of_model_ext - z_top_of_model, ', exceeds tolerance'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
   z_top_of_model = z_top_of_model_ext
@@ -1680,8 +1679,8 @@ IF (ukca_config%l_ukca_chem .OR. ukca_config%l_ukca_mode) THEN
                         error_message=error_message,                           &
                         error_routine=error_routine)
     IF (error_code_ptr > 0) THEN
-      IF (lhook)                                                               &
-        CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+      IF (LPROF_UKCA)                                                               &
+        CALL vernier_stop(vnr_handle_1)
       RETURN
     END IF
   END IF
@@ -2058,7 +2057,7 @@ IF (ukca_config%l_ukca_chem .OR. ukca_config%l_ukca_mode) THEN
 
     IF (error_code_ptr > 0) THEN
       IF (lhook) THEN
-        CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+        CALL vernier_stop(vnr_handle_1)
       END IF
       RETURN
     END IF
@@ -2969,7 +2968,7 @@ IF (ukca_config%l_ukca_chem) THEN
 
   IF (error_code_ptr > 0) THEN
     IF (lhook) THEN
-      CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+      CALL vernier_stop(vnr_handle_1)
     END IF
     RETURN
   END IF
@@ -2992,8 +2991,8 @@ IF (L_asad_use_chem_diags) THEN
                              error_routine=error_routine)
 
   IF (error_code_ptr > 0) THEN
-    IF (lhook)                                                                 &
-      CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+    IF (LPROF_UKCA)                                                                 &
+      CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
 
@@ -3042,7 +3041,7 @@ IF (ukca_config%l_blankout_invalid_diags) THEN
                                error_message=error_message,                    &
                                error_routine=error_routine)
   IF (error_code_ptr > 0) THEN
-    IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
 END IF
@@ -3112,7 +3111,7 @@ IF (l_autotune_segments) THEN
 END IF
 #endif
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE ukca_main1

@@ -54,7 +54,8 @@ USE ukca_mode_setup,   ONLY: nmodes,                                           &
 
 USE errormessagelength_mod, ONLY: errormessagelength
 USE parkind1,          ONLY: jprb, jpim
-USE yomhook,           ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod,       ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint
 
@@ -76,16 +77,14 @@ INTEGER :: i           ! index of all_ntp array
 
 INTEGER :: errcode     ! error code
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName =                                   &
                    'UKCA_CHECK_RADAER_COUPLING'
 
 CHARACTER(LEN=errormessagelength) :: cmessage     ! Error message
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -602,7 +601,7 @@ IF (glomap_config%l_ukca_radaer) THEN
   END IF
 END IF   ! l_ukca_radaer
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_check_radaer_coupling
 END MODULE ukca_check_radaer_coupling_mod

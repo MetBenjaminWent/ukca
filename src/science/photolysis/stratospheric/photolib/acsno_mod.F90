@@ -10,7 +10,8 @@
 MODULE acsno_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -44,7 +45,8 @@ SUBROUTINE acsno(angle,p,vc,ano)
 USE photol_constants_mod, ONLY: pi_over_180 => const_pi_over_180
 USE ukca_parpho_mod, ONLY: jpwav
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -96,14 +98,12 @@ REAL,PARAMETER  :: band01(jpnob) = [ -1.654245e1, 5.836899e-1, 3.449436e-1,    &
 REAL,PARAMETER  :: zen01(jpnoz) =[12975.81 , -2582.981 , 192.7709, -6.393008,  &
   7.949835e-2 ]
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSNO'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !     Initialise cross sections
 ano(49:50)=0.0
@@ -193,7 +193,7 @@ IF ( (p <= 50.0) .AND. (angle <= (84.0*pi_over_180)) ) THEN
 
   !     End of in range if statement.
 END IF
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE acsno

@@ -120,7 +120,8 @@ USE ukca_setup_indices, ONLY: nmasmergbcintr23, nmasmergbcintr34,              &
     nmasmergntintr34, nmasmergnhintr34, nmasmergnnintr34, nmasmergmpintr23,    &
     nmasmergmpintr34
 
-USE yomhook,   ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,  ONLY: jprb, jpim
 USE ukca_um_legacy_mod, ONLY: umErf
 
@@ -179,13 +180,11 @@ INTEGER(KIND=integer_32), PARAMETER :: one_kind_intthirtytwo = 1
 !
 INTEGER (KIND=integer_32) :: nmodemax_merge(nbox)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_REMODE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -402,7 +401,7 @@ DO jl=1,nbox
   END DO ! IMODE=1,3 (only merge for soluble nuc/Ait/acc)
 END DO ! JL=1,NBOX
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_remode
 END MODULE ukca_remode_mod

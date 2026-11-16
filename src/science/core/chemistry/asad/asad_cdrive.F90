@@ -105,7 +105,8 @@ USE ukca_hetero_mod, ONLY: ukca_hetero, ukca_solidphase
 USE ukca_config_specification_mod, ONLY: ukca_config
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod, ONLY: ereport
 
 USE umPrintMgr, ONLY: umMessage, umPrint
@@ -175,16 +176,14 @@ LOGICAL :: first_call = .TRUE.
 
 CHARACTER(LEN=errormessagelength) :: cmessage          ! Error message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_CDRIVE'
 
 
 !       1.  Initialise variables and arrays
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !       1.1  Copy pressure and temperature to asad_mod
 
@@ -373,7 +372,7 @@ IF ( lvmr ) THEN
   END DO
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_cdrive
 END MODULE asad_cdrive_mod

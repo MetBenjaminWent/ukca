@@ -82,7 +82,8 @@ SUBROUTINE ukca_dcoff_par_av_k(nbox,k,dp,sigma,t,dvisc,mfpa,                   &
 !--------------------------------------------------------------------
 USE ukca_constants,   ONLY: pi
 USE ukca_config_constants_mod, ONLY: boltzmann
-USE yomhook,          ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,         ONLY: jprb, jpim
 IMPLICIT NONE
 !
@@ -105,13 +106,11 @@ REAL    :: term4
 REAL    :: kng(nbox)
 REAL    :: pref(nbox)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DCOFF_PAR_AV_K'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 lnsqsg=LOG(sigma)*LOG(sigma)
 term1=(-2.0*REAL(k)+1.0)/2.0
@@ -123,7 +122,7 @@ kng(:)=2.0*mfpa(:)/dp(:)
 pref(:)=boltzmann*t(:)/(3.0*pi*dvisc(:)*dp(:))
 dcoff_par_av_k(:)=pref(:)*(term3+term4*kng(:))
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_dcoff_par_av_k
 END MODULE ukca_dcoff_par_av_k_mod

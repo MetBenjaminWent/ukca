@@ -51,7 +51,8 @@ CONTAINS
 SUBROUTINE allocate_ukca_radaer_presc(rad, row_length, rows, model_levels,     &
                                       n_wavebands)
 
-USE yomhook,         ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,        ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -63,14 +64,11 @@ INTEGER, INTENT(IN) :: n_wavebands
 
 TYPE (t_ukca_radaer_presc), INTENT(IN OUT) :: rad
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER (LEN=*), PARAMETER :: RoutineName = 'ALLOCATE_UKCA_RADAER_PRESC'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,                          &
-                        zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 rad%dim1 = row_length
 rad%dim2 = rows
@@ -87,8 +85,7 @@ IF (.NOT. ALLOCATED(rad%absorption)) THEN
 END IF
 rad%absorption(:,:,:,:) = 0.0
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,                          &
-                        zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE allocate_ukca_radaer_presc

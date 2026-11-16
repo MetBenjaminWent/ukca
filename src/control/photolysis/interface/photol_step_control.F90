@@ -85,7 +85,8 @@ USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname, error_report,       &
                           errcode_env_field_mismatch, errcode_env_req_uninit,  &
                           errcode_env_field_missing, errcode_value_invalid
 ! Dr Hook modules
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,            ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -134,8 +135,6 @@ REAL, ALLOCATABLE   :: r_theta_levels(:,:,:)
 REAL, ALLOCATABLE   :: photol_rates_2d(:,:,:,:)
 
 ! Dr Hook parameters
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
 
 CHARACTER(LEN=*), PARAMETER :: ModuleName = 'PHOTOL_STEP_CONTROL_MOD'
 
@@ -227,11 +226,11 @@ INTEGER, POINTER :: error_code_ptr
 CHARACTER(LEN=maxlen_message) :: err_msg
 
 ! Dr Hook data
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='PHOTOL_STEP_CONTROL'
 ! ------------------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr => error_code
 error_code_ptr = 0
@@ -246,7 +245,7 @@ IF ( .NOT. l_photol_environ_req_available ) THEN
   CALL error_report(photol_config%i_error_method, error_code_ptr, err_msg,     &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -262,8 +261,7 @@ IF ( PRESENT(envfield_names_in) ) THEN
   IF ( error_code_ptr > 0 ) THEN
     IF (ALLOCATED(photol_rates)) DEALLOCATE(photol_rates)
 
-    IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out,           &
-                            zhook_handle)
+    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
 END IF
@@ -466,7 +464,7 @@ IF (error_code_ptr > 0 .AND. err_msg /= '') THEN
          RoutineName, msg_out=error_message, locn_out=error_routine)
 
   CALL deallocate_drv_fields()
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -595,7 +593,7 @@ END IF   ! Error code <= 0
 
 CALL deallocate_drv_fields()
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE photol_step_control
 

@@ -164,7 +164,8 @@ USE ukca_mode_setup, ONLY:                                                     &
     mode_sup_insol
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ukca_types_mod, ONLY: log_small
 USE ukca_coag_coff_v_mod, ONLY: ukca_coag_coff_v
 
@@ -207,14 +208,12 @@ REAL    :: rhoj(nbox)
 LOGICAL (KIND=log_small) :: mask1(nbox)
 LOGICAL (KIND=log_small) :: mask2(nbox)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CALC_COAG_KERNEL'
 
 !
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -323,7 +322,7 @@ DO imode=mode_ait_insol,mode_sup_insol ! loop over insoluble modes
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_calc_coag_kernel
 END MODULE ukca_calc_coag_kernel_mod

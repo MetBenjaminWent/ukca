@@ -44,7 +44,8 @@ USE ukca_chem_offline,   ONLY: nwet_constant
 USE ukca_constants,      ONLY: m_air
 USE ukca_config_constants_mod, ONLY: rmol
 USE parkind1,            ONLY: jprb, jpim
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -77,13 +78,11 @@ LOGICAL :: todo(n_points)               ! defines qcl > qcl_min
 ! Aqueous equilibrium constants:
 REAL :: eq_con(n_points,jpeq)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_FDISS_CONSTANT'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 
 fdiss_constant(:,:,:) = 0.0
@@ -141,7 +140,7 @@ DO ns=1,nwet_constant
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_fdiss_constant
 

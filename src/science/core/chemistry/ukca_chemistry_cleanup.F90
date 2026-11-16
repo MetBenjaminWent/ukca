@@ -56,7 +56,8 @@ USE ukca_tropopause,               ONLY: l_stratosphere
 USE ereport_mod,                   ONLY: ereport
 USE errormessagelength_mod,        ONLY: errormessagelength
 USE parkind1,                      ONLY: jprb, jpim
-USE yomhook,                       ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -99,14 +100,12 @@ LOGICAL, PARAMETER :: after_chem = .FALSE.
 
 CHARACTER(LEN=errormessagelength) :: cmessage         ! Error message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEMISTRY_CLEANUP'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (ukca_config%l_ukca_offline_be) RETURN
 
@@ -193,7 +192,7 @@ ELSE IF (.NOT. ukca_config%l_ukca_offline) THEN   ! tropospheric chemistry
 
 END IF     ! l_ukca_strat etc
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE ukca_chemistry_cleanup
 

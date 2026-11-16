@@ -10,7 +10,8 @@
 MODULE cso2o3_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -37,7 +38,8 @@ SUBROUTINE cso2o3(ao2sr,ao3,tempc,tspo2,jw,jpwav)
 USE acso3w_mod, ONLY: acso3w
 USE acssrw_mod, ONLY: acssrw
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -48,15 +50,13 @@ REAL, INTENT(IN)    :: tspo2
 REAL, INTENT(IN OUT) :: ao2sr(jpwav)
 REAL, INTENT(IN OUT) :: ao3(jpwav)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='CSO2O3'
 
 
 !     Calculate the T dependent O3 cross-section.
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 IF ( jw >= 84 .AND. jw <= 102 ) THEN
   CALL acso3w(jw,tempc,jpwav,ao3)
 END IF
@@ -66,7 +66,7 @@ END IF
 IF ( jw >= 46 .AND. jw <= 62 ) THEN
   CALL acssrw(tspo2,jw,jpwav,ao2sr)
 END IF
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE cso2o3

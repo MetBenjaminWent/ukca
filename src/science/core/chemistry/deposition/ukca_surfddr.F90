@@ -67,9 +67,8 @@ USE umPrintMgr,              ONLY:                                             &
     umPrint,                                                                   &
     umMessage
 
-USE yomhook,                 ONLY:                                             &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -280,15 +279,13 @@ LOGICAL, SAVE :: l_fix_drydep_so2_water ! True to use correct surface resistance
                                         ! of water when calculating dry
                                         ! deposition of SO2
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SURFDDR'
 
 
 ! Set up standard resistance array rsurf on first call only
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (first) THEN
 
@@ -2662,7 +2659,7 @@ DO j = 1, ndepd
   END IF ! End of IF (speci == species name)
 
 END DO  ! End of DO j = 1, ndepd
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE ukca_surfddr

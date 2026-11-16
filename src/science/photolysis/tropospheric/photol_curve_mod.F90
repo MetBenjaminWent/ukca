@@ -46,7 +46,8 @@ USE photol_config_specification_mod,  ONLY: photol_config
 USE ukca_error_mod,                   ONLY: error_report, maxlen_message,      &
                                             maxlen_procname
 
-USE yomhook,     ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,    ONLY: jprb, jpim
 USE umPrintMgr,  ONLY: umPrint, umMessage
 
@@ -89,15 +90,13 @@ REAL :: fgmt(7)             ! times at which photol rates are va
 
 INTEGER, POINTER :: error_code_ptr
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='PHOTOL_CURVE'
 
 ! Initialise wks
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr => errcode
 error_code_ptr = 0
@@ -171,8 +170,7 @@ DO j = 1,tot_p_rows
                     cmessage, RoutineName, msg_out=error_message,              &
                     locn_out=error_routine)
 
-            IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out,   &
-                                    zhook_handle)
+            IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
             RETURN
           END IF
         END DO
@@ -217,7 +215,7 @@ DO j = 1,tot_p_rows
   END DO       ! end of looping over row length
 END DO         ! end of looping over rows
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE photol_curve
 

@@ -10,7 +10,8 @@
 MODULE invert_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -37,7 +38,8 @@ SUBROUTINE invert(a,ainv,acopy,indx,np)
 USE ludcmp_mod, ONLY: ludcmp
 USE lubksb_mod, ONLY: lubksb
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -52,15 +54,13 @@ REAL :: d
 INTEGER :: i
 INTEGER :: j
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='INVERT'
 
 
 !     Set up the identity matrix.
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 DO i = 1 , np
   DO j = 1 , np
     ainv(i,j) = 0.0
@@ -82,7 +82,7 @@ CALL ludcmp(acopy,np,np,indx,d)
 DO j = 1 , np
   CALL lubksb(acopy,np,np,indx,ainv(1,j))
 END DO
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE invert

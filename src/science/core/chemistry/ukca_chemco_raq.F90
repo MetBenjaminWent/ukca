@@ -58,7 +58,8 @@ USE ukca_constants, ONLY: m_air, m_n2o5
 USE ereport_mod, ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 
 USE ukca_config_constants_mod, ONLY: rho_water, avogadro
@@ -181,13 +182,11 @@ LOGICAL, SAVE :: first_pass = .TRUE.
 INTEGER :: errcode                             ! Error code for ereport
 CHARACTER(LEN=errormessagelength) :: cmessage  ! Error message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEMCO_RAQ'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 ! OMP CRITICAL will only allow one thread through this code at a time,
 ! while the other threads are held until completion.
 !$OMP CRITICAL (init_ukca_chemco_raq)
@@ -616,7 +615,7 @@ IF (ukca_config%l_ukca_raqaero) THEN
 END IF ! l_ukca_raqaero
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_chemco_raq
 

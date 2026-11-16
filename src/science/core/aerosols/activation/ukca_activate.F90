@@ -154,9 +154,8 @@ USE umPrintMgr,                ONLY:                                           &
     PrStatus_Diag,                                                             &
     newline
 
-USE yomhook,                   ONLY:                                           &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -319,15 +318,13 @@ REAL    :: n_ccn(row_length,rows,model_levels)
 REAL    :: aird_fac !Factor to convert the CDNC to per kg from per m3 for
                     !cloud base level, and then to per m3 for current level
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_ACTIVATE'
 
 CHARACTER(LEN=errormessagelength) :: cmessage
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables_local%
 !           have been included here to make the code easier to read
@@ -710,7 +707,7 @@ END DO ! k
 
 IF ( i_glomap_clim_activation_scheme == i_gc_activation_arg ) THEN
   ! Return cdncflag and cdncwt
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -793,7 +790,7 @@ END IF       ! l_ukca_mode_diags
 
 first=.FALSE.
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 END SUBROUTINE ukca_activate
 
 SUBROUTINE ukca_activate_calc_zn_zxtm1 ( row_length,                           &
@@ -833,9 +830,8 @@ USE umPrintMgr,                ONLY:                                           &
     umPrint,                                                                   &
     umMessage
 
-USE yomhook,                   ONLY:                                           &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -882,11 +878,9 @@ INTEGER :: k                   ! loop index
 CHARACTER(LEN=errormessagelength) :: cmessage
 CHARACTER(LEN=*), PARAMETER       :: RoutineName='UKCA_ACTIVATE_CALC_ZN_ZXTM1'
 
-INTEGER(KIND=jpim), PARAMETER     :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER     :: zhook_out = 1
-REAL(KIND=jprb)                   :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! find the first tracer in nmr_index and mmr_index (these refer to all tracers)
 ifirst = jpctr + 1
@@ -941,7 +935,7 @@ DO imode=1,topmode
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 END SUBROUTINE ukca_activate_calc_zn_zxtm1
 
 SUBROUTINE gc_activate_calc_zn_zxtm1 ( row_length,                             &
@@ -1003,9 +997,8 @@ USE ukca_config_specification_mod, ONLY:                                       &
 USE umPrintMgr,             ONLY:                                              &
     newline
 
-USE yomhook,                ONLY:                                              &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -1051,11 +1044,9 @@ CHARACTER(LEN=errormessagelength) :: cmessage ! error message
 
 CHARACTER(LEN=*), PARAMETER   :: RoutineName='GC_ACTIVATE_CALC_ZN_ZXTM1'
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 SELECT CASE(i_glomap_clim_setup)
 CASE (i_sussbcoc_5mode)
@@ -1156,7 +1147,7 @@ END DO
 DEALLOCATE(zammr3d)
 DEALLOCATE(znmr3d)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 END SUBROUTINE gc_activate_calc_zn_zxtm1
 
 SUBROUTINE ukca_activate_calc_zrdry (row_length,rows,model_levels,kbdim,mode,  &
@@ -1184,9 +1175,8 @@ USE ukca_missing_data_mod,  ONLY:                                              &
 USE umPrintMgr,             ONLY:                                              &
     newline
 
-USE yomhook,                ONLY:                                              &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -1216,13 +1206,11 @@ INTEGER :: icode               ! Return code  =0 Normal exit  >1 Error
 
 CHARACTER(LEN=errormessagelength) :: cmessage ! error message
 
-INTEGER(KIND=jpim), PARAMETER     :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER     :: zhook_out = 1
-REAL(KIND=jprb)                   :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER       :: RoutineName='UKCA_ACTIVATE_CALC_ZRDRY'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 ! Initialise zrdry
 zrdry(:,:,:) = rmdi
@@ -1261,7 +1249,7 @@ ELSE
   CALL ereport(RoutineName,icode,cmessage)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 END SUBROUTINE ukca_activate_calc_zrdry
 
 SUBROUTINE ukca_activate_calc_updraft_velocity ( row_length,                   &
@@ -1277,9 +1265,8 @@ USE parkind1,             ONLY:                                                &
     jprb,                                                                      &
     jpim
 
-USE yomhook,              ONLY:                                                &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -1301,13 +1288,11 @@ REAL, INTENT(OUT)   :: sigw ( row_length, rows, model_levels )
 
 INTEGER :: k                             ! loop index
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_5
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_ACTIVATE_CALC_UPDRAFT_VELOCITY'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 ! Updraught velocity pdf std. dev. (m/s)
 ! ======================================
@@ -1340,7 +1325,7 @@ ELSE
   END DO
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
 END SUBROUTINE ukca_activate_calc_updraft_velocity
 
 SUBROUTINE gc_activate_calc_updraft_velocity ( row_length,                     &
@@ -1354,9 +1339,8 @@ USE parkind1,             ONLY:                                                &
     jprb,                                                                      &
     jpim
 
-USE yomhook,              ONLY:                                                &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -1380,13 +1364,11 @@ INTEGER :: i,j,k                   ! loop index
 
 REAL, PARAMETER :: sigwmin = 0.01  ! minimum value of sigmaw
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_6
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='GC_ACTIVATE_CALC_UPDRAFT_VELOCITY'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 sigw(:,:,:)=0.0e0         ! initialise to 0
 
@@ -1410,7 +1392,7 @@ DO k = bl_levels, model_levels
   END DO
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
 END SUBROUTINE gc_activate_calc_updraft_velocity
 
 END MODULE ukca_activate_mod

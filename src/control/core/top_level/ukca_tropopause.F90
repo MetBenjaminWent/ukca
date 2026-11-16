@@ -31,7 +31,8 @@ MODULE ukca_tropopause
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Diag, newline
 USE ereport_mod, ONLY: ereport
 USE parkind1,    ONLY: jprb, jpim
-USE yomhook,     ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE errormessagelength_mod, ONLY: errormessagelength
 USE ukca_um_legacy_mod, ONLY: planet_radius
 USE ukca_missing_data_mod, ONLY: rmdi, imdi
@@ -129,9 +130,7 @@ INTEGER, SAVE   :: max_trop_level
 LOGICAL, SAVE   :: l_first = .TRUE.
 LOGICAL         :: l_level_found
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CALC_TROPOPAUSE'
 
@@ -139,7 +138,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CALC_TROPOPAUSE'
 !     Calculate weighting function from Hoerling, 1993 paper
 !     W = a sech (lat) + B (lat)**2 + C
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialise values for level indices
 jll = 0
@@ -309,7 +308,7 @@ ELSE
   L_stratosphere(:,:,:) = .FALSE.
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_calc_tropopause
 

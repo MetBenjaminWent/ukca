@@ -72,7 +72,8 @@ SUBROUTINE ukca_radaer_3d_diags(                                               &
       ukca_aerosol_sca, ukca_aerosol_gsca)
 
 USE parkind1, ONLY: jpim, jprb
-USE yomhook,  ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE conversions_mod, ONLY: pi
 
 USE ukca_radaer_lut,         ONLY:                                             &
@@ -251,13 +252,11 @@ REAL :: this_ssa
 !
 LOGICAL :: l_in_stratosphere
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_RADAER_3D_DIAGS'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialize output arrays
 ukca_aerosol_ext(:,:) = 0.0
@@ -533,7 +532,7 @@ DO i_mode = 1, n_ukca_mode
   END DO ! i_layr
 END DO ! i_mode
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_radaer_3d_diags
 

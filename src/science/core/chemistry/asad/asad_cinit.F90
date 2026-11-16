@@ -81,7 +81,8 @@ USE ukca_config_specification_mod, ONLY: ukca_config, int_method_nr,           &
                                          int_method_be_explicit
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod, ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint
 USE errormessagelength_mod, ONLY: errormessagelength
@@ -113,13 +114,11 @@ REAL :: sfmin
 CHARACTER (LEN=10), PARAMETER :: nullx='          '
 CHARACTER (LEN=errormessagelength) :: cmessage    ! Error message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_CINIT'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 ljacx = .TRUE.
 
 jpnpx3 = (jpnr/(3*3))+3*3
@@ -358,7 +357,7 @@ CALL asad_inijac
 IF ( ndepw /= 0 ) CALL ukca_inwdep()
 IF ( ndepd /= 0 ) CALL ukca_inddep()
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_cinit
 END MODULE asad_cinit_mod

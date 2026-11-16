@@ -25,7 +25,8 @@
 MODULE ukca_um_dissoc_mod
 
 
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -102,14 +103,12 @@ IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: theta_field_size
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='STRAT_PHOTOL_INIT'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (.NOT. ALLOCATED(ajhno3 )) ALLOCATE(ajhno3 (theta_field_size))
 IF (.NOT. ALLOCATED(ajpna  )) ALLOCATE(ajpna  (theta_field_size))
@@ -161,7 +160,7 @@ IF (.NOT. ALLOCATED(ajcs2  )) ALLOCATE(ajcs2  (theta_field_size))
 IF (.NOT. ALLOCATED(ajh2so4)) ALLOCATE(ajh2so4(theta_field_size))
 IF (.NOT. ALLOCATED(ajso3  )) ALLOCATE(ajso3  (theta_field_size))
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE strat_photol_init
 
@@ -175,14 +174,12 @@ SUBROUTINE strat_photol_dealloc()
 
 IMPLICIT NONE
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='STRAT_PHOTOL_DEALLOC'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Deallocating in reverse order to which the arrays were allocated
 IF (ALLOCATED(ajso3  )) DEALLOCATE(ajso3  )
@@ -235,7 +232,7 @@ IF (ALLOCATED(ajh2o2 )) DEALLOCATE(ajh2o2 )
 IF (ALLOCATED(ajpna  )) DEALLOCATE(ajpna  )
 IF (ALLOCATED(ajhno3 )) DEALLOCATE(ajhno3 )
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE strat_photol_dealloc
 

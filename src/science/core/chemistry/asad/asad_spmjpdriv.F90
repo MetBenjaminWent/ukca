@@ -109,7 +109,8 @@ USE asad_mod, ONLY: cdt, f, jpcspf, jpspec, ltrig,                             &
                     ncsteps, ncsteps_factor, nitfg, speci, y
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod, ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
 
@@ -149,14 +150,12 @@ CHARACTER(LEN=errormessagelength) :: cmessage
 REAL :: cdt_initial                 ! Initial chemistry timestep
 REAL :: f_initial(n_points,jpcspf)  ! Saved f array from previous solver call
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_SPMJPDRIV'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Stash initial values
 ncsteps_initial = ncsteps
@@ -272,7 +271,7 @@ END IF
 ncsteps = ncsteps_initial
 cdt = cdt_initial
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_spmjpdriv
 

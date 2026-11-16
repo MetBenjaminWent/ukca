@@ -29,7 +29,8 @@ CONTAINS
 
 FUNCTION ukca_flupj(x,xs,ys,ln)
 
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 
 USE ukca_error_mod,  ONLY: maxlen_message, i_error_method_abort, error_report
@@ -58,16 +59,14 @@ LOGICAL :: L_in_range             ! Flag to indicate if x is wit
 INTEGER, POINTER :: err_code_ptr
 CHARACTER(LEN=maxlen_message) :: cmessage     ! Error message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_FLUPJ'
 
 
 !       Check if xs array is increasing or decreasing
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (xs(1) < xs(2)) THEN
   temp_ys(1:ln) = ys(1:ln)
@@ -101,7 +100,7 @@ IF (.NOT. (L_in_range)) THEN
   CALL error_report(i_error_method_abort, err_code_ptr, cmessage, RoutineName)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END FUNCTION ukca_flupj
 END MODULE ukca_flupj_mod

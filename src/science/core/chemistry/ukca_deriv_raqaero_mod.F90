@@ -44,7 +44,8 @@ USE ukca_trop_hetchem_mod, ONLY: ihet_n2o5, ihet_ho2_ho2
 USE asad_mod, ONLY: jpspec, jppj, jphk
 USE ukca_config_specification_mod, ONLY: ukca_config
 
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,            ONLY: jprb, jpim
 
 USE ukca_um_legacy_mod,  ONLY: oneover_v
@@ -81,13 +82,11 @@ REAL :: tmp1(n_pnts)                     ! work array for vector reciprocal
 REAL :: tmp2(n_pnts)                     ! work array for vector reciprocal
 
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DERIV_RAQAERO'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialise sulphur oxidation fluxes
 delta_so2_wetox_h2o2(:) = 0.0
@@ -966,7 +965,7 @@ END DO  ! n_be_calls
 
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_deriv_raqaero
 

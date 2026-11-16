@@ -10,7 +10,8 @@
 MODULE acssr_mod
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 
@@ -42,7 +43,8 @@ CHARACTER(LEN=*), PARAMETER, PRIVATE :: ModuleName='ACSSR_MOD'
 CONTAINS
 SUBROUTINE acssr(tc,jpwav,ao2sr)
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -70,15 +72,13 @@ REAL, SAVE :: logsr(jpwavesr, no2col)
 REAL, SAVE :: o2col(no2col)
 REAL, SAVE :: logo2col(no2col)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSSR'
 
 
 ! Main block: Initialize data upon first entry
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 IF (first) THEN
   sr(:,1) = [                                                                  &
     2.0596e-19,1.3273e-19,6.6113e-20,5.1048e-20,4.5025e-20,1.4983e-20,         &
@@ -194,7 +194,7 @@ END IF
 
 ao2sr(46:45 + jpwavesr) =                                                      &
   EXP((1.0 - frac) * logsr(:,jo2) + frac * logsr(:,jo2 + 1))
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE acssr

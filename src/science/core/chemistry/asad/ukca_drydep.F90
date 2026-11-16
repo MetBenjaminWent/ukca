@@ -42,7 +42,8 @@ SUBROUTINE ukca_drydep(nlev, dryrt, n_points)
 USE asad_mod,       ONLY: ndepd, nldepd, dpd, jpdd
 USE ukca_config_specification_mod,ONLY: ukca_config
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: nlev                 ! Level number
@@ -56,13 +57,11 @@ INTEGER :: i                                ! Loop variable
 INTEGER :: js                               ! Loop variable
 INTEGER :: nspec                            ! Pointer for specie
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DRYDEP'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (nlev == 1 .OR. ukca_config%l_ukca_intdd) THEN
   ! Bottom level or interactive dry deposition
@@ -86,7 +85,7 @@ ELSE
 
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_drydep
 END MODULE ukca_drydep_mod

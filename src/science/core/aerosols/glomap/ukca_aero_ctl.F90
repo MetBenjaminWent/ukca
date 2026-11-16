@@ -29,7 +29,8 @@ MODULE ukca_aero_ctl_mod
 
 USE ukca_types_mod, ONLY: log_small, integer_32
 USE parkind1,   ONLY: jprb, jpim
-USE yomhook,    ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -718,13 +719,11 @@ REAL :: seg_znotg(nbox)
 REAL :: seg_zo3(nbox)
 
 INTEGER :: errcode
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_AERO_CTL'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -5003,7 +5002,7 @@ END IF      ! verbose
 
 IF (firstcall) firstcall = .FALSE.
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_aero_ctl
 !
@@ -5021,12 +5020,10 @@ REAL,INTENT(IN OUT) :: b(nb)  ! Segment made up from columns
 ! local loop iterators
 INTEGER :: ic, l, ia, ib
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SURFACE_TO_SEG'
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 ia = lbase       ! the address of base of 1st column on segment
 ib = 1
 
@@ -5037,7 +5034,7 @@ DO ic = 1, ncol           ! loop over columns on the segment
   END DO
   ia = lbase+ic           ! start of base of next column
 END DO
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 END SUBROUTINE surface_to_seg
 !
 SUBROUTINE surface_to_seg_int(lbase, ncol, nb, stride,nl, a, b)
@@ -5055,12 +5052,10 @@ INTEGER,INTENT(IN OUT) :: b(nb)  ! Segment made up from columns
 ! local loop iterators
 INTEGER :: ic, l, ia, ib
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SURFACE_TO_SEG_INT'
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 ia = lbase       ! the address of base of 1st column on segment
 ib = 1
 
@@ -5071,7 +5066,7 @@ DO ic = 1, ncol           ! loop over columns on the segment
   END DO
   ia = lbase+ic           ! start of base of next column
 END DO
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 END SUBROUTINE surface_to_seg_int
 !
 SUBROUTINE extract_seg(lbase, ncol, nb, stride, nl, a, b)
@@ -5088,12 +5083,10 @@ REAL,INTENT(IN OUT) :: b(nb)       ! segment made up from columns
 ! local loop iterators
 INTEGER :: ic, l, ia, ib
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'EXTRACT_SEG'
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 ia = lbase                ! the address of base of 1st column on segment
 ib = 1
 
@@ -5105,7 +5098,7 @@ DO ic = 1, ncol           ! loop over columns on the segment
   END DO
   ia = lbase + ic         ! start of base of next column
 END DO
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 END SUBROUTINE extract_seg
 !
 SUBROUTINE insert_seg(lbase, ncol, nb, stride, nl, b, a)
@@ -5149,12 +5142,10 @@ INTEGER(KIND=integer_32) ,INTENT(IN OUT) :: a(stride*nl) ! 3D array unwound
 
 ! local loop iterators
 INTEGER :: ic, l, ia, ib
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_5
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'INT_INS_SEG'
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 ia = lbase                ! the address of base of 1st column on segment
 ib = 1                    ! the box id in the segment
@@ -5167,7 +5158,7 @@ DO ic = 1, ncol           ! loop over columns on the segment
   END DO
   ia = lbase + ic         ! start of base of next column
 END DO
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
 END SUBROUTINE int_ins_seg
 !
 SUBROUTINE select_array_segment(dim1_len, dim2_start, dim2_index,              &

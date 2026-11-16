@@ -68,9 +68,8 @@ USE ukca_mode_setup,                    ONLY:                                  &
 USE ukca_volume_mode_mod,               ONLY:                                  &
     ukca_volume_mode
 
-USE yomhook,                            ONLY:                                  &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -153,12 +152,10 @@ REAL(KIND=real_umphys) :: dummy_cor_ins_du_1d( n_points )
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='PREPARE_FIELDS_FOR_RADAER_OPENMP'
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialise dummy fields to zero
 dummy_acc_sol_du_1d(:) = 0.0
@@ -203,7 +200,7 @@ CALL ukca_volume_mode( glomap_variables_climatology, n_points, nd, md, mdt,    &
                        t_theta_levels_1d, p_theta_levels_1d, q_1d,             &
                        mdwat, wvol, wetdp, rhopar, pvol, pvol_wat )
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE prepare_fields_for_radaer_openmp
 END MODULE prepare_fields_for_radaer_openmp_mod

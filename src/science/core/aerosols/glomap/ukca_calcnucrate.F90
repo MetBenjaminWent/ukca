@@ -166,7 +166,8 @@ SUBROUTINE ukca_calcnucrate(nbox, dtz, t, s, rh, aird, h2so4,                  &
 USE ukca_config_constants_mod, ONLY: boltzmann
 USE ukca_constants,     ONLY: nmol, conc_eps
 USE ukca_binapara_mod,  ONLY: ukca_binapara
-USE yomhook,            ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,           ONLY: jprb, jpim
 USE ereport_mod,        ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
@@ -245,13 +246,11 @@ REAL :: japp(nbox)      ! Binary nucleation rate
 REAL :: zbl(nbox)       ! Boundary layer height from htpblg, but filtered
                         ! by MIN(htpblg,zmaxbln)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CALCNUCRATE'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !     i_bhn_method = i_bhn_method_kulmala   ! set for Kulmala
 i_bhn_method = i_bhn_method_vekhamaki ! set for Vehkamakki
@@ -427,7 +426,7 @@ IF ((i_nuc_method == 2) .OR. (i_nuc_method == 3)) THEN
   END DO    ! Loop over NBOX
 END IF     ! METHOD 2 OR 3
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_calcnucrate
 END MODULE ukca_calcnucrate_mod

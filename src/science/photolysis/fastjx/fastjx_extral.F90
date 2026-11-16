@@ -82,7 +82,8 @@ SUBROUTINE fastjx_extral(dtaux,l1x,l2x,nx,jtaumx,atau,atau0, jxtra)
 
 USE ereport_mod,          ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 USE errormessagelength_mod, ONLY: errormessagelength
 
@@ -112,9 +113,7 @@ REAL                 :: ataun1
 INTEGER              :: errcode
 CHARACTER (LEN=errormessagelength)   :: cmessage      ! error message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_EXTRAL'
 
@@ -122,7 +121,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_EXTRAL'
 ! **************************************************************
 ! End of Header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Set arrays to 0
 ttau(:)  = 0.0e0
@@ -184,7 +183,7 @@ DO l2 = l2x,1,-1
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE fastjx_extral
 END MODULE fastjx_extral_mod

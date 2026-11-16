@@ -25,7 +25,8 @@
 
 MODULE ukca_environment_diags_mod
 
-USE yomhook,        ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,       ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -33,8 +34,6 @@ IMPLICIT NONE
 PRIVATE
 
 ! Dr Hook parameters
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
 
 CHARACTER(LEN=*), PARAMETER :: ModuleName = 'UKCA_ENVIRONMENT_DIAGS_MOD'
 
@@ -93,13 +92,13 @@ CHARACTER(LEN=10) :: jrate_prod1
 CHARACTER(LEN=10) :: jrate_prod2
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'PHOTOL_RATE_DIAG'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -136,7 +135,7 @@ CASE DEFAULT
     'The name given (' // TRIM(diag_name) //                                   &
     ') does not match a recognised photolysis rate diagnostic',                &
     RoutineName, msg_out=error_message, locn_out=error_routine)
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END SELECT
 
@@ -161,7 +160,7 @@ DO WHILE (i < SIZE(ratj_defs) .AND. .NOT. l_found)
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE photol_rate_diag
 

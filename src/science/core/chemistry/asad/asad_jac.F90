@@ -96,7 +96,8 @@ USE asad_mod, ONLY: ctype, dpd, dpw, ej, f, jpcspf, jpif, jpfm,                &
                     nltr3, nltrf, nmpjac, nodd, npjac1, nspi,                  &
                     ntr3, ntrf, peps, prk, y
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: n_points
@@ -139,9 +140,7 @@ LOGICAL :: ginclude5
 
 CHARACTER :: ityped*2
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_JAC'
 
@@ -149,7 +148,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_JAC'
 !       1.  Initialise local variables.
 !           ---------- ----- ----------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 DO jtr = 1, jpcspf
   DO jl = 1, n_points
     ej(jl,jtr) = 0.0
@@ -372,7 +371,7 @@ DO jtr = 1, jpcspf
   END DO
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_jac
 END MODULE asad_jac_mod

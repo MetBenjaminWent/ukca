@@ -89,7 +89,8 @@ USE ukca_config_constants_mod, ONLY: avogadro
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE ukca_ntp_mod,         ONLY: ntp_type, dim_ntp, name2ntpindex
 
-USE yomhook,              ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,             ONLY: jprb, jpim
 USE ereport_mod,          ONLY: ereport
 USE umPrintMgr,           ONLY: umMessage, umPrint
@@ -210,14 +211,12 @@ REAL :: rc_het(theta_field_size,2)      ! heterog rates for trop chem
 ! Full ntp array
 REAL :: ntp_data(tot_n_pnts,dim_ntp)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEMISTRY_CTL'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Dummy variables to satisfy expected numbers of arguments for ASAD_CDRIVE,
 ! ASAD_CHEMICAL_DIAGNOSTICS and ASAD_PSC_DIAGNOSTIC
@@ -630,7 +629,7 @@ DO l = 1, dim_ntp
   END IF
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_chemistry_ctl
 

@@ -168,7 +168,8 @@ USE ukca_setup_indices,   ONLY: mh2so4, msec_org, msec_orgi,                   &
     nmascondsusupins, nmascondocsupins, nmascondsosupins, dimen,               &
     condensable, condensable_choice, mm_gas
 
-USE yomhook,              ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,             ONLY: jprb, jpim
 USE ereport_mod,          ONLY: ereport
 USE ukca_types_mod,       ONLY: log_small
@@ -240,14 +241,12 @@ REAL :: sinkarr(nbox)
 REAL :: difvol
 !
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CONDEN'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -786,7 +785,7 @@ DO jv=1,nchemg
 
 END DO ! DO jv=1,nchemg
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_conden
 END MODULE ukca_conden_mod

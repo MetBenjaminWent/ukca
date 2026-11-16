@@ -37,7 +37,8 @@ USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname,                     &
 
 USE ukca_missing_data_mod, ONLY: imdi
 
-USE yomhook,             ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,            ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -45,8 +46,6 @@ IMPLICIT NONE
 PRIVATE
 
 ! Dr Hook parameters
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
 
 CHARACTER(LEN=*), PARAMETER :: ModuleName = 'UKCA_DIAGNOSTICS_SET_PTRS_MOD'
 
@@ -110,7 +109,7 @@ CHARACTER(LEN=maxlen_procname), OPTIONAL, INTENT(OUT) :: error_routine
 INTEGER :: group
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=maxlen_message) :: message_txt  ! Buffer for output message
 
@@ -118,7 +117,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_DIAG_PTRS_1D_DOMAIN'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -176,7 +175,7 @@ END IF
 IF (error_code_ptr > 0) THEN
   CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt,   &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -230,7 +229,7 @@ END IF
 IF (error_code_ptr > 0) THEN
   CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt,   &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -266,7 +265,7 @@ END IF
 NULLIFY(diagnostics%value_2d_real_ptr)
 NULLIFY(diagnostics%value_3d_real_ptr)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE set_diag_ptrs_1d_domain
 
@@ -320,7 +319,7 @@ CHARACTER(LEN=maxlen_procname), OPTIONAL, INTENT(OUT) :: error_routine
 INTEGER :: group
 
 ! Dr Hook
-REAL(KIND=jprb) :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=maxlen_message) :: message_txt  ! Buffer for output message
 
@@ -328,7 +327,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_DIAG_PTRS_3D_DOMAIN'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -391,7 +390,7 @@ END IF
 IF (error_code_ptr > 0) THEN
   CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt,   &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
   RETURN
 END IF
 
@@ -447,7 +446,7 @@ END IF
 IF (error_code_ptr > 0) THEN
   CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt,   &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-  IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
   RETURN
 END IF
 
@@ -483,7 +482,7 @@ END IF
 NULLIFY(diagnostics%value_0d_real_ptr)
 NULLIFY(diagnostics%value_1d_real_ptr)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE set_diag_ptrs_3d_domain
 

@@ -83,7 +83,8 @@ USE asad_mod,             ONLY: o1d_in_ss, o3p_in_ss, n_in_ss, h_in_ss,        &
 USE ukca_chem_defs_mod,   ONLY: chch_defs
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod, ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint
 
@@ -106,14 +107,12 @@ CHARACTER (LEN=errormessagelength) :: cmessage        ! Error message
 
 LOGICAL :: l_fa
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_INRATS_SET_SP_LISTS'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Find out which species are in steady state (for N-R solver)
 
@@ -303,7 +302,7 @@ IF (ANY(errcodes(:,:) /= 0)) THEN
   CALL ereport(RoutineName,errcode,cmessage)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE asad_inrats_set_sp_lists
@@ -327,7 +326,8 @@ USE ukca_chem_defs_mod,   ONLY: ratb_defs, ratt_defs,                          &
                                 ratj_defs, rath_defs
 
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod, ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
 USE ukca_um_legacy_mod, ONLY: mype
@@ -378,9 +378,7 @@ INTEGER :: ind                   ! Loop index
 CHARACTER (LEN=10), PARAMETER :: nullx='          '
 CHARACTER (LEN=errormessagelength) :: cmessage        ! Error message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_INRATS'
 
@@ -388,7 +386,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_INRATS'
 !       1.  Determine chemistry
 !           --------- ---------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Initialise local counters, see asad_cinit for (e.g.) spb and frpb
 ispb(:,:) = 0
@@ -867,7 +865,7 @@ IF ( ix /= jpnr ) THEN
   CALL ereport('ASAD_INRATS',ix,cmessage)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE asad_inrats
 END MODULE asad_inrats_mod

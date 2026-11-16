@@ -89,9 +89,8 @@ USE ukca_mode_setup,                 ONLY:                                     &
     nmodes,                                                                    &
     nmodes_list_sussbcoc_5mode
 
-USE yomhook,                         ONLY:                                     &
-    lhook,                                                                     &
-    dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -206,13 +205,11 @@ REAL(KIND=real_umphys), ALLOCATABLE :: mdt(:,:)
 REAL(KIND=real_umphys), ALLOCATABLE :: mmr1d(:,:,:)
 REAL(KIND=real_umphys), ALLOCATABLE :: nmr1d(:,:)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER   :: RoutineName='GLOMAP_CLIM_DRYDP_ND_OUT'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 #if !defined(LFRIC)
 ! Find the information for items required from D1
@@ -307,7 +304,7 @@ IF (ALLOCATED(mdt))                 DEALLOCATE(mdt)
 IF (ALLOCATED(md))                  DEALLOCATE(md)
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE glomap_clim_drydp_nd_out
 

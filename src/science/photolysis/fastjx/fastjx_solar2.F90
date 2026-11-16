@@ -72,7 +72,8 @@ USE   fastjx_data,    ONLY: daynumber,tau,szamax,                              &
 USE photol_constants_mod, ONLY: pi => const_pi,                                &
                                 pi_over_180 => const_pi_over_180
 
-USE yomhook,          ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,         ONLY: jprb, jpim
 IMPLICIT  NONE
 
@@ -94,13 +95,11 @@ REAL         :: sollat(SIZE(sinlat,1),SIZE(sinlat,2))
 REAL         :: coslat(SIZE(sinlat,1),SIZE(sinlat,2))
 REAL         :: cosz(SIZE(sinlat,1),SIZE(sinlat,2))
 REAL         :: loct(SIZE(sinlat,1),SIZE(sinlat,2))
-INTEGER(KIND=jpim), PARAMETER  :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER  :: zhook_out = 1
-REAL(KIND=jprb)                :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_SOLAR2'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (lcal360) THEN
   sindec = 0.3978*SIN(2* pi *(REAL(daynumber)-80.0)/360.0)
@@ -125,7 +124,7 @@ ELSE WHERE
   sza_2d    = szamax   ! Reduce SZA to avoid airmass problems
 END WHERE
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE fastjx_solar2
 END MODULE fastjx_solar2_mod

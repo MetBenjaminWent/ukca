@@ -45,7 +45,8 @@ USE plumeria_FindT_mod,     ONLY: plumeria_FindT
 USE conversions_mod,        ONLY: pi
 USE comorph_constants_mod,  ONLY: R_dry, R_vap, gravity
 USE parkind1,               ONLY: jpim, jprb      ! DrHook
-USE yomhook,                ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -93,15 +94,13 @@ REAL :: v_s1, v_s2, v_s3    ! Components of wind parallel and perpendicular
                             ! to the plume
 
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='PLUMERIA_DERIVS'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Get variables from yarr
 Massflux = yarr(1)

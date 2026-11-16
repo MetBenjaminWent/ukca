@@ -66,7 +66,8 @@ USE ukca_um_legacy_mod, ONLY: copydiag_3d, len_stlist, stindex, stlist,        &
                               ukca_diag_sect
 
 USE ereport_mod,  ONLY: ereport
-USE yomhook,      ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,     ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -115,19 +116,17 @@ REAL, INTENT(IN OUT) :: stashwork(len_stashwork)  ! STASH workspace
 
 ! Local variables
 INTEGER :: item                                ! STASH item
-INTEGER(KIND=jpim), PARAMETER :: zhook_in = 0  ! DrHook tracing entry
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1 ! DrHook tracing exit
 INTEGER :: icode                               ! error code for EReport
 INTEGER :: im_index                            ! internal model index
 
-REAL(KIND=jprb) :: zhook_handle ! DrHook tracing
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEM_DIAGS' ! used for EReport
 
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 icode = 0 ! Initialise error status
 im_index = 1
@@ -349,7 +348,7 @@ END IF  ! sf(item,UKCA_diag_sect)
 
 ! ----------------------------------------------------------------------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_chem_diags
 

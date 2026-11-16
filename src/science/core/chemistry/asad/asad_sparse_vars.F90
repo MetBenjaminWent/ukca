@@ -112,7 +112,8 @@ USE asad_mod, ONLY: specf, frpx, jpcspf, jpfrpx, jpmsp, jpspec,                &
                     nposterms, nnegterms, nfracterms, posterms, negterms,      &
                     fracterms, base_tracer, ffrac, ztabpd, total
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod, ONLY: ereport
 USE umPrintMgr, ONLY:                                                          &
     PrintStatus, PrStatus_Oper, PrStatus_Normal, umMessage, umPrint
@@ -153,13 +154,11 @@ INTEGER, ALLOCATABLE :: map(:,:)      ! a matrix of 1's indicating where the
 
 CHARACTER(LEN=errormessagelength) :: cmessage
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='SETUP_SPFULJAC'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! ------------------------------------------------------------------------------
 ! Section 1: Create nonzero_map (index array for Jacobian matrix) and
@@ -443,7 +442,7 @@ IF (ANY(errcodes(:,:) /= 0)) THEN
   END IF
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE setup_spfuljac
 
@@ -459,7 +458,8 @@ USE asad_mod, ONLY: ctype, deriv, dpd, dpw, f, jpcspf, jpfm, jpif, jpmsp,      &
                     nposterms, nnegterms, nfracterms, posterms, negterms,      &
                     fracterms, base_tracer, ffrac, y, total
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -487,13 +487,11 @@ INTEGER :: js
 INTEGER :: jl
 INTEGER :: ij
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='SPFULJAC'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! At the bottom of this routine we divide by f, so ensure that
 ! f is not too small.
@@ -587,7 +585,7 @@ DO p = 1, total
 END DO
 
 !
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE spfuljac
 
@@ -598,7 +596,8 @@ SUBROUTINE splinslv2(n_points, bb, xx, min_pivot, max_val,                     &
 
 USE asad_mod, ONLY: jpcspf, spfjsize_max, total
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 !
@@ -649,13 +648,11 @@ REAL :: xx1(n_points,jpcspf)
 REAL :: pivot(n_points)
 REAL :: kfact(n_points)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='SPLINSLV2'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Filter sparse Jacobian
 #if defined(IBM_XL_FORTRAN)
@@ -732,7 +729,7 @@ END DO
 ! Section 2: Solve P A P' z = P b with P'z = x using L U z = P b
 CALL spresolv2(n_points, bb, xx, min_pivot, modified_map, spfj, max_val)
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE splinslv2
 
@@ -751,7 +748,8 @@ SUBROUTINE spresolv2(n_points, bb, xx, min_pivot, modified_map, spfj, max_val)
 
 USE asad_mod, ONLY: jpcspf, reorder, spfjsize_max
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -777,13 +775,11 @@ REAL :: bb1(n_points, jpcspf)
 REAL :: xx1(n_points, jpcspf)
 REAL :: pivot(n_points)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='SPRESOLV2'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 ! Part (a) calculate right-hand side P b
 DO i = 1, jpcspf
@@ -820,7 +816,7 @@ DO i = 1, jpcspf
   xx(:,reorder(i)) = xx1(:,i)
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE spresolv2
 

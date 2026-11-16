@@ -91,7 +91,8 @@ USE ukca_config_constants_mod, ONLY: avogadro
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE ukca_ntp_mod,         ONLY: ntp_type, dim_ntp, name2ntpindex
 
-USE yomhook,              ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,             ONLY: jprb, jpim
 USE ereport_mod,          ONLY: ereport
 USE umPrintMgr,           ONLY: umMessage, umPrint
@@ -211,9 +212,7 @@ LOGICAL :: stratflag(row_length,rows,model_levels)
 ! Full ntp array
 REAL :: ntp_data(row_length,rows,model_levels,dim_ntp)
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 ! Full-domain versions of ASAD modules variables
 REAL :: full_dpd(row_length,rows,model_levels,jpspec)
@@ -251,7 +250,7 @@ LOGICAL :: chunking_enabled
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEMISTRY_CTL_FULL'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Dummy variables to satisfy expected numbers of arguments for ASAD_CDRIVE,
 ! ASAD_CHEMICAL_DIAGNOSTICS and ASAD_PSC_DIAGNOSTIC
@@ -727,7 +726,7 @@ IF (.NOT. ukca_config%l_fix_ukca_h2so4_ystore .AND.                            &
   y(:,:) = RESHAPE(full_y, [tot_n_pnts,jpspec])
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_chemistry_ctl_full
 

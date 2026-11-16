@@ -69,7 +69,8 @@ USE asad_mod,        ONLY: specf, ctype, jpfm, jppjac, jpmsp,                  &
                            nzjac1, o3p_in_ss, speci,                           &
                            jpspec, jpcspf, jpnr
 USE parkind1, ONLY: jprb, jpim
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE ereport_mod, ONLY: ereport
 USE umPrintMgr, ONLY:                                                          &
     umPrint,                                                                   &
@@ -116,9 +117,7 @@ CHARACTER (LEN=errormessagelength) :: cmessage     ! Error message
 
 INTEGER :: errcode       ! Variable passed to ereport
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_INIJAC'
 
@@ -126,7 +125,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_INIJAC'
 !       1. Loop over reactions and set index arrays.
 !          ---- ---- --------- --- --- ----- -------
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 jpnjcx3 = (jpnr/(3*3))+3*3
 
@@ -512,7 +511,7 @@ DO jtr=1,jpspec
   IF (speci(jtr) == 'H         ') nsph   = jtr
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_inijac
 END MODULE asad_inijac_mod

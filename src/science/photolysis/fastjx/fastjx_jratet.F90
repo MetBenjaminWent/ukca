@@ -73,7 +73,8 @@ SUBROUTINE fastjx_jratet(ppj,ttj,fff, valjl)
 ! #######################################################################
 USE fastjx_data, ONLY: lpar, jpcl, njval, q1d, qqq,                            &
                        qo2, qo3, tqq, w_, x_, titlej
-USE yomhook,      ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,     ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -108,15 +109,13 @@ REAL :: qq1b
 ! Loop variables
 INTEGER ::  j,k,l, iv
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_JRATET'
 
 ! *************************************************************
 ! End of Header
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO l = 1,jpcl    ! master loop over layer = l
 
@@ -305,7 +304,7 @@ DO l = 1,jpcl    ! master loop over layer = l
 
 END DO    ! master loop over l=1,jpcl
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE fastjx_jratet

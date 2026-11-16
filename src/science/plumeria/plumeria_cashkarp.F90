@@ -66,7 +66,8 @@ SUBROUTINE plumeria_cashkarpqs(y, dydx, x, x_out, h_in, yscal, h_out, hnext)
 
 USE plumeria_derivs_mod,       ONLY: plumeria_derivs
 USE parkind1,                  ONLY: jpim, jprb      ! DrHook
-USE yomhook,                   ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -89,14 +90,12 @@ REAL :: ytemp(13)      ! Temporary storage of values during integration
 REAL, PARAMETER   :: eps_small = 5.0e-4
 REAL :: alpha, max_error, h, xnew
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='PLUMERIA_CASHKARPQS'
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 h = h_in
 CALL plumeria_cashkarp(y, dydx, x, h, ytemp, yerr)
@@ -141,7 +140,8 @@ SUBROUTINE plumeria_cashkarp(y_in, dydx, x, h, yout, yerr)
 
 USE plumeria_derivs_mod,   ONLY: plumeria_derivs
 USE parkind1,              ONLY: jpim, jprb      ! DrHook
-USE yomhook,               ONLY: lhook, dr_hook  ! DrHook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 
 IMPLICIT NONE
 
@@ -190,14 +190,12 @@ REAL, PARAMETER  :: dc_4    = c_4-13525.0/55296.0
 REAL, PARAMETER  :: dc_5    = 277.0/14336.0
 REAL, PARAMETER  :: dc_6    = c_6-.25
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='PLUMERIA_CASHKARP'
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_in, zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 !Calculate y and dydx at intermediate values of x
 ytemp = y_in + b_21 * h * dydx

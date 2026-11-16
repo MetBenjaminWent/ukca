@@ -46,7 +46,8 @@ USE ukca_chem_defs_mod, ONLY: chch_t1, ratb_t1, rath_t1, ratj_t1, ratt_t1,     &
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE asad_mod,           ONLY: jddepc, jddept, jpctr, jpspec, jpro2, jpcspf,    &
                               jpbk, jptk, jppj, jphk, jpnr, jpdd, jpdw
-USE yomhook,     ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,    ONLY: jprb, jpim
 USE ereport_mod, ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
@@ -148,13 +149,11 @@ TYPE(rath_t1) :: last_het
 TYPE(depvel_t):: last_depvel
 TYPE(wetdep)  :: last_wetdep
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEM_MASTER'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 
 ! Define below the chemistry schemes
@@ -8958,7 +8957,7 @@ IF (ierr > 1) THEN
   CALL ereport(RoutineName,ierr,cmessage)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_chem_master
 

@@ -53,7 +53,8 @@ USE ukca_update_emdiagstruct_mod, ONLY: update_emdiagstruct, emdiags
 
 USE ereport_mod,        ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
-USE yomhook,            ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,           ONLY: jprb, jpim
 
 USE ukca_um_legacy_mod, ONLY: copydiag, copydiag_3d, get_emdiag_stash,         &
@@ -81,15 +82,13 @@ REAL, ALLOCATABLE :: em_diags (:,:,:)
 
 CHARACTER(LEN=errormessagelength) :: cmessage ! Error return message
 
-INTEGER (KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER (KIND=jpim), PARAMETER :: zhook_out = 1
-REAL    (KIND=jprb)            :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_EMISS_DIAGS'
 
 ! End of header
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! ------------------------------------------------------------------------
 ! Loop through all emissions to store the diagnostics
@@ -495,7 +494,7 @@ IF (sf(item, section)) THEN
                  emdiags%em_mek (:,:), row_length, rows)
 END IF
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_emiss_diags

@@ -62,7 +62,8 @@ SUBROUTINE ukca_light(delta_lambda,delta_phi,ppress,niv,                       &
                       cloud2cloud_flash_rate,                                  &
                       total_N)
 
-USE yomhook,         ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,        ONLY: jprb, jpim
 USE ukca_config_constants_mod, ONLY: avogadro
 USE ukca_constants,  ONLY: recip_pi_over_180, m_n
@@ -154,16 +155,14 @@ REAL :: ew_res_deg  ! gridbox width in degrees
 REAL :: ns_res_deg  ! gridbox height in degrees
 REAL :: fr_calib_fac ! model resolution calibration factor
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_LIGHT'
 
 
 !       Initialise variables
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 gb_area_30N  = 0.0
 ew_res_deg   = 0.0
@@ -371,7 +370,7 @@ IF ( total_flash_rate > 0.0 ) THEN
 
 END IF ! total flash rate > 0
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_light
 END MODULE ukca_light_mod

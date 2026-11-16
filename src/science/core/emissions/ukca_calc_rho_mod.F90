@@ -26,7 +26,8 @@ SUBROUTINE ukca_calc_rho(                                                      &
  row_length, rows, model_levels, theta, q, qcl, qcf, exner, rho_r2,            &
  r_theta_levels, r_rho_levels, air_density, air_burden)
 
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -72,11 +73,9 @@ INTEGER :: i, j, k   ! Loop countera
 ! Error Reporting
 CHARACTER (LEN=*), PARAMETER :: RoutineName='UKCA_CALC_RHO'
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 air_density(:,:,:) = 0.0
 air_burden (:,:,:) = 0.0
@@ -156,7 +155,7 @@ DO k = 1, model_levels
 
 END DO ! k
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_calc_rho

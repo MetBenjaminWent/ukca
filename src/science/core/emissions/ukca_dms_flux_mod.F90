@@ -58,7 +58,8 @@ USE ukca_config_specification_mod, ONLY: i_liss_merlivat, i_wanninkhof,        &
 USE ukca_config_constants_mod, ONLY: tfs
 USE ukca_constants, ONLY: zerodegc
 
-USE yomhook, ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1, ONLY: jprb, jpim
 USE umPrintMgr, ONLY: umPrint, umMessage
 USE errormessagelength_mod, ONLY: errormessagelength
@@ -95,13 +96,11 @@ REAL, PARAMETER :: t_max=47.0       ! Max T to avoid breaking Sc fit (C)
 INTEGER  :: errcode                              ! Error code
 CHARACTER(LEN=errormessagelength) :: cmessage    ! Error message
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DMS_FLUX'
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Calculate the Schmidt number (Sc):
 
@@ -201,7 +200,7 @@ DO j = 1, rows
   END DO
 END DO
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_dms_flux
 

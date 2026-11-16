@@ -54,7 +54,8 @@ USE ukca_scenario_common_mod, ONLY: ich2br2, in2o, ich4, ico2, ih2,            &
                        i_h2, n_full_spc, full_lbc, ukca_set_lbc_index,         &
                        ukca_lump_lbcs, ukca_set_lbc_mmr
 
-USE yomhook,          ONLY: lhook, dr_hook
+USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
+USE vernier_timing_mod, ONLY: LPROF_UKCA
 USE parkind1,         ONLY: jprb, jpim
 USE ereport_mod,      ONLY: ereport
 
@@ -124,14 +125,12 @@ REAL    :: frac
 INTEGER :: ierr
 CHARACTER(LEN=errormessagelength) :: cmessage
 
-INTEGER(KIND=jpim), PARAMETER :: zhook_in  = 0
-INTEGER(KIND=jpim), PARAMETER :: zhook_out = 1
-REAL(KIND=jprb)               :: zhook_handle
+INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SCENARIO_WMOA1'
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (i_year < 1950) THEN
    ! no information prior to 1950
@@ -4807,7 +4806,7 @@ IF (perform_lumping) CALL ukca_lump_lbcs(n_full_spc,full_lbc)
 CALL ukca_set_lbc_mmr(n_lbc_specs, lbc_mmr)
 
 
-IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
+IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_scenario_wmoa1
 END MODULE ukca_scenario_wmoa1_mod
