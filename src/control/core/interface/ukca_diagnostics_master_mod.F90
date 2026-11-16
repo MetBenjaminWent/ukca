@@ -308,7 +308,7 @@ DO i = 1, SIZE(master_diag_list)
           'No ASAD id code defined for a recognised ASAD diagnostic: ' //      &
           master_diag_list(i)%varname, RoutineName,                            &
           msg_out=error_message, locn_out=error_routine)
-        IF (lhook) THEN
+        IF (LPROF_UKCA) THEN
           CALL vernier_stop(vnr_handle_2)
         END IF
         RETURN

@@ -387,7 +387,7 @@ DO i = 1, n_req
       TRIM(varnames(i)), ''''
     CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt, &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-    IF (lhook) THEN
+    IF (LPROF_UKCA) THEN
       CALL vernier_stop(vnr_handle_2)
     END IF
     RETURN
@@ -405,7 +405,7 @@ DO i = 1, n_req
       group, ' diagnostic request'
     CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt, &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-    IF (lhook) THEN
+    IF (LPROF_UKCA) THEN
       CALL vernier_stop(vnr_handle_2)
     END IF
     RETURN
@@ -428,7 +428,7 @@ DO i = 1, n_req
         CALL error_report(ukca_config%i_error_method, error_code_ptr,          &
                           message_txt, RoutineName, msg_out=error_message,     &
                           locn_out=error_routine)
-        IF (lhook) THEN
+        IF (LPROF_UKCA) THEN
           CALL vernier_stop(vnr_handle_2)
         END IF
         RETURN
@@ -448,7 +448,7 @@ DO i = 1, n_req
            'Diagnostic name ''' // TRIM(varnames(i)) //                        &
            ''' is not recognised',                                             &
            RoutineName, msg_out=error_message, locn_out=error_routine)
-    IF (lhook) THEN
+    IF (LPROF_UKCA) THEN
       CALL vernier_stop(vnr_handle_2)
     END IF
     RETURN
@@ -687,7 +687,7 @@ DO i = 1, n_req
       CALL error_report(ukca_config%i_error_method, error_code_ptr,            &
                         message_txt, RoutineName,                              &
                         msg_out=error_message, locn_out=error_routine)
-      IF (lhook) THEN
+      IF (LPROF_UKCA) THEN
         CALL vernier_stop(vnr_handle_4)
       END IF
       RETURN
@@ -709,7 +709,7 @@ DO i = 1, n_req
         CALL error_report(ukca_config%i_error_method, error_code_ptr,          &
                           message_txt, RoutineName,                            &
                           msg_out=error_message, locn_out=error_routine)
-        IF (lhook) THEN
+        IF (LPROF_UKCA) THEN
           CALL vernier_stop(vnr_handle_4)
         END IF
         RETURN

@@ -618,7 +618,7 @@ DO group = 1, n_diag_group
         CALL error_report(ukca_config%i_error_method, error_code_ptr,          &
           'Invalid no. of dimensions for diagnostic output',                   &
           RoutineName, msg_out=error_message, locn_out=error_routine)
-        IF (lhook) THEN
+        IF (LPROF_UKCA) THEN
           CALL vernier_stop(vnr_handle_6)
         END IF
         RETURN

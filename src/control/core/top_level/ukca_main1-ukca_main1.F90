@@ -2056,7 +2056,7 @@ IF (ukca_config%l_ukca_chem .OR. ukca_config%l_ukca_mode) THEN
         SIZE(stashwork50), stashwork50)
 
     IF (error_code_ptr > 0) THEN
-      IF (lhook) THEN
+      IF (LPROF_UKCA) THEN
         CALL vernier_stop(vnr_handle_1)
       END IF
       RETURN
@@ -2967,7 +2967,7 @@ IF (ukca_config%l_ukca_chem) THEN
                              error_routine=error_routine)
 
   IF (error_code_ptr > 0) THEN
-    IF (lhook) THEN
+    IF (LPROF_UKCA) THEN
       CALL vernier_stop(vnr_handle_1)
     END IF
     RETURN
