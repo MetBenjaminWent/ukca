@@ -160,7 +160,7 @@ USE ukca_mode_setup,      ONLY: nmodes, nanion, ncation,                       &
                                 cp_nh4, cp_no3, cp_nn
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,             ONLY: jprb, jpim
 USE ereport_mod,          ONLY: ereport
 USE umPrintMgr,           ONLY: umPrint, umMessage, newline
@@ -264,7 +264,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_VOLUME_MODE'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables_local%
 !           have been included here to make the code easier to read
@@ -896,7 +896,7 @@ IF (glomap_config%l_fix_neg_pvol_wat .OR. l_glomap_clim_radaer) THEN
   END DO
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_volume_mode
 END MODULE ukca_volume_mode_mod

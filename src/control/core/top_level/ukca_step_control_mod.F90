@@ -41,7 +41,7 @@ MODULE ukca_step_control_mod
 
 ! Dr Hook modules
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -240,7 +240,7 @@ CHARACTER(LEN=maxlen_fieldname), POINTER :: varnames(:)
 INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_STEP_CONTROL_1D_DOMAIN'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -858,7 +858,7 @@ IF (error_code <= 0) THEN
 
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_step_control_1d_domain
 
@@ -1032,7 +1032,7 @@ CHARACTER(LEN=maxlen_fieldname), POINTER :: varnames(:)
 INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_STEP_CONTROL_3D_DOMAIN'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -1735,7 +1735,7 @@ IF (error_code <= 0) THEN
 
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_step_control_3d_domain
 

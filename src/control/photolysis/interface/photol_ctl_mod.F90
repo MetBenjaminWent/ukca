@@ -76,7 +76,7 @@ USE ukca_um_dissoc_mod,        ONLY: strat_photol_init, strat_photol_dealloc
 
 ! UM profiling and error handling
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,                 ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -173,7 +173,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='PHOTOL_CTL'
 ! Error handling for routines called here
 CHARACTER(LEN=maxlen_message) :: err_message   ! Error return message
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! -- body of subroutine begins here -- !
 error_code_ptr = 0
@@ -184,7 +184,7 @@ IF (PRESENT(error_routine)) error_routine = ''
 photol_rates(:,:,:,:) = 0.0
 ! if photolysis is off exit photol_ctl
 IF (photol_config%i_photol_scheme == photolysis_off) THEN
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -206,7 +206,7 @@ IF ( .NOT. photol_config%l_environ_ztop ) THEN
                       err_message, RoutineName, msg_out=error_message,         &
                       locn_out=error_routine)
 
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
 
@@ -248,7 +248,7 @@ IF (photol_config%i_photol_scheme == photolysis_fastjx) THEN
   IF (error_code_ptr > 0) THEN
     IF (ALLOCATED(photol_rates_fastjx)) DEALLOCATE(photol_rates_fastjx)
 
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
 
@@ -271,7 +271,7 @@ IF (photol_config%l_strat_chem) THEN
     IF (ALLOCATED(photol_rates_fastjx)) DEALLOCATE(photol_rates_fastjx)
     CALL strat_photol_dealloc()
 
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
 END IF
@@ -330,7 +330,7 @@ DO k = 1, model_levels
                      err_message, RoutineName, msg_out=error_message,          &
                      locn_out=error_routine)
 
-              IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+              IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
               RETURN
             END IF
           ELSE
@@ -386,7 +386,7 @@ IF (photol_config%l_environ_jo2b) THEN
   END DO
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE photol_ctl
 

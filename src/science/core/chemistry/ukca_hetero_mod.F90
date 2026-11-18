@@ -38,7 +38,7 @@ MODULE ukca_hetero_mod
 
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -202,7 +202,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_HETERO'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !! The uptake coefficients for reactions 1-5 on NAT and ice are those
 !! recommended in "Chemical Kinetics and Photochemical Data for use in
@@ -707,7 +707,7 @@ END IF
 ! save the solid phase hno3 to add back after end of the chemistry timestep
 sphno3 = shno3
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_hetero
 
@@ -735,7 +735,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_BR_GAMMA'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Equations are IUPAC recommendations and can be found in
 ! Crowley et al. 2010, Atmos. Chem. Physics. (ref. to page numbers)
@@ -774,7 +774,7 @@ DO jl=kstart, kend
   gam_br(jl,7) = 0.02 * theta_hbr
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_br_gamma
 
@@ -860,7 +860,7 @@ INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SHI_LIQUID_AEROSOL'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! initialise to zero
 gam3arr(:,:)= 0.0
@@ -1100,7 +1100,7 @@ DO jl=kstart, kend
 
 END DO !(jl=kstart, kend)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE ukca_shi_liquid_aerosol
 
@@ -1172,7 +1172,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SOLIDPHASE'
 !           1.  Add amount of HONO2 back to main ASAD arrays.
 !               --- ------ -- ----- ---- -- ---- ---- -------
 !
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 ! OMP CRITICAL will only allow one thread through this code at a time,
 ! while the other threads are held until completion.
 !$OMP CRITICAL (ukca_solidphase_init)
@@ -1195,7 +1195,7 @@ END IF
 f(1:n_points,ihno3) = f(1:n_points,ihno3) +                                    &
                  sphno3(1:n_points)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE ukca_solidphase
 
@@ -1358,7 +1358,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CALCKPSC'
 !          1.  INITIALISE RATES TO ZERO
 !              ---------- ----- -- ----
 !
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 akpsc1(kstart:kend) = 0.0
 akpsc2(kstart:kend) = 0.0
 akpsc3(kstart:kend) = 0.0
@@ -1478,7 +1478,7 @@ IF ( lppsc .OR. lpsa ) THEN
   !
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
 RETURN
 END SUBROUTINE ukca_calckpsc
 
@@ -1748,7 +1748,7 @@ DATA (c(i,28),i=1,16)/                                                         &
 !          1.  REACTION PROBABILITY FOR CLONO2 + H2O
 !              -------- ----------- --- ------ - ---
 !
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 hshcl(:)  = 0.0
 rpcncl(:) = 0.0
@@ -1828,7 +1828,7 @@ IF (lphocl) THEN
   END DO
 END IF
 !
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_6)
 RETURN
 END SUBROUTINE ukca_eqcomp
 
@@ -1860,7 +1860,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_POSITION'
 !
 !     --------------------------------------------------------------------
 !
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_7, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_7, ModuleName//':'//RoutineName)
 ier = 1
 IF ( iorder == 0 ) THEN
   IF ( x < xc(1) ) THEN
@@ -1890,7 +1890,7 @@ END IF
 !
 !     --------------------------------------------------------------------
 !
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_7)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_7)
 RETURN
 END SUBROUTINE ukca_position
 
@@ -1929,7 +1929,7 @@ INTEGER(KIND=vik) :: vnr_handle_8
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_PSCPRES'
 
 !
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_8, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_8, ModuleName//':'//RoutineName)
 shno3(kstart:kend) = 0.0
 sh2o (kstart:kend) = 0.0
 fpsc1(kstart:kend) = 0.0
@@ -1989,7 +1989,7 @@ DO jl=kstart,kend
   END IF
 END DO
 !
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_8)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_8)
 RETURN
 END SUBROUTINE ukca_pscpres
 ! =======================================================================

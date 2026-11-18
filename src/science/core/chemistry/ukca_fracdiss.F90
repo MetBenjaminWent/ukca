@@ -38,7 +38,7 @@ USE ukca_config_constants_mod, ONLY: rmol, avogadro
 USE ukca_constants,       ONLY: m_air
 USE parkind1,             ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -88,7 +88,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_FRACDISS'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 inv_298 = 1.0/298.0
 
@@ -178,7 +178,7 @@ DO k=1,model_levels
                avogadro)**2)
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE ukca_fracdiss

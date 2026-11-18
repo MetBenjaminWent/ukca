@@ -11,7 +11,7 @@ MODULE invert_mod
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 
@@ -39,7 +39,7 @@ USE ludcmp_mod, ONLY: ludcmp
 USE lubksb_mod, ONLY: lubksb
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -60,7 +60,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='INVERT'
 
 
 !     Set up the identity matrix.
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 DO i = 1 , np
   DO j = 1 , np
     ainv(i,j) = 0.0
@@ -82,7 +82,7 @@ CALL ludcmp(acopy,np,np,indx,d)
 DO j = 1 , np
   CALL lubksb(acopy,np,np,indx,ainv(1,j))
 END DO
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE invert

@@ -26,7 +26,7 @@ MODULE ukca_um_dissoc_mod
 
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -108,7 +108,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='STRAT_PHOTOL_INIT'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (.NOT. ALLOCATED(ajhno3 )) ALLOCATE(ajhno3 (theta_field_size))
 IF (.NOT. ALLOCATED(ajpna  )) ALLOCATE(ajpna  (theta_field_size))
@@ -160,7 +160,7 @@ IF (.NOT. ALLOCATED(ajcs2  )) ALLOCATE(ajcs2  (theta_field_size))
 IF (.NOT. ALLOCATED(ajh2so4)) ALLOCATE(ajh2so4(theta_field_size))
 IF (.NOT. ALLOCATED(ajso3  )) ALLOCATE(ajso3  (theta_field_size))
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE strat_photol_init
 
@@ -179,7 +179,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName='STRAT_PHOTOL_DEALLOC'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Deallocating in reverse order to which the arrays were allocated
 IF (ALLOCATED(ajso3  )) DEALLOCATE(ajso3  )
@@ -232,7 +232,7 @@ IF (ALLOCATED(ajh2o2 )) DEALLOCATE(ajh2o2 )
 IF (ALLOCATED(ajpna  )) DEALLOCATE(ajpna  )
 IF (ALLOCATED(ajhno3 )) DEALLOCATE(ajhno3 )
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE strat_photol_dealloc
 

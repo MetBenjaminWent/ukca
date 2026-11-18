@@ -45,7 +45,7 @@ USE ukca_constants,      ONLY: m_air
 USE ukca_config_constants_mod, ONLY: rmol
 USE parkind1,            ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -82,7 +82,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_FDISS_CONSTANT'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 
 fdiss_constant(:,:,:) = 0.0
@@ -140,7 +140,7 @@ DO ns=1,nwet_constant
   END IF
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_fdiss_constant
 

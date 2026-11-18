@@ -45,7 +45,7 @@ USE asad_mod,             ONLY: ldepd, ldepw, ih_o3, ih_h2o2,                  &
                                 jptk, jppj, jphk, jpnr, jpdd, jpdw
 USE parkind1,             ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod,          ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
 
@@ -68,7 +68,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INIASAD'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (printstatus >= prstatus_oper) THEN
   WRITE(umMessage,'(A)') 'ASAD initialised using:'
@@ -145,7 +145,7 @@ END IF
 
 CALL asad_cinit()
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_iniasad
 
@@ -156,7 +156,7 @@ SUBROUTINE ukca_iniasad_spatial_vars(npoints)
 USE asad_mod,             ONLY: asad_mod_init_spatial_vars
 USE parkind1,             ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -166,13 +166,13 @@ INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INIASAD_SPATIAL_VARS'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 !$OMP PARALLEL
 CALL asad_mod_init_spatial_vars(npoints)
 !$OMP END PARALLEL
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_iniasad_spatial_vars
 
@@ -183,7 +183,7 @@ SUBROUTINE ukca_delasad_spatial_vars()
 USE asad_mod,             ONLY: asad_mod_dealloc_spatial_vars
 USE parkind1,             ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -191,13 +191,13 @@ INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DELASAD_SPATIAL_VARS'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 !$OMP PARALLEL
 CALL asad_mod_dealloc_spatial_vars()
 !$OMP END PARALLEL
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE ukca_delasad_spatial_vars
 

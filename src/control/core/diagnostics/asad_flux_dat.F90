@@ -8822,7 +8822,7 @@ SUBROUTINE asad_load_default_fluxes
 
 USE ukca_config_specification_mod,  ONLY: ukca_config
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Normal
 USE errormessagelength_mod, ONLY: errormessagelength
@@ -8879,7 +8879,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_LOAD_DEFAULT_FLUXES'
 CHARACTER(LEN=errormessagelength) :: cmessage     ! error message
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (ukca_config%l_ukca_strattrop) THEN
   ! Select the asad diagnostics appropriate for StratTrop chemistry and
@@ -9559,7 +9559,7 @@ IF (ALLOCATED(aa_trop_ox_budget_prod02)) DEALLOCATE(aa_trop_ox_budget_prod02)
 IF (ALLOCATED(aa_trop_ox_budget_prod01)) DEALLOCATE(aa_trop_ox_budget_prod01)
 
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE asad_load_default_fluxes
 

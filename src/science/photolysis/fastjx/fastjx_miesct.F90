@@ -83,7 +83,7 @@ SUBROUTINE fastjx_miesct(fj,fjt,fjb, pomega,fz,ztau,zflux,rfl,u0,nd)
 
 USE fastjx_data, ONLY: w_, m_, m2_, n_, emu, wt
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -118,7 +118,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_MIESCT'
 
 ! End of Header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO i = 1,m_
   CALL legnd0 (emu(i),pm0,m2_)
@@ -135,7 +135,7 @@ END DO
 ! ---blkslv now CALLed with all the wavelength arrays (k=1:w_)
 CALL blkslv(fj,pomega,fz,ztau,zflux,rfl,pm,pm0,fjt,fjb, nd)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 !###########################################################################
@@ -159,7 +159,7 @@ REAL                 :: den
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='LEGND0'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 !---always does pl(2) = p[1]
 pl(1) = 1.0e0
@@ -171,7 +171,7 @@ DO i = 3,n
 END DO
 
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 
 END SUBROUTINE legnd0
@@ -224,7 +224,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='BLKSLV'
 
 ! End of Header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 DO k=1,w_
   CALL gen_id (pomega(1,1,k),fz(1,k),ztau(1,k),zflux(k),rfl(k),                &
@@ -360,7 +360,7 @@ DO k = 1,w_
   fjbot(k) = 4.0e0*sumb - sumbx
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE blkslv
 
@@ -417,7 +417,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='GEN_ID'
 !---------------------------------------------
 ! End of Header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 !---------upper boundary:  2nd-order terms
 l1 = 1
@@ -687,7 +687,7 @@ DO i = 1,m_
 
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE gen_id
 
@@ -711,7 +711,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='MATINW'
 ! ****************************
 ! End of Header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 a(:,:,:) = b(:,:,:)
 
@@ -769,7 +769,7 @@ DO k=1,w_
   a(4,3,k) = a(4,4,k)*a(4,3,k)
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
 
 RETURN
 END SUBROUTINE matinw

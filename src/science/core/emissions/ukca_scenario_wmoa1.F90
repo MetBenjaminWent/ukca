@@ -55,7 +55,7 @@ USE ukca_scenario_common_mod, ONLY: ich2br2, in2o, ich4, ico2, ih2,            &
                        ukca_lump_lbcs, ukca_set_lbc_mmr
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,         ONLY: jprb, jpim
 USE ereport_mod,      ONLY: ereport
 
@@ -130,7 +130,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SCENARIO_WMOA1'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (i_year < 1950) THEN
    ! no information prior to 1950
@@ -4806,7 +4806,7 @@ IF (perform_lumping) CALL ukca_lump_lbcs(n_full_spc,full_lbc)
 CALL ukca_set_lbc_mmr(n_lbc_specs, lbc_mmr)
 
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_scenario_wmoa1
 END MODULE ukca_scenario_wmoa1_mod

@@ -43,7 +43,7 @@ USE ukca_um_legacy_mod,   ONLY: drep, rho_dust => rhop
 USE ukca_constants,       ONLY: rpi => pi
 USE parkind1,             ONLY: jpim, jprb      ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: row_length
@@ -125,7 +125,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='AER_NO3_2BINDU'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ptss(:,:,:,:) = 0.0
 pthno3(:,:,:) = 0.0
@@ -275,7 +275,7 @@ DO jk = 1,nlevs
 END DO !jk
 
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE aer_no3_2bindu
 
@@ -292,7 +292,7 @@ USE ukca_um_legacy_mod,   ONLY: drep, rho_dust => rhop
 USE ukca_constants,       ONLY: rpi => pi
 USE parkind1,             ONLY: jpim, jprb      ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: row_length
@@ -380,7 +380,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='AER_NO3_6BINDU'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ptss(:,:,:,:) = 0.0
 pthno3(:,:,:) = 0.0
@@ -553,7 +553,7 @@ DO jk = 1,nlevs
   END DO !jj
 END DO !jk
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 
 END SUBROUTINE aer_no3_6bindu
 
@@ -569,7 +569,7 @@ SUBROUTINE aer_no3_ukcadu (row_length, rows, nlevs, ptsphy, nssmodes,          &
 USE ukca_constants,       ONLY: rpi => pi
 USE parkind1,             ONLY: jpim, jprb      ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: row_length
@@ -653,7 +653,7 @@ INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='AER_NO3_UKCADU'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Initialise arrays
 ptss(:,:,:,:) = 0.0
@@ -802,7 +802,7 @@ DO jk = 1,nlevs
   END DO !jj
 END DO !jk
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 
 END SUBROUTINE aer_no3_ukcadu
 

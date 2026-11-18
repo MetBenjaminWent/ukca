@@ -56,7 +56,7 @@ USE ukca_environment_fields_mod, ONLY: o3_offline, oh_offline,                 &
                            no3_offline, ho2_offline
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod, ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 
@@ -92,7 +92,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_INICNT'
 
 !     1.  Copy water, CO2, and offline oxidants (if required) into ASAD array.
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 row_length = ukca_config%row_length
 rows = ukca_config%rows
@@ -152,7 +152,7 @@ END IF
 ! Convert to molecules/cm^3 from vmr
 y_out(:) = y_out(:)*tnd(:)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE asad_inicnt

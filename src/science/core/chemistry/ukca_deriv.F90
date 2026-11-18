@@ -40,7 +40,7 @@ SUBROUTINE ukca_deriv(nr, n_be_calls, n_pnts,                                  &
 USE asad_mod, ONLY: jpspec, jppj
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -80,7 +80,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DERIV'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO n = 1, n_be_calls           ! loop over chemical timesteps
 
@@ -663,7 +663,7 @@ DO n = 1, n_be_calls           ! loop over chemical timesteps
 
 END DO  ! n_be_calls
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_deriv
 END MODULE ukca_deriv_mod

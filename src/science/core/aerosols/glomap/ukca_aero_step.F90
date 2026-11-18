@@ -350,7 +350,7 @@ USE umPrintMgr,                              ONLY:                             &
     umMessage
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 
 IMPLICIT NONE
@@ -511,7 +511,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_AERO_STEP'
 !
 !     CHECKMD_ND set to 1/0 for whether/not to check for
 !                values of ND, MD and MDT out of range.
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -1202,7 +1202,7 @@ DO imts=1,nmts
   !
 END DO ! end loop over NMTS
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_aero_step
 END MODULE ukca_aero_step_mod

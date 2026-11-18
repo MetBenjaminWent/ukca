@@ -75,7 +75,7 @@ INTEGER FUNCTION asad_findreaction( react1,react2,products,                    &
                                     np,reactions,idx_in,nr,ns )
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -103,7 +103,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_FINDREACTION'
 !          Search for reactants first.
 !          ------ --- --------- ------
 !
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 asad_findreaction = 0
 empty_ten             = '         '
 
@@ -179,14 +179,14 @@ DO
 
   j = j + 1
   IF ( j > nreacts ) THEN
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
 END DO
 
 9999 CONTINUE
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END FUNCTION asad_findreaction
 END MODULE asad_findreaction_mod

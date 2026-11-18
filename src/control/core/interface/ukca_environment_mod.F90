@@ -40,7 +40,7 @@
 MODULE ukca_environment_mod
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 
 USE ukca_fieldname_mod,  ONLY:                                                 &
@@ -466,7 +466,7 @@ INTEGER :: i_field            ! Index of field in required fields array
 INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_SET_ENVIRONMENT_0D_REAL'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -478,7 +478,7 @@ IF (.NOT. l_environ_req_available) THEN
   IF (PRESENT(error_message)) error_message =                                  &
     'Environment fields requirement has not been initialised'
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -556,14 +556,14 @@ IF (error_code == errcode_env_field_unknown) THEN
     'Unknown name for 0D real environmental input field: ''' //                &
     TRIM(varname) // ''''
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
 ! Update status to show that the field is available
 IF (i_field /= 0) l_environ_field_available(i_field) = .TRUE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_set_environment_0d_real
 
@@ -596,7 +596,7 @@ INTEGER :: i_field            ! Index of field in required fields array
 INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_SET_ENVIRONMENT_0D_INTEGER'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -608,7 +608,7 @@ IF (.NOT. l_environ_req_available) THEN
   IF (PRESENT(error_message)) error_message =                                  &
     'Environment fields requirement has not been initialised'
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
   RETURN
 END IF
 
@@ -626,14 +626,14 @@ IF (error_code == errcode_env_field_unknown) THEN
     'Unknown name for 0D integer environmental input field: ''' //             &
     TRIM(varname) // ''''
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
   RETURN
 END IF
 
 ! Update status to show that the field is available
 IF (i_field /= 0) l_environ_field_available(i_field) = .TRUE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_set_environment_0d_integer
 
@@ -666,7 +666,7 @@ INTEGER :: i_field            ! Index of field in required fields array
 INTEGER(KIND=vik) :: vnr_handle_3
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_SET_ENVIRONMENT_0D_LOGICAL'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 error_code = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -678,7 +678,7 @@ IF (.NOT. l_environ_req_available) THEN
   IF (PRESENT(error_message)) error_message =                                  &
     'Environment fields requirement has not been initialised'
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
   RETURN
 END IF
 
@@ -696,14 +696,14 @@ IF (error_code == errcode_env_field_unknown) THEN
     'Unknown name for 0D logical environmental input field: ''' //             &
     TRIM(varname) // ''''
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
   RETURN
 END IF
 
 ! Update status to show that the field is available
 IF (i_field /= 0) l_environ_field_available(i_field) = .TRUE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE ukca_set_environment_0d_logical
 
@@ -769,7 +769,7 @@ INTEGER :: k2
 INTEGER(KIND=vik) :: vnr_handle_4
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_SET_ENVIRONMENT_1D_REAL'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 error_code = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -781,7 +781,7 @@ IF (.NOT. l_environ_req_available) THEN
   IF (PRESENT(error_message)) error_message =                                  &
     'Environment fields requirement has not been initialised'
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
   RETURN
 END IF
 
@@ -796,7 +796,7 @@ IF (i_field /= 0) THEN
     IF (PRESENT(error_message)) error_message =                                &
       '1D real environment field for ''' // TRIM(varname) // ''' is unallocated'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
     RETURN
   END IF
 END IF
@@ -815,7 +815,7 @@ IF ( ANY(fldnames_3d_real == varname) ) THEN
         'input 1D real environment field for 3-D field ''' // TRIM(varname) // &
         ''' has one or more invalid array bounds'
       IF (PRESENT(error_routine)) error_routine = RoutineName
-      IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+      IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
       RETURN
     END IF
     ! Set the field
@@ -830,7 +830,7 @@ IF ( ANY(fldnames_3d_real == varname) ) THEN
   END IF
 
   ! Return in any case with/ without errors
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
   RETURN
 
 END IF
@@ -860,7 +860,7 @@ IF (i_field /= 0) THEN
   END IF
   IF (error_code /= 0) THEN
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
     RETURN
   END IF
 END IF
@@ -913,7 +913,7 @@ CASE DEFAULT
       'Unknown name for 1D real environmental input field: ''' //              &
       TRIM(varname) // ''''
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
     RETURN
   END IF
 END SELECT
@@ -921,7 +921,7 @@ END SELECT
 ! Update status to show that the field is available
 IF (i_field /= 0) l_environ_field_available(i_field) = .TRUE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE ukca_set_environment_1d_real
 
@@ -971,7 +971,7 @@ INTEGER :: n2
 INTEGER(KIND=vik) :: vnr_handle_5
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_SET_ENVIRONMENT_2D_REAL'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 error_code = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -983,7 +983,7 @@ IF (.NOT. l_environ_req_available) THEN
   IF (PRESENT(error_message)) error_message =                                  &
     'Environment fields requirement has not been initialised'
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
   RETURN
 END IF
 
@@ -998,7 +998,7 @@ IF (i_field /= 0) THEN
     IF (PRESENT(error_message)) error_message =                                &
       '2D real environment field for ''' // TRIM(varname) // ''' is unallocated'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
     RETURN
   END IF
 END IF
@@ -1022,7 +1022,7 @@ IF ( ANY(fldnames_4d_real == varname) ) THEN
         'input 2D real environment field for 4-D field ''' // TRIM(varname) // &
         ''' has one or more invalid array bounds'
       IF (PRESENT(error_routine)) error_routine = RoutineName
-      IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+      IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
       RETURN
     END IF
     ! Set the 4-D field
@@ -1037,7 +1037,7 @@ IF ( ANY(fldnames_4d_real == varname) ) THEN
   END IF
 
   ! Return in any case with/ without errors
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
   RETURN
 
 END IF
@@ -1072,7 +1072,7 @@ IF (i_field /= 0) THEN
   END IF
   IF (error_code /= 0) THEN
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
     RETURN
   END IF
 END IF
@@ -1164,7 +1164,7 @@ CASE DEFAULT
       'Unknown name for 2D real environmental input field: ''' //              &
       TRIM(varname) // ''''
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
     RETURN
   END IF
 END SELECT
@@ -1172,7 +1172,7 @@ END SELECT
 ! Update status to show that the field is available
 IF (i_field /= 0) l_environ_field_available(i_field) = .TRUE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
 RETURN
 END SUBROUTINE ukca_set_environment_2d_real
 
@@ -1214,7 +1214,7 @@ INTEGER :: j2
 INTEGER(KIND=vik) :: vnr_handle_6
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_SET_ENVIRONMENT_2D_INTEGER'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 error_code = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -1226,7 +1226,7 @@ IF (.NOT. l_environ_req_available) THEN
   IF (PRESENT(error_message)) error_message =                                  &
     'Environment fields requirement has not been initialised'
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_6)
   RETURN
 END IF
 
@@ -1245,7 +1245,7 @@ IF (i_field /= 0) THEN
       '2D integer environment field for ''' // TRIM(varname) //                &
       ''' is unallocated'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_6)
     RETURN
   END IF
   i1 = environ_field_info(i_field)%lbound_dim1
@@ -1259,7 +1259,7 @@ IF (i_field /= 0) THEN
       '2D integer environment field for ''' // TRIM(varname) //                &
       ''' has one or more invalid array bounds'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_6)
     RETURN
   END IF
 END IF
@@ -1285,14 +1285,14 @@ CASE DEFAULT
     'Unknown name for 2D integer environmental input field: ''' //             &
     TRIM(varname) // ''''
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_6)
   RETURN
 END SELECT
 
 ! Update status to show that the field is available
 IF (i_field /= 0) l_environ_field_available(i_field) = .TRUE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_6)
 RETURN
 END SUBROUTINE ukca_set_environment_2d_integer
 
@@ -1337,7 +1337,7 @@ INTEGER :: j2
 INTEGER(KIND=vik) :: vnr_handle_7
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_SET_ENVIRONMENT_2D_LOGICAL'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_7, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_7, ModuleName//':'//RoutineName)
 
 error_code = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -1349,7 +1349,7 @@ IF (.NOT. l_environ_req_available) THEN
   IF (PRESENT(error_message)) error_message =                                  &
     'Environment fields requirement has not been initialised'
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_7)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_7)
   RETURN
 END IF
 
@@ -1368,7 +1368,7 @@ IF (i_field /= 0) THEN
       '2D logical environment field for ''' // TRIM(varname) //                &
       ''' is unallocated'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_7)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_7)
     RETURN
   END IF
   i1 = environ_field_info(i_field)%lbound_dim1
@@ -1382,7 +1382,7 @@ IF (i_field /= 0) THEN
       '2D logical environment field for ''' // TRIM(varname) //                &
       ''' has one or more invalid array bounds'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_7)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_7)
     RETURN
   END IF
 END IF
@@ -1410,14 +1410,14 @@ CASE DEFAULT
     'Unknown name for 2D logical environmental input field: ''' //             &
     TRIM(varname) // ''''
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_7)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_7)
   RETURN
 END SELECT
 
 ! Update status to show that the field is available
 IF (i_field /= 0) l_environ_field_available(i_field) = .TRUE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_7)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_7)
 RETURN
 END SUBROUTINE ukca_set_environment_2d_logical
 
@@ -1461,7 +1461,7 @@ INTEGER :: k2
 INTEGER(KIND=vik) :: vnr_handle_8
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_SET_ENVIRONMENT_3D_REAL'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_8, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_8, ModuleName//':'//RoutineName)
 
 error_code = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -1473,7 +1473,7 @@ IF (.NOT. l_environ_req_available) THEN
   IF (PRESENT(error_message)) error_message =                                  &
     'Environment fields requirement has not been initialised'
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_8)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_8)
   RETURN
 END IF
 
@@ -1491,7 +1491,7 @@ IF (i_field /= 0) THEN
     IF (PRESENT(error_message)) error_message =                                &
       '3D real environment field for ''' // TRIM(varname) // ''' is unallocated'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_8)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_8)
     RETURN
   END IF
   i1 = environ_field_info(i_field)%lbound_dim1
@@ -1508,7 +1508,7 @@ IF (i_field /= 0) THEN
       '3D real environment field for ''' // TRIM(varname) //                   &
       ''' has one or more invalid array bounds'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_8)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_8)
     RETURN
   END IF
 END IF
@@ -1686,14 +1686,14 @@ CASE DEFAULT
     'Unknown name for 3D real environmental input field: ''' //                &
     TRIM(varname) // ''''
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_8)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_8)
   RETURN
 END SELECT
 
 ! Update status to show that the field is available
 IF (i_field /= 0) l_environ_field_available(i_field) = .TRUE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_8)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_8)
 RETURN
 END SUBROUTINE ukca_set_environment_3d_real
 
@@ -1739,7 +1739,7 @@ INTEGER :: n2
 INTEGER(KIND=vik) :: vnr_handle_9
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_SET_ENVIRONMENT_4D_REAL'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_9, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_9, ModuleName//':'//RoutineName)
 
 error_code = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -1751,7 +1751,7 @@ IF (.NOT. l_environ_req_available) THEN
   IF (PRESENT(error_message)) error_message =                                  &
     'Environment fields requirement has not been initialised'
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_9)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_9)
   RETURN
 END IF
 
@@ -1770,7 +1770,7 @@ IF (i_field /= 0) THEN
     IF (PRESENT(error_message)) error_message =                                &
       '4D real environment field for ''' // TRIM(varname) // ''' is unallocated'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_9)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_9)
     RETURN
   END IF
   i1 = environ_field_info(i_field)%lbound_dim1
@@ -1790,7 +1790,7 @@ IF (i_field /= 0) THEN
       '4D real environment field for ''' // TRIM(varname) //                   &
       ''' has one or more invalid array bounds'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_9)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_9)
     RETURN
   END IF
 END IF
@@ -1808,14 +1808,14 @@ CASE DEFAULT
     'Unknown name for 4D real environmental input field: ''' //                &
     TRIM(varname) // ''''
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_9)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_9)
   RETURN
 END SELECT
 
 ! Update status to show that the field is available
 IF (i_field /= 0) l_environ_field_available(i_field) = .TRUE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_9)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_9)
 RETURN
 END SUBROUTINE ukca_set_environment_4d_real
 
@@ -2082,7 +2082,7 @@ INTEGER :: i
 INTEGER(KIND=vik) :: vnr_handle_10
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'CLEAR_ENVIRONMENT_FIELDS'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_10, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_10, ModuleName//':'//RoutineName)
 
 ! Clear environment field pointers before re-setting/de-allocating the fields
 DO i = 1, SIZE(environ_field_ptrs)
@@ -2232,7 +2232,7 @@ l_environ_field_available(:) = .FALSE.
 IF (ALLOCATED(land_index)) DEALLOCATE(land_index)
 land_points = 0
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_10)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_10)
 RETURN
 END SUBROUTINE clear_environment_fields
 

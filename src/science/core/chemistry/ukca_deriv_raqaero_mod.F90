@@ -45,7 +45,7 @@ USE asad_mod, ONLY: jpspec, jppj, jphk
 USE ukca_config_specification_mod, ONLY: ukca_config
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 
 USE ukca_um_legacy_mod,  ONLY: oneover_v
@@ -86,7 +86,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DERIV_RAQAERO'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialise sulphur oxidation fluxes
 delta_so2_wetox_h2o2(:) = 0.0
@@ -965,7 +965,7 @@ END DO  ! n_be_calls
 
 
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_deriv_raqaero
 

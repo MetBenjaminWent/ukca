@@ -62,7 +62,7 @@
 MODULE fastjx_data
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 
 USE ukca_parpho_mod,       ONLY: jpwav
@@ -309,7 +309,7 @@ USE ukca_missing_data_mod, ONLY: imdi
 USE photol_config_specification_mod, ONLY: photol_config
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,    ONLY: jprb, jpim
 
 IMPLICIT  NONE
@@ -335,7 +335,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_SET_LIMITS'
 
 
 ! ***********************************************************************
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 cmessage = ''
@@ -407,7 +407,7 @@ CASE DEFAULT
 
 END SELECT
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE fastjx_set_limits
 
@@ -426,7 +426,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_ALLOCATE_MEMORY'
 
 ! ***********************************************************************
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Allocate arrays that depend on GCM size
 IF (.NOT. ALLOCATED(amf2))                                                     &
@@ -490,7 +490,7 @@ IF (.NOT. ALLOCATED(tz_block  ))                                               &
 IF (.NOT. ALLOCATED(u0        ))                                               &
   ALLOCATE(u0        (kpcx ))
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE fastjx_allocate_memory
 
@@ -506,7 +506,7 @@ INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_DEALLOCATE_MEMORY'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 IF (ALLOCATED(amf2))        DEALLOCATE(amf2)
 IF (ALLOCATED(dm_3d))       DEALLOCATE(dm_3d)
@@ -541,7 +541,7 @@ IF (ALLOCATED(u0))          DEALLOCATE(u0)
 IF (ALLOCATED(tz_3d))       DEALLOCATE(tz_3d)
 IF (ALLOCATED(tz_block))    DEALLOCATE(tz_block)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE fastjx_deallocate_memory
 
@@ -559,7 +559,7 @@ INTEGER(KIND=vik) :: vnr_handle_4
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_SET_DATA_FROM_CONFIG'
 
 ! ***********************************************************************
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 ! Copy configuration data to local variables.
 ! Wavelength number as selected by user.
@@ -612,7 +612,7 @@ jlabel(:) = photol_config%jlabel(:)
 IF (.NOT. ALLOCATED(jind)) ALLOCATE(jind(n_species))
 jind(:) = photol_config%jind(:)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE fastjx_set_data_from_config
 
@@ -634,7 +634,7 @@ INTEGER(KIND=vik) :: vnr_handle_5
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FLINT'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 IF (tint <= t2) THEN
   IF (tint <= t1) THEN
@@ -650,7 +650,7 @@ ELSE
   END IF
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
 RETURN
 
 END FUNCTION flint

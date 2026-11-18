@@ -46,7 +46,7 @@ USE ukca_um_legacy_mod, ONLY: exp_v, log_v
 USE ukca_config_constants_mod, ONLY: rmol
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -106,7 +106,7 @@ REAL :: rcw_out(p_fieldda,model_levels,jpdw)  ! temporary array
 REAL :: tmp4_out(p_fieldda,model_levels,jpdw) ! temporary array
 REAL :: tmp5_out(p_fieldda,model_levels,jpdw) ! temporary array
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 first_point = 1
 last_point = p_fieldda
@@ -228,7 +228,7 @@ DO ns = 1,jpdw
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_wdeprt
 END MODULE ukca_wdeprt_mod

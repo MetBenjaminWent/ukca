@@ -74,7 +74,7 @@ SUBROUTINE ukca_chemco_raq_init (nr, npdep)
 
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 USE umprintmgr, ONLY: umPrint, umMessage
 USE ereport_mod, ONLY: ereport
@@ -100,7 +100,7 @@ TYPE(rr) :: zero_rate = rr(0.0, 0.0, 0.0, 0)
 
 INTEGER(KIND=vik) :: vnr_handle_1
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Safety checks
 IF (ukca_config%l_ukca_raqaero) THEN
@@ -544,7 +544,7 @@ pdep(10) =  pd(125,130,125, 0.5)
 
 
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_chemco_raq_init
 

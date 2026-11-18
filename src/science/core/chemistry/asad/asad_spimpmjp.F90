@@ -127,7 +127,7 @@ SUBROUTINE forward_euler(n_points, f, f_initial, f_min, nonzero_map, spfj)
 
 USE asad_mod,            ONLY: cdt, jpcspf, fdot, spfjsize_max
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -144,7 +144,7 @@ INTEGER :: jl, jtr, ip
 INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*),   PARAMETER :: RoutineName='FORWARD_EULER'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Solve for all species in f array, including non-transported RO2 species
 DO jtr=1,jpcspf
@@ -159,7 +159,7 @@ DO jtr=1,jpcspf
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE forward_euler
 
@@ -170,7 +170,7 @@ SUBROUTINE calc_residual_error(n_points,residual_error,G_f,f_min)
 USE asad_mod,            ONLY: jpcspf, nlf
 USE asad_mod,            ONLY: prod, slos
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -186,7 +186,7 @@ INTEGER :: jl, jtr, j
 INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER   :: RoutineName='CALC_RESIDUAL_ERROR'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 residual_error = 0.0
 
@@ -205,7 +205,7 @@ DO jtr=1,jpcspf
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 
 END SUBROUTINE calc_residual_error
 
@@ -215,7 +215,7 @@ SUBROUTINE calc_error_norm(n_points,error_norm,f,f_incr,f_min)
 
 USE asad_mod,            ONLY: jpcspf
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -232,7 +232,7 @@ INTEGER :: jtr
 INTEGER(KIND=vik) :: vnr_handle_3
 CHARACTER(LEN=*), PARAMETER   :: RoutineName='CALC_ERROR_NORM'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 error_norm = 0.0
 DO jtr=1,jpcspf
@@ -243,7 +243,7 @@ DO jtr=1,jpcspf
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 
 END SUBROUTINE calc_error_norm
 
@@ -258,7 +258,7 @@ USE asad_mod,           ONLY: ptol, peps, cdt, f, fdot, nitnr, nstst, y,       &
 USE asad_sparse_vars,   ONLY: setup_spfuljac, spfuljac, spresolv2, splinslv2
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,           ONLY: jprb, jpim
 USE umPrintMgr,         ONLY: printstatus, PrStatus_Oper, PrStatus_Diag,       &
                               umMessage, umPrint
@@ -335,7 +335,7 @@ LOGICAL, SAVE :: first = .TRUE.
 LOGICAL, SAVE :: first_pass = .TRUE.
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 f_min = SQRT(peps) ! Minimum species concentration
 
@@ -599,7 +599,7 @@ IF (exit_code /= 0) THEN
   END IF
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE asad_spimpmjp
 

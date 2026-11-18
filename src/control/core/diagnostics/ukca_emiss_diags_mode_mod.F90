@@ -80,7 +80,7 @@ USE ukca_mode_setup,  ONLY:                                                    &
 
 USE ukca_emiss_mod,  ONLY: marine_oc_online
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 
 
@@ -95,7 +95,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 icount = 0
 mode_diag(:)%item = -1
@@ -279,7 +279,7 @@ IF (icount /= num_mode_diags) THEN
   CALL ereport ('UKCA_EMISS_DIAGS_MODE_INIT', icount, cmessage)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE ukca_emiss_diags_mode_init
 
@@ -295,7 +295,7 @@ USE ukca_emiss_mod,     ONLY: emissions, num_em_flds, marine_oc_online
 USE parkind1,           ONLY: jprb, jpim
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 USE ukca_um_legacy_mod, ONLY: len_stlist, stindex, stlist, num_stash_levels,   &
                               stash_levels, si, sf, si_last,                   &
@@ -338,7 +338,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_EMISS_DIAGS_MODE'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 IF (lfirst) THEN
   CALL ukca_emiss_diags_mode_init
@@ -434,7 +434,7 @@ DO k = 1, num_mode_diags
     END IF  ! varname
   END IF  ! if diagnostic requested
 END DO  ! loop over diags
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 
 RETURN
 END SUBROUTINE ukca_emiss_diags_mode

@@ -69,7 +69,7 @@ USE errormessagelength_mod,        ONLY: errormessagelength
 USE parkind1,                      ONLY: jprb, jpim
 USE umPrintMgr,                    ONLY: umMessage, umPrint
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -151,7 +151,7 @@ CHARACTER(LEN=10)                 :: prods3(3) ! Triplet of products
 INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER   :: RoutineName = 'UKCA_CHEMISTRY_SETUP'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 tropraq = (ukca_config%l_ukca_trop .OR. ukca_config%l_ukca_aerchem .OR.        &
            ukca_config%l_ukca_raq .OR. ukca_config%l_ukca_raqaero)
@@ -301,7 +301,7 @@ IF (ukca_config%l_ukca_offline) THEN
     tracer(:,:,:,n_h2o2) = h2o2_offline(:,:,:)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE ukca_chemistry_setup
 

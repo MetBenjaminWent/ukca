@@ -50,7 +50,7 @@ USE ereport_mod,            ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 USE parkind1,               ONLY: jpim,  jprb     ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -78,7 +78,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='GET_NOY'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ierr           = 0
 noy_3d (:,:,:) = 0
@@ -106,7 +106,7 @@ ELSE
   CALL ereport ('GET_NOY', ierr, cmessage)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 

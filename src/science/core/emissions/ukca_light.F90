@@ -63,7 +63,7 @@ SUBROUTINE ukca_light(delta_lambda,delta_phi,ppress,niv,                       &
                       total_N)
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,        ONLY: jprb, jpim
 USE ukca_config_constants_mod, ONLY: avogadro
 USE ukca_constants,  ONLY: recip_pi_over_180, m_n
@@ -162,7 +162,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_LIGHT'
 
 !       Initialise variables
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 gb_area_30N  = 0.0
 ew_res_deg   = 0.0
@@ -370,7 +370,7 @@ IF ( total_flash_rate > 0.0 ) THEN
 
 END IF ! total flash rate > 0
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_light
 END MODULE ukca_light_mod

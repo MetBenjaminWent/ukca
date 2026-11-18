@@ -84,7 +84,7 @@ SUBROUTINE ukca_water_content_v(nv,mask,cl,rh,ions,wc)
 USE ukca_mode_setup,   ONLY: ncation, nanion
 USE parkind1,          ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ukca_types_mod,    ONLY: log_small
 USE ukca_config_specification_mod, ONLY: glomap_config
 
@@ -228,7 +228,7 @@ DATA (y(3,-4,j),j=0,7)/                                                        &
      -3.603924022e5, 6.856992393e4/
 DATA rh_min(3,-4),molal_max(3,-4)/47.0e0,23.2e0/
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !Put the correct value into the y array (N.B., can't do with DATA statment).
 IF (glomap_config%l_fix_ukca_water_content) y(1,-3,6) = -1.220611402e3
@@ -330,7 +330,7 @@ DO ic=1,ncation
 END DO
 wc(idx(:m))=(1.0/18.0e-3)*dum(:m)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_water_content_v
 END MODULE ukca_water_content_v_mod

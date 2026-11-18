@@ -36,7 +36,7 @@ USE ereport_mod,            ONLY: ereport
 USE umPrintMgr,             ONLY: umPrint, umMessage
 USE parkind1,               ONLY: jprb, jpim      ! for Dr Hook tracing
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 PRIVATE
@@ -82,7 +82,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_DIAGS_ALLOC'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Allocate diagnostic field for copy of aerosol water array if required
 IF (.NOT. ALLOCATED(mdwat_diag) .AND.                                          &
@@ -92,7 +92,7 @@ IF (.NOT. ALLOCATED(mdwat_diag) .AND.                                          &
 IF (.NOT. ALLOCATED(wetdp_diag) .AND. l_ukca_pm_diags)                         &
   ALLOCATE(wetdp_diag(nbox,nmodes))
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE ukca_mode_diags_alloc
@@ -179,7 +179,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_DIAGS'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -286,7 +286,7 @@ END IF
 IF (ALLOCATED(wetdp_diag)) DEALLOCATE(wetdp_diag)
 IF (ALLOCATED(mdwat_diag)) DEALLOCATE(mdwat_diag)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 
 END SUBROUTINE ukca_mode_diags
@@ -556,7 +556,7 @@ INTEGER(KIND=vik) :: vnr_handle_3
 CHARACTER(LEN=*), PARAMETER :: RoutineName='MODE_DIAGS_CMIP6'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -858,7 +858,7 @@ IF (sf(item,section)) THEN
     stash_levels,num_stash_levels+1)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE mode_diags_cmip6
 
@@ -971,7 +971,7 @@ INTEGER(KIND=vik) :: vnr_handle_4
 CHARACTER(LEN=*), PARAMETER :: RoutineName='MODE_DIAGS_PM'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 section = stashcode_glomap_sec
 tsection = stashcode_glomap_sec*1000
@@ -1105,7 +1105,7 @@ DEALLOCATE(pm_dry)
 DEALLOCATE(pm_wet)
 DEALLOCATE(pm_component)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE mode_diags_pm
 

@@ -122,7 +122,7 @@ USE asad_mod,            ONLY: prod, slos, y, rk, prk,                         &
                                nldepx, nnfrp, jpspec, jpnr
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: kl
@@ -166,7 +166,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_PRLS'
 !       1.  Initialise variables.
 !           ---------- ----------
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 DO js = 1, jpspec
   DO jl = 1, kl
     prod(jl,js) = 0.0
@@ -297,7 +297,7 @@ IF ( ldepem ) THEN
 
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_prls
 END MODULE asad_prls_mod

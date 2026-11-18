@@ -79,7 +79,7 @@ USE asad_mod,               ONLY: fdot, ydot, prod, slos,                      &
                                   nf, nlf, jpcspf
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE asad_prls_mod, ONLY: asad_prls
 IMPLICIT NONE
 
@@ -106,7 +106,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_DIFFUN'
 !       1. Initialise tracer/family chemistry tendencies
 !          ---------- ------------- --------- ----------
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 DO jtr = 1, jpcspf
   DO jl = 1, kl
     fdot(jl,jtr) = 0.0
@@ -147,7 +147,7 @@ DO j = 1, nf
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_diffun
 END MODULE asad_diffun_mod

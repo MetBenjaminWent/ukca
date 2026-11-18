@@ -82,7 +82,7 @@ SUBROUTINE ukca_vgrav_av_k(nbox,k,dp,sigma,dvisc,mfpa,rhop,                    &
 USE ukca_um_legacy_mod,  ONLY: gg => g
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -110,7 +110,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_VGRAV_AV_K'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 lnsqsg=LOG(sigma)*LOG(sigma)
 term1=(4.0*REAL(k)+4.0)/2.0
@@ -122,7 +122,7 @@ kng(:)=2.0*mfpa(:)/dp(:)
 pref(:)=rhop(:)*dp(:)*dp(:)*gg/(18.0*dvisc(:))
 vgrav_av(:)=pref(:)*(term3+term4*kng(:))
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_vgrav_av_k
 END MODULE ukca_vgrav_av_k_mod

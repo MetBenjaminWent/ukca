@@ -106,7 +106,7 @@ USE ukca_config_constants_mod,      ONLY: avogadro, boltzmann
 USE ukca_config_specification_mod,  ONLY: glomap_config, glomap_variables
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,                       ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -158,7 +158,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_PRIM_MOC'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Molar mass of dry air (kg/mol)
 mm_da = avogadro*boltzmann/rgas
@@ -218,7 +218,7 @@ DO imode=1,nmodes
 
 END DO ! loop over nmodes
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 

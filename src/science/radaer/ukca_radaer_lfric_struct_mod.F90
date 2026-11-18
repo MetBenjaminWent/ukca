@@ -162,7 +162,7 @@ SUBROUTINE allocate_radaer_lfric_struct(ukca_radaer, glomap_variables)
 USE ukca_mode_setup, ONLY: nmodes, ncp_max, cp_no3, glomap_variables_type
 USE parkind1,        ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 TYPE(ukca_radaer_lfric_struct), INTENT(IN OUT) :: ukca_radaer
@@ -174,7 +174,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ALLOCATE_RADAER_LFRIC_STRUCT'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 
 ncp                          = glomap_variables%ncp
@@ -216,7 +216,7 @@ IF (.NOT. ALLOCATED(ukca_radaer%i_mode))                                       &
 IF (.NOT. ALLOCATED(ukca_radaer%idx_cpnt_mode))                                &
       ALLOCATE(ukca_radaer%idx_cpnt_mode(nmodes,ncp_max))
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 END SUBROUTINE allocate_radaer_lfric_struct
 
 END MODULE ukca_radaer_lfric_struct_mod

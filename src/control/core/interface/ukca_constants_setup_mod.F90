@@ -77,7 +77,7 @@ USE ukca_error_mod, ONLY: error_report, maxlen_message, maxlen_procname,       &
 
 USE parkind1, ONLY: jpim, jprb      ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -110,7 +110,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CONSTANTS_SETUP'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Use parent-supplied argument for return code
 error_code_ptr => error_code
@@ -125,7 +125,7 @@ IF (l_ukca_constants_available) THEN
   CALL error_report(ukca_config%i_error_method, error_code_ptr,                &
          'UKCA configurable constants have already been set', RoutineName,     &
          msg_out=error_message, locn_out=error_routine)
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -153,7 +153,7 @@ IF (PRESENT(const_rho_so4))                                                    &
 
 l_ukca_constants_available = .TRUE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE ukca_constants_setup

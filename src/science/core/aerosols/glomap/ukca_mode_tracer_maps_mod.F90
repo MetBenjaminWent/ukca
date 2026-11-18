@@ -68,7 +68,7 @@ USE ukca_um_legacy_mod,        ONLY: mype
 USE umprintmgr,                ONLY: umprint, ummessage, printstatus,          &
                                      prstatus_diag
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,                  ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -88,7 +88,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: routinename='UKCA_AERO_TRACER_INIT'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, modulename//':'//routinename)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, modulename//':'//routinename)
 
 ! Allocate the nmr_index and initialise to
 ! zero. Zero inidicates that a mode
@@ -196,7 +196,7 @@ IF (printstatus >= prstatus_diag .AND. mype == 0) THEN
   END DO
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_aero_tracer_init
@@ -211,7 +211,7 @@ INTEGER FUNCTION arrayloc(ch_arr,ch_test)
 ! Note that the match is case sensitive but ignores
 ! all leading and trailing white space
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,             ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -224,7 +224,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: routinename='ARRAYLOC'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, modulename//':'//routinename)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, modulename//':'//routinename)
 
 ! Start with default value
 arrayloc = -99
@@ -236,7 +236,7 @@ find_arrayloc : DO i = 1, SIZE (ch_arr)
   END IF
 END DO find_arrayloc
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 
 END FUNCTION arrayloc
 

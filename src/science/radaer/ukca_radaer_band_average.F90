@@ -72,7 +72,7 @@ USE errormessagelength_mod, ONLY: errormessagelength
 
 USE parkind1, ONLY: jpim, jprb
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE conversions_mod, ONLY: pi
 USE ukca_radaer_lut_read_in, ONLY: ukca_radaer_get_lut_index
 
@@ -340,7 +340,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_RADAER_BAND_AVERAGE'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !
 ! To band-average modal optical properties, we need first to compute
@@ -905,7 +905,7 @@ CASE DEFAULT
 END SELECT ! precalc%n_integ_pts is 3 or more
 
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_radaer_band_average

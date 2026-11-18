@@ -26,7 +26,7 @@
 MODULE ukca_environment_diags_mod
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,       ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -98,7 +98,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'PHOTOL_RATE_DIAG'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -135,7 +135,7 @@ CASE DEFAULT
     'The name given (' // TRIM(diag_name) //                                   &
     ') does not match a recognised photolysis rate diagnostic',                &
     RoutineName, msg_out=error_message, locn_out=error_routine)
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END SELECT
 
@@ -160,7 +160,7 @@ DO WHILE (i < SIZE(ratj_defs) .AND. .NOT. l_found)
   END IF
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE photol_rate_diag
 

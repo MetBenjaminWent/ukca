@@ -46,7 +46,7 @@ USE ukca_config_specification_mod, ONLY: ukca_config
 USE ukca_config_constants_mod, ONLY: tfs, rho_water
 USE asad_mod, ONLY: jpdd
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 
 USE ukca_aerod_mod, ONLY: ukca_aerod
@@ -138,7 +138,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DDEPCTL'
 ! Adjust tile fractions so they add up to 1. If gsf has the water tile
 ! fraction = 1.0, set the land fraction to 0.0
 !
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 land_fraction = 0.0
 smr           = 0.0
 lai_ft        = 0.0
@@ -269,7 +269,7 @@ CALL ukca_ddcalc(row_length, rows, bl_levels, ntype,                           &
   npft, timestep, dzl, zbl, gsf, resa, rb, rc,                                 &
   nlev_with_ddep, zdryrt, len_stashwork, stashwork)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 !
 END SUBROUTINE ukca_ddepctl

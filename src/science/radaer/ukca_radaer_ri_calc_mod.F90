@@ -26,7 +26,7 @@ MODULE ukca_radaer_ri_calc_mod
 
 USE parkind1, ONLY: jpim, jprb
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 
 IMPLICIT NONE
@@ -299,7 +299,7 @@ COMPLEX FUNCTION refract_mix_mg(re_m, im_m, re_bc, im_bc,                      &
 
 USE parkind1, ONLY: jpim, jprb
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -324,7 +324,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='REFRACT_MIX_MG'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 eff_dicnst_m  = CMPLX(re_m, im_m)**2.0
 eff_dicnst_bc = CMPLX(re_bc, im_bc)**2.0
@@ -336,7 +336,7 @@ a = vol_frac_bc * (eff_dicnst_bc - eff_dicnst_m)                               &
 eff_dicnst_mix = eff_dicnst_m * (1.0 + (3.0*a)/(1.0-a))
 refract_mix_mg    = SQRT(eff_dicnst_mix)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END FUNCTION refract_mix_mg

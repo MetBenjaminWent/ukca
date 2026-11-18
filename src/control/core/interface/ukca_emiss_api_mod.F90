@@ -48,7 +48,7 @@ USE ereport_mod,           ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 USE parkind1,              ONLY: jpim, jprb      ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -117,7 +117,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_GET_EMISSION_VARLIST'
 
 ! End of header
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Nullify pointer before use
 emiss_species => NULL()
@@ -136,7 +136,7 @@ IF (.NOT. l_ukca_config_available) THEN
     error_message = 'No UKCA configuration has been set up'
   IF (PRESENT(error_routine)) error_routine = RoutineName
 
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -177,7 +177,7 @@ END DO      ! loop over all species
 emiss_species => em_spec
 num_per_species => n_per_species
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_get_emission_varlist
 
@@ -245,7 +245,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_REGISTER_EMISSION'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Check for availability of UKCA configuration data
 IF (.NOT. l_ukca_config_available) THEN
@@ -366,7 +366,7 @@ IF ( ANY(aero_ems_species == tracer_name) ) THEN
   END DO      ! Loop over modes
 END IF        ! MODE emission
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 
 RETURN
 END SUBROUTINE ukca_register_emission
@@ -400,7 +400,7 @@ INTEGER(KIND=vik) :: vnr_handle_3
 CHARACTER(LEN=*), PARAMETER :: RoutineName='GET_REGISTERED_EMS_INFO'
 
 ! End of header
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 n_2d_ems = 0
 n_3d_ems = 0
@@ -418,7 +418,7 @@ DO i = 1, n_ems_registered
   END IF
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 
 RETURN
 END SUBROUTINE get_registered_ems_info
@@ -470,7 +470,7 @@ INTEGER(KIND=vik) :: vnr_handle_4
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SET_EMISSION'
 
 ! End of header
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 ! Check that the index given to identify the emission is in range
 
@@ -631,7 +631,7 @@ IF ( PRESENT(vert_scaling) ) THEN
   END IF
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 RETURN
 
 END SUBROUTINE ukca_set_emission

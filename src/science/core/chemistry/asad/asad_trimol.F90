@@ -56,7 +56,7 @@ USE asad_mod,        ONLY: rk, at, ntrkx, spt, t300, t, peps,                  &
                            tnd, f, wp, specf, jpcspf, jptk
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ukca_um_legacy_mod, ONLY: exp_v, powr_v, oneover_v
 
 IMPLICIT NONE
@@ -105,7 +105,7 @@ REAL :: inv_t(1:n_points)
 !       1.  Calculate trimolecular rate coefficients
 !           --------- ------------ ---- ------------
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 iho2  = 0
 in2o5   = 0
 ino2no3 = 0
@@ -240,7 +240,7 @@ ELSE IF (ih2o == 0 .AND. iho2 /= 0) THEN
   END DO
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_trimol
 END MODULE asad_trimol_mod

@@ -56,7 +56,7 @@ USE ereport_mod,     ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Diag
 USE parkind1,        ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 USE ukca_chem_offline, ONLY: ndry_offline, nwet_offline
 USE ukca_chem_aer,     ONLY: ndry_aer_aer, nwet_aer_aer
@@ -75,7 +75,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SETUP_CHEM'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 
 SELECT CASE (ukca_config%i_ukca_chem)
@@ -451,7 +451,7 @@ IF (PrintStatus >= PrStatus_Diag) THEN
   CALL umPrint(umMessage,src='ukca_setup_chem_mod')
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE ukca_setup_chem
 

@@ -11,7 +11,7 @@ MODULE acsmc_mod
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 
@@ -47,7 +47,7 @@ CONTAINS
 SUBROUTINE acsmc(t,jpwav,wavenm,amc)
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -89,7 +89,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSMC'
 
 
 !     Check that temperature is in range.
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 tc = t
 IF ( tc > 300.0 ) tc = 300.0
 IF ( tc < 210.0 ) tc = 210.0
@@ -108,7 +108,7 @@ DO jw = 45 , 67
   amc(jw) = 10.0**arg
 
 END DO
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE acsmc

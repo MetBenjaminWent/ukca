@@ -150,7 +150,7 @@ USE ukca_setup_indices, ONLY: condensable,                                     &
         nmasagedmpintr84
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,           ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -203,7 +203,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_AGEING'
 
 !
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -479,7 +479,7 @@ DO imode=mode_ait_insol,topmode ! loop over insoluble modes
   END IF ! if insoluble mode is present (IMODE=5,7)
 END DO ! Loop IMODE=5,topmode
 !
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_ageing
 END MODULE ukca_ageing_mod

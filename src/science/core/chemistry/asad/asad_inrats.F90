@@ -84,7 +84,7 @@ USE ukca_chem_defs_mod,   ONLY: chch_defs
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod, ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint
 
@@ -112,7 +112,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_INRATS_SET_SP_LISTS'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Find out which species are in steady state (for N-R solver)
 
@@ -302,7 +302,7 @@ IF (ANY(errcodes(:,:) /= 0)) THEN
   CALL ereport(RoutineName,errcode,cmessage)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE asad_inrats_set_sp_lists
@@ -327,7 +327,7 @@ USE ukca_chem_defs_mod,   ONLY: ratb_defs, ratt_defs,                          &
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod, ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
 USE ukca_um_legacy_mod, ONLY: mype
@@ -386,7 +386,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_INRATS'
 !       1.  Determine chemistry
 !           --------- ---------
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Initialise local counters, see asad_cinit for (e.g.) spb and frpb
 ispb(:,:) = 0
@@ -865,7 +865,7 @@ IF ( ix /= jpnr ) THEN
   CALL ereport('ASAD_INRATS',ix,cmessage)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE asad_inrats
 END MODULE asad_inrats_mod

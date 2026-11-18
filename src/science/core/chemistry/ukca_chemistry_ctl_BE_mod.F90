@@ -87,7 +87,7 @@ USE ukca_environment_fields_mod,   ONLY: surf_wetness
 USE ukca_config_specification_mod, ONLY: ukca_config
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,             ONLY: jprb, jpim
 USE ereport_mod,          ONLY: ereport
 USE umPrintMgr,           ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
@@ -200,7 +200,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEMISTRY_CTL_BE'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 nr = jpbk + jptk + jphk
 secs_per_step = REAL(chem_timestep)
@@ -395,7 +395,7 @@ IF (ALLOCATED(ystore)) DEALLOCATE(ystore)
 WHERE (tracer(:,n_h2o2) > h2o2_offline(:))                                     &
        tracer(:,n_h2o2) = h2o2_offline(:)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_chemistry_ctl_be
 
@@ -416,7 +416,7 @@ USE ukca_missing_data_mod, ONLY: rmdi, imdi
 USE umPrintMgr,          ONLY: umPrint, umMessage
 USE ereport_mod,         ONLY: ereport
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -453,7 +453,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEMCO_BE_OFFLINE'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Copy pressure, temperature and water vapour into module variables
 npnts = theta_field_size
@@ -609,7 +609,7 @@ IF (first) THEN
 END IF
 
 first = .FALSE.
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_chemco_be_offline
 
@@ -651,7 +651,7 @@ SUBROUTINE ukca_deriv_offline(nr, n_be_calls, theta_field_size, dts, y,        &
 USE asad_mod, ONLY: jpspec
 USE ukca_um_legacy_mod, ONLY: oneover_v
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,        ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -690,7 +690,7 @@ INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DERIV_OFFLINE'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 npnts = theta_field_size
 
@@ -815,7 +815,7 @@ DO n = 1, n_be_calls           ! loop over chemical timesteps
 END DO  ! n_be_calls
 
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 
 RETURN
 END SUBROUTINE ukca_deriv_offline

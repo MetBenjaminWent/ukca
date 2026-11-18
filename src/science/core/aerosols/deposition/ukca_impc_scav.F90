@@ -53,7 +53,7 @@ SUBROUTINE ukca_mode_imscavcoff(verbose)
 
 USE umPrintMgr,         ONLY: umPrint, umMessage
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,           ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -66,7 +66,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_IMSCAVCOFF'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Set up collision efficiencies for all aerosol bins and raindrop bins
 colleff4( 1,1:nrow)=[ 0.522e+05,0.139e+05,0.328e+04,0.775e+03,                 &
@@ -203,7 +203,7 @@ IF (verbose >= 2) THEN
   END DO
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_mode_imscavcoff
 ! ----------------------------------------------------------------------
@@ -412,7 +412,7 @@ USE ukca_setup_indices, ONLY:                                                  &
     nmasimscmpsupins
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,           ONLY: jprb, jpim
 USE ukca_config_specification_mod, ONLY: glomap_config, glomap_variables
 
@@ -495,7 +495,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_IMPC_SCAV'
 allfrac(1)=fc
 allfrac(2)=fd
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -1273,7 +1273,7 @@ ELSE ! l_fix_ukca_impscav
 
 END IF ! l_fix_ukca_impscav
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_impc_scav
 END MODULE ukca_impc_scav_mod

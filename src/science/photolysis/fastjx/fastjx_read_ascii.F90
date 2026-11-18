@@ -33,7 +33,7 @@ USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper,          &
 USE ereport_mod, ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -88,7 +88,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_RD_MIE_FILE'
 
 ! ***********************************
 ! End of Header
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !Open data file containing aerosol/cloud data
 OPEN (nj1,FILE=namfil,STATUS='OLD',FORM='FORMATTED',ACTION='READ')
@@ -142,7 +142,7 @@ END DO ! aerosols
 ! Close file
 CLOSE(nj1)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE fastjx_rd_mie_file
 
@@ -194,7 +194,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_RD_XXX_FILE'
 
   ! *****************************
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
   !----------spectral data----set for new format data J-ver8.3------------------
 !         note that NJVAL = # J-values, but
@@ -396,7 +396,7 @@ IF (numwvl /= wx_) THEN
   END IF
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE fastjx_rd_xxx_file
 

@@ -83,7 +83,7 @@ USE rad_input_mod,   ONLY: l_extra_top
 USE um_types, ONLY: real_umphys
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,        ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -126,7 +126,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER (LEN=*), PARAMETER :: RoutineName = 'SET_PRESC_SSA_FIELD'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (l_extra_top) THEN
   i_top_copy = 2
@@ -178,7 +178,7 @@ IF (l_extra_top) THEN
 
 END IF ! l_extra_top
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE set_presc_ssa_field

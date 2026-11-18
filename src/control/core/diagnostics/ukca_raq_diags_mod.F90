@@ -53,7 +53,7 @@ USE get_noy_mod,  ONLY: get_noy
 USE get_nmvoc_mod,  ONLY: get_nmvoc
 USE parkind1, ONLY: jprb,  jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 USE ukca_um_legacy_mod, ONLY: len_stlist, stindex, stlist, num_stash_levels,   &
                               stash_levels, si, sf, si_last, copydiag_3d
@@ -94,7 +94,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_RAQ_DIAGS'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 im_index = 1
 
@@ -733,7 +733,7 @@ IF (sf(item,sect)) THEN
        stash_levels,num_stash_levels+1)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_raq_diags

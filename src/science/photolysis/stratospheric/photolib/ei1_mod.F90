@@ -11,7 +11,7 @@ MODULE ei1_mod
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE umPrintMgr, ONLY: umMessage, umPrint
 IMPLICIT NONE
 
@@ -39,7 +39,7 @@ CONTAINS
 REAL FUNCTION ei1(x)
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 ! Function interface
@@ -83,7 +83,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='EI1'
 
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 IF ( x < 0.0 ) THEN
   WRITE(umMessage,'(1X,A,1X,E12.5)')                                           &
   '** EI1 WARNING ** Negative argument >',x
@@ -116,7 +116,7 @@ ELSE IF ( (x > 10.0) .AND. (x < xmax) ) THEN
 ELSE IF ( x >= xmax ) THEN
   ei1 = 0.0
 END IF
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END FUNCTION ei1

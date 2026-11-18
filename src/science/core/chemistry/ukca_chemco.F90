@@ -45,7 +45,7 @@ USE ukca_config_specification_mod, ONLY: ukca_config
 USE asad_mod,         ONLY: peps, jpeq, jpspec
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -94,7 +94,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEMCO'
 
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 IF (ukca_config%l_ukca_aerchem) THEN
   faq(:,:) = fdiss(:,:,1) + fdiss(:,:,2)
   ! convert clw in kg/kg to volume ratio
@@ -1115,7 +1115,7 @@ IF (ukca_config%l_ukca_aerchem) THEN
 END IF    ! l_ukca_aerchem
 
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_chemco
 END MODULE ukca_chemco_mod

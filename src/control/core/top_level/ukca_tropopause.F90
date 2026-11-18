@@ -32,7 +32,7 @@ USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Diag, newline
 USE ereport_mod, ONLY: ereport
 USE parkind1,    ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE errormessagelength_mod, ONLY: errormessagelength
 USE ukca_um_legacy_mod, ONLY: planet_radius
 USE ukca_missing_data_mod, ONLY: rmdi, imdi
@@ -138,7 +138,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CALC_TROPOPAUSE'
 !     Calculate weighting function from Hoerling, 1993 paper
 !     W = a sech (lat) + B (lat)**2 + C
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialise values for level indices
 jll = 0
@@ -308,7 +308,7 @@ ELSE
   L_stratosphere(:,:,:) = .FALSE.
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_calc_tropopause
 

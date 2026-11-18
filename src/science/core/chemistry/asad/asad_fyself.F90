@@ -48,7 +48,7 @@ SUBROUTINE asad_fyself(n_points)
 USE asad_mod,        ONLY: qa, rk, nstst, nlstst, nspi, jpnr
 USE parkind1,        ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: n_points    ! No of spatial points
@@ -69,7 +69,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_FYSELF'
 !       1.  Initialisation
 !           --------------
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 DO j = 1, nstst
   js = nlstst(j)
   DO jl = 1, n_points
@@ -89,7 +89,7 @@ DO jr = 1, jpnr
   END IF
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_fyself
 END MODULE asad_fyself_mod

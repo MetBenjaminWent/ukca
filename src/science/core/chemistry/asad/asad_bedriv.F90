@@ -63,7 +63,7 @@ USE asad_mod,        ONLY: cdt, ctype, dpd, dpw, f, frpx,                      &
                            jpspec, jpcspf, jptk, jppj
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod, ONLY: ereport
 
 USE ukca_um_legacy_mod, ONLY: mype
@@ -166,7 +166,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_BEDRIV'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 ! OMP CRITICAL will only allow one thread through this code at a time,
 ! while the other threads are held until completion.
 !$OMP CRITICAL (asad_bedriv_init)
@@ -603,7 +603,7 @@ DO j = 1, jpcspf
 END DO
 
 ! finish BE step
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_bedriv
 END MODULE asad_bedriv_mod

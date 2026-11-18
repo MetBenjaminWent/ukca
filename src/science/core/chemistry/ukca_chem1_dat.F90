@@ -56,7 +56,7 @@ USE ukca_chem_offline,  ONLY:  chch_defs_offline,                              &
                                ukca_init_offline
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 USE umPrintMgr, ONLY:                                                          &
     umPrint,                                                                   &
@@ -587,7 +587,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEM1_INIT'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (.NOT. (ukca_config%l_ukca_strat .OR. ukca_config%l_ukca_strattrop .OR.     &
            ukca_config%l_ukca_tropisop .OR. ukca_config%l_ukca_offline .OR.    &
@@ -805,7 +805,7 @@ IF (ukca_config%l_ukca_chem_aero .AND. ukca_config%l_ukca_scale_soa_yield_isop &
   CALL ukca_scale_soa_yield_isop
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 CONTAINS
@@ -816,7 +816,7 @@ IMPLICIT NONE
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='CHECK_DIMS'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 IF (isizes(1) /= jpspec) THEN
   cmessage= ' chch_defs: size not equal to jpspec'
@@ -867,7 +867,7 @@ IF (ierr > 1) THEN
   CALL ereport('UKCA_CHEM1_INIT.check_dims',ierr,cmessage)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE check_dims
 
@@ -879,7 +879,7 @@ INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SCALE_SOA_YIELD'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
    ! A scaling factor soa_yield_scaling_mt can be used to tune the SOA
    ! yield from the oxidaton of monoterpene. E.g this could be
@@ -894,7 +894,7 @@ DO i = 1, SIZE(ratb_defs)
   END IF
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 
 END SUBROUTINE ukca_scale_soa_yield
@@ -907,7 +907,7 @@ INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SCALE_SOA_YIELD_ISOP'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
    ! A scaling factor soa_yield_scaling_isop can be used to tune the SOA
    ! yield from the oxidation of isoprene.
@@ -947,7 +947,7 @@ IF (ukca_config%i_ukca_chem_version >= ichem_ver132) THEN
   END IF
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 RETURN
 
 END SUBROUTINE ukca_scale_soa_yield_isop

@@ -55,7 +55,7 @@ USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname,                     &
                           errcode_value_unknown, error_report
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,       ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -106,7 +106,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UPDATE_SKIPPED_DIAG_FLAGS'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO group = 1, n_diag_group
   DO i = 1, diagnostics%n_request(group)
@@ -120,7 +120,7 @@ DO group = 1, n_diag_group
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE update_skipped_diag_flags
 
@@ -166,7 +166,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SEEK_ACTIVE_REQUESTS'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 i_diag_req = 0
 l_active_requests = .FALSE.
@@ -192,7 +192,7 @@ DO group = 1, n_diag_group
 
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE seek_active_requests
 
@@ -244,7 +244,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UPDATE_DIAGNOSTICS_2D_REAL'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -273,7 +273,7 @@ IF (diagnostics%n_request(dgroup_flat_real) > 0) THEN
 
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE update_diagnostics_2d_real
 
@@ -324,7 +324,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UPDATE_DIAGNOSTICS_3D_REAL'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -359,7 +359,7 @@ DO group = 1, n_diag_group
 
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE update_diagnostics_3d_real
 
@@ -408,7 +408,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UPDATE_DIAG_FIELD'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -515,7 +515,7 @@ IF (error_code_ptr > 0) THEN
                     RoutineName, msg_out=error_message, locn_out=error_routine)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
 RETURN
 END SUBROUTINE update_diag_field
 
@@ -594,7 +594,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'BLANK_OUT_MISSING_DIAGS'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -618,7 +618,7 @@ DO group = 1, n_diag_group
         CALL error_report(ukca_config%i_error_method, error_code_ptr,          &
           'Invalid no. of dimensions for diagnostic output',                   &
           RoutineName, msg_out=error_message, locn_out=error_routine)
-        IF (LPROF_UKCA) THEN
+        IF (lprof_ukca) THEN
           CALL vernier_stop(vnr_handle_6)
         END IF
         RETURN
@@ -627,7 +627,7 @@ DO group = 1, n_diag_group
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_6)
 RETURN
 END SUBROUTINE blank_out_missing_diags
 

@@ -52,7 +52,7 @@ USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname,                     &
                           i_error_method_abort
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -167,7 +167,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_SET_DIAGNOSTIC_REQUESTS'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Use parent supplied argument for return code
 error_code_ptr => error_code
@@ -184,7 +184,7 @@ IF (.NOT. l_ukca_config_available) THEN
   CALL error_report(i_error_method_abort, error_code_ptr,                      &
          'No UKCA configuration has been set up', RoutineName,                 &
          msg_out=error_message, locn_out=error_routine)
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -285,7 +285,7 @@ IF (error_code_ptr > 0 .AND. message_txt /= '') THEN
                     RoutineName, msg_out=error_message, locn_out=error_routine)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_set_diagnostic_requests
 
@@ -346,7 +346,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_DIAG_REQUESTS'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -364,7 +364,7 @@ IF (SIZE(status_flags) /= n_req) THEN
     ' diagnostic requests'
   CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt,   &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
   RETURN
 END IF
 
@@ -387,7 +387,7 @@ DO i = 1, n_req
       TRIM(varnames(i)), ''''
     CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt, &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-    IF (LPROF_UKCA) THEN
+    IF (lprof_ukca) THEN
       CALL vernier_stop(vnr_handle_2)
     END IF
     RETURN
@@ -405,7 +405,7 @@ DO i = 1, n_req
       group, ' diagnostic request'
     CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt, &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-    IF (LPROF_UKCA) THEN
+    IF (lprof_ukca) THEN
       CALL vernier_stop(vnr_handle_2)
     END IF
     RETURN
@@ -428,7 +428,7 @@ DO i = 1, n_req
         CALL error_report(ukca_config%i_error_method, error_code_ptr,          &
                           message_txt, RoutineName, msg_out=error_message,     &
                           locn_out=error_routine)
-        IF (LPROF_UKCA) THEN
+        IF (lprof_ukca) THEN
           CALL vernier_stop(vnr_handle_2)
         END IF
         RETURN
@@ -448,7 +448,7 @@ DO i = 1, n_req
            'Diagnostic name ''' // TRIM(varnames(i)) //                        &
            ''' is not recognised',                                             &
            RoutineName, msg_out=error_message, locn_out=error_routine)
-    IF (LPROF_UKCA) THEN
+    IF (lprof_ukca) THEN
       CALL vernier_stop(vnr_handle_2)
     END IF
     RETURN
@@ -464,7 +464,7 @@ diag_requests(group)%varnames = varnames
 diag_requests(group)%status_flags = status_flags
 diag_requests(group)%i_master = i_master
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE set_diag_requests
 
@@ -534,7 +534,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_UPDATE_DIAGNOSTIC_REQUESTS'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Use parent supplied argument for return code
 error_code_ptr => error_code
@@ -549,7 +549,7 @@ IF (.NOT. l_ukca_config_available) THEN
   CALL error_report(i_error_method_abort, error_code_ptr,                      &
          'No UKCA configuration has been set up', RoutineName,                 &
          msg_out=error_message, locn_out=error_routine)
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
   RETURN
 END IF
 
@@ -585,7 +585,7 @@ IF (.NOT. l_status_flags_present) THEN
                      msg_out=error_message, locn_out=error_routine)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE ukca_update_diagnostic_requests
 
@@ -634,7 +634,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UPDATE_DIAG_REQUESTS'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -664,7 +664,7 @@ END IF
 IF (error_code_ptr > 0) THEN
   CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt,   &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
   RETURN
 END IF
 
@@ -687,7 +687,7 @@ DO i = 1, n_req
       CALL error_report(ukca_config%i_error_method, error_code_ptr,            &
                         message_txt, RoutineName,                              &
                         msg_out=error_message, locn_out=error_routine)
-      IF (LPROF_UKCA) THEN
+      IF (lprof_ukca) THEN
         CALL vernier_stop(vnr_handle_4)
       END IF
       RETURN
@@ -709,7 +709,7 @@ DO i = 1, n_req
         CALL error_report(ukca_config%i_error_method, error_code_ptr,          &
                           message_txt, RoutineName,                            &
                           msg_out=error_message, locn_out=error_routine)
-        IF (LPROF_UKCA) THEN
+        IF (lprof_ukca) THEN
           CALL vernier_stop(vnr_handle_4)
         END IF
         RETURN
@@ -727,7 +727,7 @@ END DO
 ! Return updated status flag array
 status_flags = diag_requests(group)%status_flags
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE update_diag_requests
 

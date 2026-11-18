@@ -67,7 +67,7 @@ USE parkind1,                          ONLY:                                   &
     jprb
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -114,7 +114,7 @@ CHARACTER (LEN=errormessagelength) :: cmessage
 INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*),   PARAMETER :: RoutineName='UKCA_RADAER_LFRIC_SETTINGS'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -269,7 +269,7 @@ IF (ukca_radaer_lfric%n_mode == 0 .OR. ukca_radaer_lfric%n_cpnt == 0) THEN
   CALL ereport(RoutineName,ierr,cmessage)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE ukca_radaer_lfric_settings
 

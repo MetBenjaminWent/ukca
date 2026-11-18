@@ -71,7 +71,7 @@ SUBROUTINE fastjx_opmie (dtaux,pomegax,u0,rfl,amf2,jxtra,                      &
 USE fastjx_data,    ONLY: atau0, lpar, m2_, n_, w_
 USE ereport_mod,    ONLY: ereport
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,       ONLY: jprb, jpim
 USE errormessagelength_mod, ONLY: errormessagelength
 USE fastjx_miesct_mod, ONLY: fastjx_miesct
@@ -151,7 +151,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_OPMIE'
 !-----------------------------------------------
 ! End of Header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO l2 = 1,(2*(lpar+1)),1
   jaddlv(l2) = jxtra(l2)
@@ -449,7 +449,7 @@ DO k=1,w_
 
 END DO  ! wavelength loop!
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE fastjx_opmie

@@ -167,7 +167,7 @@ USE ukca_config_constants_mod, ONLY: boltzmann
 USE ukca_constants,     ONLY: nmol, conc_eps
 USE ukca_binapara_mod,  ONLY: ukca_binapara
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,           ONLY: jprb, jpim
 USE ereport_mod,        ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
@@ -250,7 +250,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CALCNUCRATE'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !     i_bhn_method = i_bhn_method_kulmala   ! set for Kulmala
 i_bhn_method = i_bhn_method_vekhamaki ! set for Vehkamakki
@@ -426,7 +426,7 @@ IF ((i_nuc_method == 2) .OR. (i_nuc_method == 3)) THEN
   END DO    ! Loop over NBOX
 END IF     ! METHOD 2 OR 3
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_calcnucrate
 END MODULE ukca_calcnucrate_mod

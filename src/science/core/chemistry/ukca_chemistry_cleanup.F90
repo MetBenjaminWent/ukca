@@ -57,7 +57,7 @@ USE ereport_mod,                   ONLY: ereport
 USE errormessagelength_mod,        ONLY: errormessagelength
 USE parkind1,                      ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -105,7 +105,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEMISTRY_CLEANUP'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (ukca_config%l_ukca_offline_be) RETURN
 
@@ -192,7 +192,7 @@ ELSE IF (.NOT. ukca_config%l_ukca_offline) THEN   ! tropospheric chemistry
 
 END IF     ! l_ukca_strat etc
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE ukca_chemistry_cleanup
 

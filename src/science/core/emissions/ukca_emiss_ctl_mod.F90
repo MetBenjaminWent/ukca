@@ -123,7 +123,7 @@ USE errormessagelength_mod, ONLY: errormessagelength
 
 USE parkind1,             ONLY: jpim, jprb      ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 USE ukca_diurnal_isop_ems_mod, ONLY: ukca_diurnal_isop_ems
 USE ukca_light_ctl_mod, ONLY: ukca_light_ctl
@@ -339,7 +339,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_EMISS_CTL'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -1287,7 +1287,7 @@ IF (ukca_config%l_ukca_persist_off) THEN
 
 END IF  !  ukca_config%l_ukca_persist_off
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_emiss_ctl
@@ -1298,7 +1298,7 @@ SUBROUTINE regrid_jules_emi(                                                   &
 
 USE parkind1,             ONLY: jpim, jprb      ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 !
@@ -1329,7 +1329,7 @@ INTEGER                         :: ii, jj, ll
 CHARACTER(LEN=*), PARAMETER :: RoutineName='REGRID_JULES_EMI'
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Initialise emission_2D
 DO jj = 1, rows
@@ -1350,7 +1350,7 @@ DO ll = 1, land_points
   emission_2D (ii,jj) = emission_2D (ii,jj) * land_fraction(ii,jj)
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 
 RETURN
 END SUBROUTINE regrid_jules_emi

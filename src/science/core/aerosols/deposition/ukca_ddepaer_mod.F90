@@ -241,7 +241,7 @@ USE ukca_vgrav_av_k_mod,     ONLY: ukca_vgrav_av_k
 USE ukca_um_legacy_mod,      ONLY: vkman, gg => g, rgas => r
 USE ukca_types_mod,          ONLY: log_small
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -320,7 +320,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DDEPAER'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -672,7 +672,7 @@ DO imode=1,nmodes
   END IF ! if mode present
 END DO ! loop over modes
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_ddepaer
 

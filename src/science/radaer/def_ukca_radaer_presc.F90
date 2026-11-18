@@ -52,7 +52,7 @@ SUBROUTINE allocate_ukca_radaer_presc(rad, row_length, rows, model_levels,     &
                                       n_wavebands)
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,        ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -68,7 +68,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER (LEN=*), PARAMETER :: RoutineName = 'ALLOCATE_UKCA_RADAER_PRESC'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 rad%dim1 = row_length
 rad%dim2 = rows
@@ -85,7 +85,7 @@ IF (.NOT. ALLOCATED(rad%absorption)) THEN
 END IF
 rad%absorption(:,:,:,:) = 0.0
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE allocate_ukca_radaer_presc

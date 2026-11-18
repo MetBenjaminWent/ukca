@@ -11,7 +11,7 @@ MODULE quanto1d_mod
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 
@@ -38,7 +38,7 @@ CONTAINS
 SUBROUTINE quanto1d(t,jpwav,wavenm,qeo1d)
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -67,7 +67,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='QUANTO1D'
 
 
 !     Set values of PHI at values not covered by the parameterisation.
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 qeo1d(1:91) = 0.9
 
 qeo1d(98:jpwav) = 0.0
@@ -96,7 +96,7 @@ DO jw = 92 , 97
   qeo1d(jw) = MAX(qeo1d(jw),0.0)
 
 END DO
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE quanto1d

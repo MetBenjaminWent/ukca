@@ -23,7 +23,7 @@
 MODULE ukca_cspecies
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,        ONLY: jprb, jpim
 IMPLICIT NONE
 PRIVATE
@@ -210,7 +210,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CALC_CSPECIES'
 !     Add new entry if new tracers are introduced, and add value for c_xx
 !      in UKCA_CONSTANTS, where xx is the species.
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 ! advected tracers
 c_species = 0.0
 WHERE (advt == 'Ox        ') c_species = c_o3
@@ -901,7 +901,7 @@ IF (printstatus > prstatus_oper) THEN
   CALL umPrint(umMessage,src='ukca_cspecies')
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_calc_cspecies
 

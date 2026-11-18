@@ -76,7 +76,7 @@ USE ukca_environment_fields_mod, ONLY: atmospheric_co2,                        &
 USE ukca_constants, ONLY: c_co2, c_h2, c_n2, c_o2, c_ch4
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod, ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 
@@ -133,7 +133,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_FYINIT'
 !       1.  Species initialised only at start of dynamical step.
 !           ------- ----------- ---- -- ----- -- --------- -----
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 ! OMP CRITICAL will only allow one thread through this code at a time,
 ! while the other threads are held until completion.
 !$OMP CRITICAL (asad_fyinit_init)
@@ -313,7 +313,7 @@ IF (ofirst .AND.                                                               &
   END DO
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_fyinit
 END MODULE asad_fyinit_mod

@@ -67,7 +67,7 @@ USE ukca_um_legacy_mod, ONLY: copydiag_3d, len_stlist, stindex, stlist,        &
 
 USE ereport_mod,  ONLY: ereport
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,     ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -126,7 +126,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEM_DIAGS' ! used for EReport
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 icode = 0 ! Initialise error status
 im_index = 1
@@ -348,7 +348,7 @@ END IF  ! sf(item,UKCA_diag_sect)
 
 ! ----------------------------------------------------------------------
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_chem_diags
 

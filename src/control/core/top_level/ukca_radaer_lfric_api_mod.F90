@@ -115,7 +115,7 @@ USE ukca_radaer_prepare_mod,           ONLY: ukca_radaer_prepare
 
 USE parkind1,                          ONLY: jpim, jprb
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -279,7 +279,7 @@ LOGICAL :: l_soluble( nmodes )
 INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*),   PARAMETER :: RoutineName='UKCA_RADAER_LFRIC_INTERFACE'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !-----------------------------------------------------------------------
 
@@ -919,7 +919,7 @@ IF ( l_aod_ukca_cor_ins .OR. l_aaod_ukca_cor_ins ) THEN
 
 END IF ! Calculate AOD Coarse Insoluble mode
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE ukca_radaer_lfric_interface
 

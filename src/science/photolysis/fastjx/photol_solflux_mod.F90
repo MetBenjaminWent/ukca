@@ -49,7 +49,7 @@ SUBROUTINE photol_solflux(current_time, tau, lookup, solcyc, x)
 
 USE fastjx_data, ONLY: solcyc_av, solcyc_ts, n_solcyc_av, n_solcyc_ts
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -90,7 +90,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='PHOTOL_SOLFLUX'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 
 ! initialise to zero
@@ -192,7 +192,7 @@ ELSE ! using periodic avg. cycle
   END IF
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE photol_solflux
 

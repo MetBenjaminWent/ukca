@@ -60,7 +60,7 @@ USE ukca_config_constants_mod,  ONLY: rho_water, avogadro
 USE ukca_constants,  ONLY: m_air, H_plus
 USE parkind1,        ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod,     ONLY: ereport
 USE umPrintMgr, ONLY:                                                          &
     umPrint,                                                                   &
@@ -106,7 +106,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_HETERO'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !       1. Identify equations and calculate fractional dissociation
 !          --------------------------------------------------------
@@ -335,7 +335,7 @@ ELSE
   IF (iho2_h > 0)  rk(:,iho2_h) = 0.0
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_hetero
 END MODULE asad_hetero_mod

@@ -52,7 +52,7 @@ USE qsat_mod,                        ONLY:                                     &
     qsat_wat_mix
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -104,7 +104,7 @@ REAL, PARAMETER :: less_than_one = 0.999
 INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*),   PARAMETER :: RoutineName='GLOMAP_CLIM_CALC_RH_FRAC_CLEAR'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 CALL qsat_wat_mix ( qsatmr_wat_1d, t_theta_levels_1d, p_theta_levels_1d,       &
                     n_points )
@@ -133,7 +133,7 @@ DO loop = 1, n_points
   END IF
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE glomap_clim_calc_rh_frac_clear
 END MODULE glomap_clim_calc_rh_frac_clear_mod

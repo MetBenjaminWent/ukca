@@ -75,7 +75,7 @@ USE, INTRINSIC :: ieee_arithmetic
 
 USE parkind1,             ONLY: jpim, jprb      ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -127,7 +127,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='PLUMERIA_MAIN'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! ----------------------------------------------------------------------
 ! Set default values

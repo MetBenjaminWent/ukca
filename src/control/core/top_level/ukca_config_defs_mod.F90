@@ -73,7 +73,7 @@ USE ukca_config_specification_mod, ONLY: ukca_config, glomap_config
 USE asad_mod,                ONLY: jpro2
 USE parkind1,                ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod,             ONLY: ereport
 USE ukca_missing_data_mod,   ONLY: rmdi
 USE errormessagelength_mod,  ONLY: errormessagelength
@@ -92,7 +92,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SET_CONFIG_DEFS'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !     Set max fluxdiags to zero initially
 nmax_strat_fluxdiags = 0
@@ -558,7 +558,7 @@ n_use_tracers   = n_chem_tracers + n_mode_tracers +                            &
 n_use_emissions = n_chem_emissions + n_mode_emissions +                        &
                   n_3d_emissions
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE ukca_set_config_defs

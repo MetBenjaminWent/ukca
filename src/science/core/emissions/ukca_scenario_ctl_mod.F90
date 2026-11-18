@@ -52,7 +52,7 @@ SUBROUTINE ukca_scenario_ctl(n_boundary_vals, lbc_spec,                        &
                              lbc_mmr, perform_lumping)
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,              ONLY: jprb, jpim
 USE ereport_mod,           ONLY: ereport
 USE umPrintMgr, ONLY: umPrint, umMessage, PrStatus_Oper, PrintStatus
@@ -88,7 +88,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SCENARIO_CTL'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 SELECT CASE (ukca_config%i_strat_lbc_source)
 CASE (i_strat_lbc_env)
@@ -131,7 +131,7 @@ END IF
 
 L_first = .FALSE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_scenario_ctl

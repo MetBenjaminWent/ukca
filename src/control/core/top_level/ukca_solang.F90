@@ -39,7 +39,7 @@ SUBROUTINE ukca_solang (sindec, t, dt, eqt, sinlat, coslat, longit,            &
 
 USE ukca_constants, ONLY: rsec_per_day, pi, pi_over_180
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -77,7 +77,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SOLANG'
 
 REAL :: cosdec
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 trad  =  t * s2r - pi
 dtrad = dt * s2r
 cosdec = SQRT(1.0 - sindec**2)
@@ -90,7 +90,7 @@ DO j = 1, k
   cosz(j) = difsin*coscos/dtrad + sinsin
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_solang
 END MODULE ukca_solang_mod

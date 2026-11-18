@@ -29,7 +29,7 @@ MODULE ukca_conserve_mod
 USE ukca_config_specification_mod, ONLY: ukca_config
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus,                         &
@@ -159,7 +159,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CONSERVE'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 IF (firstcall) THEN
 
   IF (ntracers /= jpctr) THEN
@@ -664,7 +664,7 @@ ELSE    ! direction = F
   IF (ALLOCATED(corrfac)) DEALLOCATE(corrfac)
 END IF   ! direction
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_conserve
 

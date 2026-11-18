@@ -242,7 +242,7 @@ USE asad_mod,    ONLY: jddepc, jddept, ih_o3_const,                            &
                        ct_k298, ct_dhr, ct_kd298, ct_ddhr, jpeq, jpsp,         &
                        jpctr, jpspec, jpbk, jppj, jptk, jphk, jpdd, jpdw
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,    ONLY: jprb, jpim
 USE ereport_mod, ONLY: ereport
 USE umPrintMgr,  ONLY: umPrint, umMessage
@@ -258,7 +258,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INIT_OFFLINE'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Define species index for the constant aqueous species
 ih_o3_const = 1
@@ -304,7 +304,7 @@ rath_defs_offline = [rath_defs_a]
 depvel_defs_offline = depvel_defs_a
 henry_defs_offline  = henry_defs_a
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_init_offline
 

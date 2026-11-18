@@ -55,7 +55,7 @@ USE ereport_mod,            ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 USE parkind1,               ONLY: jpim, jprb      ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -94,7 +94,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='PLUMERIA_FINDT_INIT'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Set default values
 Cpa_avg  = 1060.0
@@ -209,7 +209,7 @@ USE ereport_mod,            ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 USE parkind1,               ONLY: jpim, jprb      ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -262,7 +262,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='PLUMERIA_FINDT'
 
 ! end of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Set default values
 kgmole_air = 8.314 / 286.98         ! Molar weight of air

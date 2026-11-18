@@ -41,7 +41,7 @@ USE asad_mod,           ONLY: depvel, jddepc, jddept, jpdd
 USE ukca_chem_defs_mod, ONLY: depvel_defs
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod, ONLY: ereport
 
 
@@ -60,7 +60,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INDDEP'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !       Reading dry deposition velocities from module
 !       Dataset is for 6 time points and 5 land categories.
@@ -79,7 +79,7 @@ DO ns=1,jpdd
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_inddep
 END MODULE ukca_inddep_mod

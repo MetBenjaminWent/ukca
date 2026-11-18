@@ -41,7 +41,7 @@ USE ukca_constants,   ONLY: m_c, m_c5h8, m_ch3oh, m_ch4, m_dms,                &
                             m_no2, m_s, m_so2
 USE parkind1,         ONLY: jpim, jprb     ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -115,7 +115,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='VERTICAL_EMISS_FACTORS'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ierror = 0
 
@@ -356,7 +356,7 @@ IF (l_ref_snap_prof) THEN
     vert_scaling_3d  (1:row_length, 1:rows, 1:model_levels) )
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE vertical_emiss_factors
@@ -392,7 +392,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='HOURLY_EMISS_FACTORS'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ierror = 0
 
@@ -524,7 +524,7 @@ IF (ierror > 0) THEN
   CALL ereport ('HOURLY_EMISS_FACTORS', ierror, cmessage)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 
 RETURN
 END SUBROUTINE hourly_emiss_factors
@@ -559,7 +559,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='DAILY_EMISS_FACTORS'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ierror = 0
 
@@ -653,7 +653,7 @@ IF (ierror > 0) THEN
   CALL ereport ('DAILY_EMISS_FACTORS', ierror, cmessage)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 
 RETURN
 END SUBROUTINE daily_emiss_factors
@@ -729,7 +729,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='BASE_EMISS_FACTORS'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 ierror = 0
 
@@ -881,7 +881,7 @@ IF (ierror > 0) THEN
   CALL ereport ('BASE_EMISS_FACTORS', ierror, cmessage)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 
 RETURN
 END SUBROUTINE base_emiss_factors
@@ -923,7 +923,7 @@ REAL, PARAMETER :: ocfact = 1.4    ! Factor to convert from C to POM
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 ierror = 0
 
@@ -1010,7 +1010,7 @@ IF (ierror > 0) THEN
   CALL ereport ('GET_BASE_SCALING', ierror, cmessage)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
 
 RETURN
 END SUBROUTINE get_base_scaling
@@ -1072,7 +1072,7 @@ LOGICAL, PARAMETER :: test_vertprof = .FALSE.
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 ! Loops over all model grid cells to calculate the emission contribution
 ! for each of them. Values stored in vert_scaling_3d.
@@ -1144,7 +1144,7 @@ IF (test_vertprof) THEN
   CALL umPrint(umMessage,src='regrid_vertic_profs')
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_6)
 
 RETURN
 END SUBROUTINE regrid_vertic_profs

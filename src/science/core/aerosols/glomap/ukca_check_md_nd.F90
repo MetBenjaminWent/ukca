@@ -72,7 +72,7 @@ USE ukca_config_specification_mod, ONLY: glomap_variables
 USE ukca_mode_setup,   ONLY: nmodes
 USE parkind1,          ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod,       ONLY: ereport
 USE ukca_types_mod,    ONLY: logical_32
 USE umPrintMgr,        ONLY:                                                   &
@@ -122,7 +122,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHECK_MD_ND'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -193,7 +193,7 @@ IF (toterr > 0) THEN
   END IF
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_check_md_nd
 END MODULE ukca_check_md_nd_mod

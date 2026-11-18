@@ -27,7 +27,7 @@ MODULE asad_mod
 USE ukca_config_specification_mod, ONLY: ukca_config, int_method_nr
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 
 USE ukca_missing_data_mod, ONLY: imdi
@@ -380,7 +380,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_MOD_PRE_SETUP_INIT'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! All arrays within ASAD which previously were of size jpctr have been
 ! resized to jpcspf, unless they specifically refer to number of transported
@@ -400,7 +400,7 @@ IF (.NOT. ALLOCATED(family)) ALLOCATE(family(jpspec))
 IF (.NOT. ALLOCATED(speci)) ALLOCATE(speci(jpspec))
 IF (.NOT. ALLOCATED(ctype)) ALLOCATE(ctype(jpspec))
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_mod_pre_setup_init
 
@@ -421,7 +421,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_MOD_INIT'
 
 !$OMP THREADPRIVATE(firstcall)
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 ! nullify prod and slos on firstcall to give DISSASSOCIATED attribute
 IF (firstcall) THEN
   NULLIFY(prod)
@@ -625,7 +625,7 @@ slos => pd(:,jpspec+1:2*jpspec)
 deriv(:,:,:) = 1.0      ! Temp fix for deriv being uninitialised in first
                         ! solver iteration
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE asad_mod_init
 
@@ -644,7 +644,7 @@ INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_MOD_INIT_SPATIAL_VARS'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Set integration method (1 = IMPACT; 3 = N-R solver; 5 = Backward-Euler)
 method = ukca_config%ukca_int_method
@@ -741,7 +741,7 @@ za(:)     = 0.0
 rk(:,:)   = 0.0
 prk(:,:)  = 0.0
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE asad_mod_init_spatial_vars
 
@@ -759,7 +759,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'ASAD_MOD_DEALLOC_SPATIAL_VARS'
 
 INTEGER(KIND=vik) :: vnr_handle_4
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 ! Set integration method (1 = IMPACT; 3 = N-R solver; 5 = Backward-Euler)
 method = ukca_config%ukca_int_method
@@ -806,7 +806,7 @@ IF (ALLOCATED(deriv)) DEALLOCATE(deriv)
 IF (ALLOCATED(co3)) DEALLOCATE(co3)
 IF (ALLOCATED(pd)) DEALLOCATE(pd)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 
 END SUBROUTINE asad_mod_dealloc_spatial_vars
 

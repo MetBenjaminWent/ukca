@@ -76,7 +76,7 @@ USE ukca_mode_setup,    ONLY:                                                  &
     mode_sup_insol
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 USE umPrintMgr, ONLY: umMessage
 
@@ -137,7 +137,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 !-----------------------------------------------------------------------------
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -335,7 +335,7 @@ IF (verbose > 1) THEN
   END DO
 END IF ! if VERBOSE > 1
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_mode_check_artefacts
 
@@ -362,7 +362,7 @@ USE ukca_mode_setup,    ONLY:                                                  &
     mode_sup_insol
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 USE ukca_types_mod, ONLY: logical_32
 
@@ -404,7 +404,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 
 !-----------------------------------------------------------------------------
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -490,7 +490,7 @@ DO icp=1,ncp
   END IF
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_mode_check_mdt
 

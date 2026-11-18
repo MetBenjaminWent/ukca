@@ -56,7 +56,7 @@ USE asad_mod,        ONLY: ctype, jpif, jpfm, jpfrpx, jpmsp, jpoo,             &
                            jpspec, jpnr
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod, ONLY: ereport
 USE umPrintMgr, ONLY: umPrint, umMessage
 USE errormessagelength_mod, ONLY: errormessagelength
@@ -99,7 +99,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_INIX'
 !       1.  Initialise the types of specie arrays.
 !           ---------- --- ----- -- ------ -------
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 jpnpx3 = (jpnr/(3*3))+3*3
 nstst = 0
 nf = 0
@@ -307,7 +307,7 @@ DO j = 1, jpspec
   END IF
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_inix
 END MODULE asad_inix_mod

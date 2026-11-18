@@ -93,7 +93,7 @@ USE ukca_constants,   ONLY: pi
 USE ukca_um_legacy_mod, ONLY: rgas => r
 USE ukca_types_mod,   ONLY: log_small
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,         ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -143,7 +143,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_COND_COFF_V'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 term1=SQRT(8.0*rmol/(pi*mmcg))
 ! .. used in calcn of thermal velocity of condensable gas
@@ -213,7 +213,7 @@ IF (ifuchs == 2) THEN
   END WHERE
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_cond_coff_v
 END MODULE ukca_cond_coff_v_mod

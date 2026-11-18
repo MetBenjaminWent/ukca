@@ -49,7 +49,7 @@ SUBROUTINE ukca_light_ctl(                                                     &
 USE ukca_um_legacy_mod,    ONLY: gg => g
 USE ukca_constants,        ONLY: c_no2, c_n
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,              ONLY: jprb, jpim
 USE asad_chem_flux_diags,  ONLY: L_asad_use_chem_diags,                        &
     L_asad_use_light_diags_tot, L_asad_use_light_diags_c2c,                    &
@@ -167,7 +167,7 @@ ext_ic = 0.0
 
 ! Find heights of model half levels
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Find heights of model levels
 
@@ -299,7 +299,7 @@ DO k = 1,p_levels
   no2_to_air(:,:,k) = n_gridbox (:,:,k)*c_no2/c_n/mass
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_light_ctl
 END MODULE ukca_light_ctl_mod

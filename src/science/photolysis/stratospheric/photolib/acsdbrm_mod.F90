@@ -11,7 +11,7 @@ MODULE acsdbrm_mod
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 ! Description:
@@ -37,7 +37,7 @@ SUBROUTINE acsdbrm(t,adbrm)
 USE ukca_parpho_mod, ONLY: jpwav
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 REAL, INTENT(IN) :: t               ! Temperature in kelvin.
@@ -63,7 +63,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSDBRM'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 IF (first) THEN
   adbrm298 = adbrm(65:93)
   first = .FALSE.
@@ -72,7 +72,7 @@ END IF
 tc = MIN(MAX(t,250.0),348.0) - 298.0
 adbrm(65:93) = adbrm298 * EXP(b*tc)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE acsdbrm

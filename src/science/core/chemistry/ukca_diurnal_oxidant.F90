@@ -32,7 +32,7 @@
 MODULE ukca_diurnal_oxidant
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,          ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -87,7 +87,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SET_DIURNAL_OX'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 SELECT CASE(species(1:4))
 CASE ('OH  ','HO2 ')
@@ -144,7 +144,7 @@ CASE ('HO2 ')
   ho2_offline_diag(:,nlev) = field(:)
 END SELECT
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_set_diurnal_ox
 
@@ -187,7 +187,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SET_DIURNAL_OX_COL'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! get mapping from theta_field to proper x*y. Field is 1 column here!
 location = ix + ((jy - 1)*ukca_config%row_length)
@@ -245,7 +245,7 @@ CASE ('HO2 ')
   ho2_offline_diag(location,:) = field(:)
 END SELECT
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_set_diurnal_ox_col
 
@@ -293,7 +293,7 @@ INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INT_COSZ'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 decls = ASIN(sindec)
 
@@ -329,7 +329,7 @@ intcosza = RESHAPE(int_zenith_angle,[row_length*rows])
 cosza = RESHAPE(cos_zenith_angle,[row_length*rows])
 daylength1d = RESHAPE(daylength,[row_length*rows])
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE ukca_int_cosz
 
@@ -346,13 +346,13 @@ IMPLICIT NONE
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'DEALLOC_DIURNAL_OXIDANT'
 INTEGER(KIND=vik) :: vnr_handle_4
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 IF (ALLOCATED(daylength1d)) DEALLOCATE(daylength1d)
 IF (ALLOCATED(cosza))       DEALLOCATE(cosza)
 IF (ALLOCATED(intcosza))    DEALLOCATE(intcosza)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 
 END SUBROUTINE dealloc_diurnal_oxidant
 END MODULE ukca_diurnal_oxidant

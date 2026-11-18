@@ -52,7 +52,7 @@
 MODULE ukca_environment_req_mod
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 
 USE ukca_fieldname_mod,  ONLY: maxlen_fieldname,                               &
@@ -443,7 +443,7 @@ CHARACTER(LEN=maxlen_fieldname) :: use_fldname = ''
 INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'INIT_ENVIRONMENT_REQ'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -461,7 +461,7 @@ IF ((.NOT. ukca_config%l_ukca_chem) .AND. (.NOT. ukca_config%l_ukca_mode)) THEN
   ALLOCATE(environ_field_ptrs(0))
   ALLOCATE(l_environ_field_available(0))
   l_environ_req_available = .TRUE.
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -1038,7 +1038,7 @@ IF (.NOT. ukca_config%l_ukca_emissions_off) THEN
         IF (PRESENT(error_message)) error_message =                            &
           'Unexpected number of dust emissions required'
         IF (PRESENT(error_routine)) error_routine = RoutineName
-        IF (LPROF_UKCA)                                                             &
+        IF (lprof_ukca)                                                             &
           CALL vernier_stop(vnr_handle_1)
         RETURN
       END IF
@@ -1728,7 +1728,7 @@ IF (n > n_max) THEN
     'Number of required environment fields (', n,                              &
     ') exceeds maximum: n_max = ', n_max
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -1754,7 +1754,7 @@ l_environ_field_available(:) = .FALSE.
 ! Set public flag to show availability of environment fields requirement
 l_environ_req_available = .TRUE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE init_environment_req
 
@@ -1882,7 +1882,7 @@ CHARACTER(LEN=maxlen_procname), OPTIONAL, INTENT(OUT) :: error_routine
 INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_GET_ENVGROUP_VARLISTS'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -1911,7 +1911,7 @@ IF (.NOT. l_environ_req_available) THEN
   IF (PRESENT(varnames_landpft_real_ptr)) NULLIFY(varnames_landpft_real_ptr)
   IF (PRESENT(varnames_fullhtphot_real_ptr))                                   &
     NULLIFY(varnames_fullhtphot_real_ptr)
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
   RETURN
 END IF
 
@@ -2039,7 +2039,7 @@ IF (PRESENT(varnames_fullhtphot_real_ptr)) THEN
   varnames_fullhtphot_real_ptr => environ_field_varnames_fullhtphot_real
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_get_envgroup_varlists
 
@@ -2067,7 +2067,7 @@ INTEGER :: i
 INTEGER(KIND=vik) :: vnr_handle_3
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SETUP_ENVGROUP_VARLIST'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 n_req = SIZE(environ_field_varnames)
 
@@ -2087,7 +2087,7 @@ DO i = 1, n_req
   END IF
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE setup_envgroup_varlist
 
@@ -2115,7 +2115,7 @@ LOGICAL :: found
 INTEGER(KIND=vik) :: vnr_handle_4
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'ENVIRON_FIELD_INDEX'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 environ_field_index = 0
 IF (l_environ_req_available) THEN
@@ -2128,7 +2128,7 @@ IF (l_environ_req_available) THEN
   IF (found) environ_field_index = i
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 RETURN
 END FUNCTION environ_field_index
 
@@ -2166,7 +2166,7 @@ INTEGER :: i
 INTEGER(KIND=vik) :: vnr_handle_5
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'CHECK_ENVIRONMENT_AVAILABILITY'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 IF (l_environ_req_available) THEN
 
@@ -2191,7 +2191,7 @@ ELSE
   IF (PRESENT(availability_ptr)) NULLIFY(availability_ptr)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
 RETURN
 END SUBROUTINE check_environment_availability
 
@@ -2217,7 +2217,7 @@ INTEGER :: i
 INTEGER(KIND=vik) :: vnr_handle_6
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'ENVIRON_FIELD_AVAILABLE'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 environ_field_available = .FALSE.
 
@@ -2232,7 +2232,7 @@ IF ( l_environ_req_available ) THEN
   ! If we are here the supplied varname does not match any required env field
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_6)
 RETURN
 END FUNCTION environ_field_available
 
@@ -2308,7 +2308,7 @@ LOGICAL :: l_print_photol_rates_table              ! T if photol_rates summary
 INTEGER(KIND=vik) :: vnr_handle_7
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'PRINT_ENVIRONMENT_SUMMARY'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_7, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_7, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -2321,7 +2321,7 @@ IF (SIZE(environ_ptrs) /= SIZE(environ_field_varnames)) THEN
     WRITE(error_message, '(A)')                                                &
       'Size of environ_ptrs does not match no. of required environment fields'
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA)                                                                   &
+  IF (lprof_ukca)                                                                   &
     CALL vernier_stop(vnr_handle_7)
   RETURN
 END IF
@@ -2462,7 +2462,7 @@ DO i = 1, SIZE(environ_field_varnames)
         'Missing pointer for environmental driver field ',                     &
         environ_field_varnames(i)
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA)                                                                 &
+    IF (lprof_ukca)                                                                 &
       CALL vernier_stop(vnr_handle_7)
     RETURN
   END IF
@@ -2565,7 +2565,7 @@ IF (l_print_photol_rates_table) THEN
           'Missing pointer for environmental driver field ',                   &
           environ_field_varnames(i)
       IF (PRESENT(error_routine)) error_routine = RoutineName
-      IF (LPROF_UKCA)                                                               &
+      IF (lprof_ukca)                                                               &
         CALL vernier_stop(vnr_handle_7)
       RETURN
     END IF
@@ -2606,7 +2606,7 @@ IF (l_print_logicals_table) THEN
           'Missing pointer for environmental driver field ',                   &
           environ_field_varnames(i)
       IF (PRESENT(error_routine)) error_routine = RoutineName
-      IF (LPROF_UKCA)                                                               &
+      IF (lprof_ukca)                                                               &
         CALL vernier_stop(vnr_handle_7)
       RETURN
     END IF
@@ -2615,7 +2615,7 @@ IF (l_print_logicals_table) THEN
 
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_7)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_7)
 RETURN
 END SUBROUTINE print_environment_summary
 
@@ -2639,7 +2639,7 @@ IMPLICIT NONE
 INTEGER(KIND=vik) :: vnr_handle_8
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'CLEAR_ENVIRONMENT_REQ'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_8, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_8, ModuleName//':'//RoutineName)
 
 IF (ALLOCATED(environ_field_varnames)) DEALLOCATE(environ_field_varnames)
 
@@ -2680,7 +2680,7 @@ IF (ALLOCATED(l_environ_field_available)) DEALLOCATE(l_environ_field_available)
 
 l_environ_req_available = .FALSE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_8)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_8)
 RETURN
 END SUBROUTINE clear_environment_req
 

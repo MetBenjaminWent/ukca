@@ -47,7 +47,7 @@ USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname
 
 ! Dr Hook modules
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -154,7 +154,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_STEP_1D_DOMAIN'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Use parent supplied argument for return code.
 ! Note that this argument is redundant if UKCA is configured to abort on error
@@ -246,7 +246,7 @@ CALL ntp_dealloc()
 CALL tracer_dealloc()
 CALL diag_status_dealloc(diagnostics)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_step_1d_domain
 
@@ -324,7 +324,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_STEP_3D_DOMAIN'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Use parent supplied argument for return code.
 ! Note that this argument is redundant if UKCA is configured to abort on error
@@ -419,7 +419,7 @@ CALL ntp_dealloc()
 CALL tracer_dealloc()
 CALL diag_status_dealloc(diagnostics)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_step_3d_domain
 

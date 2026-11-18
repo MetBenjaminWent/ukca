@@ -56,7 +56,7 @@ SUBROUTINE asad_posthet
 
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 USE ereport_mod, ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
@@ -70,13 +70,13 @@ CHARACTER (LEN=* ), PARAMETER ::  RoutineName='ASAD_POSTHET'
 INTEGER(KIND=vik) :: vnr_handle_1
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 cmessage = 'Routine should not be callable'
 icode = 1
 
 CALL ereport(RoutineName,icode,cmessage)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_posthet
 END MODULE asad_posthet_mod

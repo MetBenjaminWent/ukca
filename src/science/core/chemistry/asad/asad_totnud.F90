@@ -46,7 +46,7 @@ USE asad_mod, ONLY: tnd, p, t, pmintnd, pmin
 USE ukca_config_constants_mod, ONLY: boltzmann
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 
@@ -63,7 +63,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_TOTNUD'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 zb = boltzmann*1.0e6
 
 !       1. Total number density (1e6 converts numbers to /cm**3).
@@ -74,7 +74,7 @@ DO jl = 1, n_points
   pmintnd(jl) = pmin * tnd(jl)
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_totnud
 END MODULE asad_totnud_mod

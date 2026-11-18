@@ -69,7 +69,7 @@ CONTAINS
 SUBROUTINE fastjx_set_aer(error_code_ptr, error_message, error_routine)
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 
 USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname,                     &
@@ -96,7 +96,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_SET_AER'
 
 ! ********************************
 ! EOH
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialise aerosol index
 
@@ -122,13 +122,13 @@ DO i = 1,mx
         miedx(i), ' ', naa
     CALL error_report(photol_config%i_error_method, error_code_ptr, cmessage,  &
             RoutineName, locn_out=error_routine, msg_out=error_message )
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF   ! miedx range
 
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE fastjx_set_aer
 END MODULE fastjx_set_aer_mod

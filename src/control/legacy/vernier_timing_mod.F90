@@ -9,7 +9,7 @@ MODULE vernier_timing_mod
 
   IMPLICIT NONE
 
-  LOGICAL, PARAMETER :: LPROF_UKCA = .FALSE.
+  LOGICAL, PARAMETER :: lprof_ukca = .FALSE.
 
 END MODULE vernier_timing_mod
 #endif

@@ -70,7 +70,7 @@ USE ukca_scenario_common_mod, ONLY: ich2br2, i_cfcl3, i_cf2cl2, i_cf2clcfcl2,  &
 
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,          ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -88,7 +88,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SCENARIO_PRESCRIBED'
 
 
 ! Body of subroutine
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (first) THEN
   ! output UKCA environment values from parent model
@@ -214,7 +214,7 @@ END IF
 CALL ukca_set_lbc_mmr(n_lbc_specs, lbc_mmr)
 
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_scenario_prescribed
 END MODULE ukca_scenario_prescribed_mod

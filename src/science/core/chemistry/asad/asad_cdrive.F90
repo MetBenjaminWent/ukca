@@ -106,7 +106,7 @@ USE ukca_config_specification_mod, ONLY: ukca_config
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod, ONLY: ereport
 
 USE umPrintMgr, ONLY: umMessage, umPrint
@@ -183,7 +183,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_CDRIVE'
 
 !       1.  Initialise variables and arrays
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !       1.1  Copy pressure and temperature to asad_mod
 
@@ -372,7 +372,7 @@ IF ( lvmr ) THEN
   END DO
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_cdrive
 END MODULE asad_cdrive_mod

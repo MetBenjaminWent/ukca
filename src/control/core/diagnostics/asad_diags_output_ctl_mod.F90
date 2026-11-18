@@ -59,7 +59,7 @@ USE ukca_diagnostics_output_mod, ONLY: update_diagnostics_2d_real,             &
 USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -101,7 +101,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_DIAGS_OUTPUT_CTL'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 im_index = 1
 
@@ -143,7 +143,7 @@ DO l=1,n_asad_diags
                                       error_message=error_message,             &
                                       error_routine=error_routine)
       IF (error_code_ptr > 0) THEN
-        IF (LPROF_UKCA)                                                             &
+        IF (lprof_ukca)                                                             &
           CALL vernier_stop(vnr_handle_1)
         RETURN
       END IF
@@ -183,7 +183,7 @@ DO l=1,n_asad_diags
                                       error_message=error_message,             &
                                       error_routine=error_routine)
       IF (error_code_ptr > 0) THEN
-        IF (LPROF_UKCA)                                                             &
+        IF (lprof_ukca)                                                             &
           CALL vernier_stop(vnr_handle_1)
         RETURN
       END IF
@@ -199,7 +199,7 @@ DO i=1,n_chemdiags
        DEALLOCATE(asad_chemdiags(i)%throughput)
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_diags_output_ctl
 

@@ -53,7 +53,7 @@ USE ukca_mode_setup,      ONLY: nmodes,                                        &
 
 USE ukca_config_specification_mod, ONLY: ukca_config, glomap_variables
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,             ONLY: jprb, jpim
 USE ereport_mod,          ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Diag
@@ -130,7 +130,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_TROP_HETCHEM'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -359,7 +359,7 @@ IF (PrintStatus >= PrStatus_Diag) THEN
   CALL umPrint(umMessage,src='ukca_trop_hetchem')
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 
@@ -410,7 +410,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='CAL_N2O5'
 ! N2O5 begins here!
 !==============================================================
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! Convert RH to % (max = 100%)
 ! Values already limited to <= 1.0 - see rel_humid_frac in UKCA_MAIN1
@@ -563,7 +563,7 @@ CASE DEFAULT
 
 END SELECT
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 
 RETURN
 END FUNCTION cal_n2o5
@@ -624,7 +624,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='CAL_HO2'
 ! HO2 begins here!
 !==============================================================
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Convert rh to % (max = 100%)  !! RH is already <= 1.0
 rh_p(:)  = rh(:) * 100.0
@@ -762,7 +762,7 @@ CASE DEFAULT
 
 END SELECT
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END FUNCTION cal_ho2
 
@@ -832,7 +832,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='CAL_LOSS1K'
 ! CAL_LOSS1K begins here!
 !=============================================================
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 ! Convert molecular weight from g/mol to kg/mol
 mw_s = molec_wt_s/1.0e3
@@ -886,7 +886,7 @@ IF (PrintStatus >= PrStatus_Diag) THEN
   CALL umPrint(umMessage,src='ukca_trop_hetchem')
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 
 RETURN
 END FUNCTION cal_loss1k

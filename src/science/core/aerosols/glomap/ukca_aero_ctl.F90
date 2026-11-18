@@ -30,7 +30,7 @@ MODULE ukca_aero_ctl_mod
 USE ukca_types_mod, ONLY: log_small, integer_32
 USE parkind1,   ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -723,7 +723,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_AERO_CTL'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -5002,7 +5002,7 @@ END IF      ! verbose
 
 IF (firstcall) firstcall = .FALSE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_aero_ctl
 !
@@ -5023,7 +5023,7 @@ INTEGER :: ic, l, ia, ib
 INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SURFACE_TO_SEG'
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 ia = lbase       ! the address of base of 1st column on segment
 ib = 1
 
@@ -5034,7 +5034,7 @@ DO ic = 1, ncol           ! loop over columns on the segment
   END DO
   ia = lbase+ic           ! start of base of next column
 END DO
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 END SUBROUTINE surface_to_seg
 !
 SUBROUTINE surface_to_seg_int(lbase, ncol, nb, stride,nl, a, b)
@@ -5055,7 +5055,7 @@ INTEGER :: ic, l, ia, ib
 INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SURFACE_TO_SEG_INT'
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 ia = lbase       ! the address of base of 1st column on segment
 ib = 1
 
@@ -5066,7 +5066,7 @@ DO ic = 1, ncol           ! loop over columns on the segment
   END DO
   ia = lbase+ic           ! start of base of next column
 END DO
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 END SUBROUTINE surface_to_seg_int
 !
 SUBROUTINE extract_seg(lbase, ncol, nb, stride, nl, a, b)
@@ -5086,7 +5086,7 @@ INTEGER :: ic, l, ia, ib
 INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'EXTRACT_SEG'
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 ia = lbase                ! the address of base of 1st column on segment
 ib = 1
 
@@ -5098,7 +5098,7 @@ DO ic = 1, ncol           ! loop over columns on the segment
   END DO
   ia = lbase + ic         ! start of base of next column
 END DO
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 END SUBROUTINE extract_seg
 !
 SUBROUTINE insert_seg(lbase, ncol, nb, stride, nl, b, a)
@@ -5145,7 +5145,7 @@ INTEGER :: ic, l, ia, ib
 INTEGER(KIND=vik) :: vnr_handle_5
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'INT_INS_SEG'
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 ia = lbase                ! the address of base of 1st column on segment
 ib = 1                    ! the box id in the segment
@@ -5158,7 +5158,7 @@ DO ic = 1, ncol           ! loop over columns on the segment
   END DO
   ia = lbase + ic         ! start of base of next column
 END DO
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
 END SUBROUTINE int_ins_seg
 !
 SUBROUTINE select_array_segment(dim1_len, dim2_start, dim2_index,              &

@@ -28,7 +28,7 @@ MODULE ukca_activ_mod
 
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -55,7 +55,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACTIVMKLIN'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO k = 1, nbins
   DO i=1, model_levels
@@ -66,7 +66,7 @@ DO k = 1, nbins
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE activmklin
 !-------------------------------------------------------------------------
@@ -96,7 +96,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACTIVMKSKEW'
 INTEGER :: i, j, k
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 DO k=1, nbins
   DO i=1, model_levels
@@ -120,7 +120,7 @@ DO k=1, nbins
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 
 RETURN
 END SUBROUTINE activmkskew
@@ -143,7 +143,7 @@ INTEGER(KIND=vik) :: vnr_handle_3
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACTIVCLOSEST'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Subtract the value you wish to compare from
 ! the whole array you are comparing it to and
@@ -159,7 +159,7 @@ closeind = MINLOC(ABS(subarr(1:nbins)), DIM=1)
 ! *closeind contains the location of that value
 closeval = arrayin(closeind)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 
 RETURN
 END SUBROUTINE activclosest

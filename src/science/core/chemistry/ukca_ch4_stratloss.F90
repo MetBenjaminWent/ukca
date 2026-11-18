@@ -37,7 +37,7 @@ SUBROUTINE ukca_ch4_stratloss(n_be_calls, n_pnts,                              &
                     y, stratloss)
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 USE ukca_config_constants_mod, ONLY: avogadro
 
@@ -66,7 +66,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CH4_STRATLOSS'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO n = 1, n_be_calls
 
@@ -82,7 +82,7 @@ DO n = 1, n_be_calls
 
 END DO  ! n_be_calls
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_ch4_stratloss
 END MODULE ukca_ch4_stratloss_mod

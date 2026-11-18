@@ -57,7 +57,7 @@ SUBROUTINE ukca_ingridg(nbins,mbsmall,mblarge,mbmid,mblo,mbhi)
 !-----------------------------------------------------------------------
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -78,7 +78,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INGRIDG'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 lgmrange=LOG(mblarge)-LOG(mbsmall)
 DO jv=1,nbins+1
@@ -90,7 +90,7 @@ DO jv=1,nbins
   mbmid(jv)=EXP(0.5*LOG(mblo(jv)*mbhi(jv))) ! geometric mean
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_ingridg
 END MODULE ukca_ingridg_mod

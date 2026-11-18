@@ -47,7 +47,7 @@
 MODULE photol_environment_mod
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 
 USE photol_fieldname_mod,  ONLY: fieldname_len,                                &
@@ -189,7 +189,7 @@ CHARACTER(LEN=maxlen_message) :: cmessage
 INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'PHOTOL_INIT_ENVIRON_REQ'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -207,7 +207,7 @@ photol_env_fields(:)%fld_group_type = group_undefined
 IF ( photol_config%i_photol_scheme == i_scheme_nophot ) THEN
   l_photol_environ_req_available = .TRUE.
 
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -402,7 +402,7 @@ IF ( n_fields > n_max_fields ) THEN
   CALL error_report(photol_config%i_error_method, error_code_ptr, cmessage,    &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -412,7 +412,7 @@ l_photol_environ_req_available = .TRUE.
 ! Added for now to debug
 CALL photol_print_environ_list()
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE photol_init_environ_req
@@ -459,7 +459,7 @@ CHARACTER(LEN=maxlen_message) :: err_msg
 INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'PHOTOL_GET_ENVIRON_VARLIST'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code_ptr => errcode
 
@@ -476,7 +476,7 @@ IF ( .NOT. l_photol_environ_req_available ) THEN
   CALL error_report(photol_config%i_error_method, error_code_ptr, err_msg,     &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
   RETURN
 END IF
 
@@ -524,7 +524,7 @@ IF (PRESENT(varnames_fullhtphot_real_ptr)) THEN
   varnames_fullhtphot_real_ptr => environ_fldnames_fullhtphot_real
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE photol_get_environ_varlist
 

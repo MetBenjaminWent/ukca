@@ -60,7 +60,7 @@ USE ukca_missing_data_mod, ONLY: rmdi, imdi
 
 USE parkind1,            ONLY: jpim, jprb      ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -207,7 +207,7 @@ CHARACTER (LEN=errormessagelength) :: cmessage
 INTEGER                            :: ierror      ! Error code
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -418,7 +418,7 @@ IF (PRESENT(mode_frac_out)) mode_frac_out = mode_frac
 IF (PRESENT(mode_diam_out)) mode_diam_out = mode_diam
 IF (PRESENT(mode_stdev_out)) mode_stdev_out = mode_stdev
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_def_mode_emiss

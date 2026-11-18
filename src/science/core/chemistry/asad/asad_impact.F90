@@ -98,7 +98,7 @@ USE asad_mod,        ONLY: cdt, ctype, ej, f, fdot, jpif,                      &
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 
 USE asad_diffun_mod, ONLY: asad_diffun
@@ -160,7 +160,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_IMPACT'
 !       Crude way of determining if photolysis is on or not.
 !       Needs improving.
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 inl = 0
 DO jl = 1, n_points
   IF ( rk(jl,nprkx(1)) > peps ) THEN
@@ -364,14 +364,14 @@ DO jit = 1, ukca_config%nrsteps
     IF ( .NOT. gconv ) EXIT
   END DO
   IF (gconv) THEN
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
 END DO           ! End of NR (jit) loop
 
 !       9.1  Convergence achieved or max. no. of iterations reached
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_impact
 END MODULE asad_impact_mod

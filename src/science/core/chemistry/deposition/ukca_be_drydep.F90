@@ -39,7 +39,7 @@ USE asad_mod,          ONLY:  ndepd, nldepd, jpspec, jpdd
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -65,7 +65,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_BE_DRYDEP'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 DO js = 1, jpspec
   DO i = 1, n_pnts
     odryrt(i,js) = 0.0
@@ -98,7 +98,7 @@ ELSE
 
 END IF   ! End of IF (l_ukca_intdd) statement
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_be_drydep
 END MODULE ukca_be_drydep_mod

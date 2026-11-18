@@ -90,7 +90,7 @@ USE ukca_chemco_raq_mod,  ONLY: ukca_chemco_raq
 USE ukca_deriv_raqaero_mod, ONLY: ukca_deriv_raqaero
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,             ONLY: jprb, jpim
 USE ereport_mod,          ONLY: ereport
 USE umPrintMgr,           ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
@@ -261,7 +261,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEMISTRY_CTL_TROPRAQ'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 nr = nr_therm + nr_phot
 
 IF (firstcall) THEN
@@ -706,7 +706,7 @@ IF (ukca_config%l_enable_diag_um .AND. ukca_config%l_ukca_raq) THEN
        len_stashwork, stashwork)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_chemistry_ctl_tropraq
 

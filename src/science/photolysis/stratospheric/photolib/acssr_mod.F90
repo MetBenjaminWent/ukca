@@ -11,7 +11,7 @@ MODULE acssr_mod
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 
@@ -44,7 +44,7 @@ CONTAINS
 SUBROUTINE acssr(tc,jpwav,ao2sr)
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -78,7 +78,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSSR'
 
 
 ! Main block: Initialize data upon first entry
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 IF (first) THEN
   sr(:,1) = [                                                                  &
     2.0596e-19,1.3273e-19,6.6113e-20,5.1048e-20,4.5025e-20,1.4983e-20,         &
@@ -194,7 +194,7 @@ END IF
 
 ao2sr(46:45 + jpwavesr) =                                                      &
   EXP((1.0 - frac) * logsr(:,jo2) + frac * logsr(:,jo2 + 1))
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE acssr

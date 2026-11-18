@@ -111,7 +111,7 @@ USE ukca_config_specification_mod, ONLY: ukca_config
 
 USE parkind1,                ONLY: jpim, jprb
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -162,7 +162,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='SET_DDEPAER_COEFF'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! New method
 IF (l_improve_aero_drydep) THEN
@@ -266,7 +266,7 @@ ELSE
 
 END IF    ! l_improve_aero_drydep
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE set_ddepaer_coeff
 

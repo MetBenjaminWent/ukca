@@ -123,7 +123,7 @@ SUBROUTINE ukca_transform_halogen(rows, row_length, model_levels, tr_ukca,     &
 
 USE parkind1,       ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -145,7 +145,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_TRANSFORM_HALOGEN'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (first) THEN
   CALL ukca_setup_lumping()
@@ -207,7 +207,7 @@ ELSE
                  forward, tracers)
 
 END IF
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE ukca_transform_halogen
@@ -281,7 +281,7 @@ SUBROUTINE transform(row_length, rows, model_levels, tr_ukca,                  &
 
 USE parkind1,       ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -314,7 +314,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='TRANSFORM'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ALLOCATE(total_all(row_length,rows,model_levels))
 ALLOCATE(total_source(row_length,rows,model_levels))
@@ -489,7 +489,7 @@ DEALLOCATE (total_all)
 DEALLOCATE (total_source)
 DEALLOCATE (total_nochange)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE transform
 
@@ -533,7 +533,7 @@ USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
 
 USE parkind1,       ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -544,7 +544,7 @@ INTEGER(KIND=vik) :: vnr_handle_3
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SETUP_LUMPING'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 DO i=1,jpctr
   SELECT CASE (advt(i))
@@ -743,7 +743,7 @@ DO i=1,jpctr
   END SELECT
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 END SUBROUTINE ukca_setup_lumping
 
 END MODULE ukca_transform_halogen_mod

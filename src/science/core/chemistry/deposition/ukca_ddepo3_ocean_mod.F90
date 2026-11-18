@@ -50,7 +50,7 @@ USE ukca_um_legacy_mod,        ONLY: vkman, rgas => r
 USE ukca_config_constants_mod, ONLY: rhosea
 USE parkind1,                  ONLY: jpim, jprb
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 
 IMPLICIT NONE
@@ -85,7 +85,7 @@ REAL :: trm2
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DDEPO3_OCEAN'
 
 !------------------------------------------------------------------------
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 
 rhoa = p0 / ( rgas * t0 ) ! air density (kg/m3)
@@ -117,7 +117,7 @@ vdw=SQRT(a1*m_diff)*(psi*b_k1(delzt1)*COSH(argm)+b_k0(delzt1)*SINH(argm))/     &
 
 rc=1.0/(alpha*vdw) ! surface resistance (s/m)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE ukca_ddepo3_ocean
 

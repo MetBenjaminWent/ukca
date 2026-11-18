@@ -43,7 +43,7 @@ USE ukca_tropopause,  ONLY: L_stratosphere
 USE ukca_cspecies,    ONLY: c_species
 USE parkind1,         ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod,      ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus,                         &
                       PrStatus_Oper, PrStatus_Diag, umPrintFlush
@@ -313,7 +313,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_SETSTASH_CHEMDIAG'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ierr = -1
 
@@ -466,7 +466,7 @@ END IF
 
 ierr = 0
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_setstash_chemdiag
 
@@ -483,7 +483,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_ZERO_CHEMDIAG'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 !     "zero" all fields
 diagnostic%location             = 0
@@ -505,7 +505,7 @@ IF (ALLOCATED(diagnostic%products))                                            &
 IF (ALLOCATED(diagnostic%throughput))                                          &
      diagnostic%throughput(:,:,:)    = 0.0
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE asad_zero_chemdiag
 ! #####################################################################
@@ -527,7 +527,7 @@ INTEGER(KIND=vik) :: vnr_handle_3
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_INIT_CHEMDIAG'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 n_chemdiags = 0
 DO i = 1, n_asad_diags
@@ -922,7 +922,7 @@ IF (PrintStatus == Prstatus_Diag) THEN
   CALL umPrint(umMessage,src=RoutineName)
 END IF ! PrintStatus = Prstatus_diag
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE asad_init_chemdiag
 
@@ -942,7 +942,7 @@ INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_CD_UPPERCASE'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 
 ! required for shift
@@ -962,7 +962,7 @@ END DO
 
 asad_cd_uppercase = ADJUSTL(asad_cd_uppercase)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 RETURN
 END FUNCTION asad_cd_uppercase
 
@@ -981,7 +981,7 @@ INTEGER(KIND=vik) :: vnr_handle_5
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_ALLOCATE_CHEMDIAG'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 ! Allocate flux array and initialise
 DO l=1,n_chemdiags
@@ -994,7 +994,7 @@ DO l=1,n_chemdiags
   END IF
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
 RETURN
 END SUBROUTINE asad_allocate_chemdiag
 
@@ -1018,7 +1018,7 @@ INTEGER(KIND=vik) :: vnr_handle_7
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_CHEMICAL_DIAGNOSTICS_INIT'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 ! Set up locations of reactions using (an altered version of)
 ! asad_findreaction
@@ -1246,7 +1246,7 @@ DO l=1,n_chemdiags
   END IF           ! Printstatus
 END DO ! i
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_6)
 RETURN
 
 CONTAINS
@@ -1331,7 +1331,7 @@ INTEGER :: find_count
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='CD_FINDREACTION'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_7, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_7, ModuleName//':'//RoutineName)
 
 cd_findreaction(:) = -1 ! set to -1 to see if haven't got it at end
 find_count = 0
@@ -1395,7 +1395,7 @@ search_reactants: DO
     IF ( iprods /= ipargs ) THEN
       j = j + 1
       IF ( j > nreacts ) THEN
-        IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_7)
+        IF (lprof_ukca) CALL vernier_stop(vnr_handle_7)
         RETURN
       END IF
       CYCLE search_reactants
@@ -1440,7 +1440,7 @@ IF (ALLOCATED(prods)) DEALLOCATE( prods )
 IF (ALLOCATED(inprods)) DEALLOCATE( inprods )
 IF (ALLOCATED(found)) DEALLOCATE(found)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_7)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_7)
 RETURN
 END FUNCTION cd_findreaction
 
@@ -1485,7 +1485,7 @@ INTEGER                           :: errcode
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_CHEMICAL_DIAGNOSTICS'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_8, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_8, ModuleName//':'//RoutineName)
 
 IF (ukca_config%l_ukca_asad_full) THEN
   IF (chunk_size /= row_length * rows * model_levels) THEN
@@ -1675,7 +1675,7 @@ END IF ! l_ukca_asad_columns / l_ukca_asad_full
 
 ierr = 0
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_8)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_8)
 RETURN
 
 END SUBROUTINE asad_chemical_diagnostics
@@ -1719,7 +1719,7 @@ INTEGER(KIND=vik) :: vnr_handle_9
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_EMISSIONS_DIAGNOSTICS'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_9, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_9, ModuleName//':'//RoutineName)
 
 ierr = -1
 
@@ -1788,7 +1788,7 @@ END DO                    ! l,n_chemdiags
 
 ierr = 0
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_9)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_9)
 RETURN
 END SUBROUTINE asad_emissions_diagnostics
 
@@ -1829,7 +1829,7 @@ INTEGER(KIND=vik) :: vnr_handle_10
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_3D_EMISSIONS_DIAGNOSTICS'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_10, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_10, ModuleName//':'//RoutineName)
 
 ierr = -1
 
@@ -1918,7 +1918,7 @@ END DO                    ! l,n_chemdiags
 
 ierr = 0
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_10)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_10)
 RETURN
 END SUBROUTINE asad_3d_emissions_diagnostics
 
@@ -1936,7 +1936,7 @@ INTEGER(KIND=vik) :: vnr_handle_11
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_TROPOSPHERIC_MASK'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_11, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_11, ModuleName//':'//RoutineName)
 
 ierr = 1
 
@@ -1954,7 +1954,7 @@ END IF
 
 ierr = 0
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_11)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_11)
 RETURN
 END SUBROUTINE asad_tropospheric_mask
 
@@ -1998,7 +1998,7 @@ INTEGER(KIND=vik) :: vnr_handle_12
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_TENDENCY_STE'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_12, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_12, ModuleName//':'//RoutineName)
 
 
 ierr = 1
@@ -2063,7 +2063,7 @@ END DO       ! l=1,n_chemdiags
 
 ierr = 0
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_12)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_12)
 RETURN
 END SUBROUTINE asad_tendency_ste
 
@@ -2085,7 +2085,7 @@ INTEGER(KIND=vik) :: vnr_handle_13
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_MASS_DIAGNOSTIC'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_13, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_13, ModuleName//':'//RoutineName)
 
 ierr = -1
 
@@ -2102,7 +2102,7 @@ END DO                    ! l,n_chemdiags
 
 ierr = 0
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_13)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_13)
 RETURN
 END SUBROUTINE asad_mass_diagnostic
 ! #####################################################################
@@ -2133,7 +2133,7 @@ INTEGER                           :: errcode
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_PSC_DIAGNOSTIC'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_14, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_14, ModuleName//':'//RoutineName)
 ierr = -1
 
 IF (ukca_config%l_ukca_asad_full) THEN
@@ -2236,7 +2236,7 @@ END IF ! l_ukca_asad_columns / l_ukca_asad_full
 
 ierr = 0
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_14)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_14)
 RETURN
 END SUBROUTINE asad_psc_diagnostic
 
@@ -2266,7 +2266,7 @@ INTEGER(KIND=vik) :: vnr_handle_15
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_OUTPUT_TRACER'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_15, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_15, ModuleName//':'//RoutineName)
 
 ierr = 1
 
@@ -2305,7 +2305,7 @@ END DO      ! l=1,n_chemdiags
 
 ierr = 0
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_15)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_15)
 RETURN
 END SUBROUTINE asad_output_tracer
 
@@ -2328,7 +2328,7 @@ INTEGER(KIND=vik) :: vnr_handle_16
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_LIGHTNING_DIAGNOSTICS'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_16, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_16, ModuleName//':'//RoutineName)
 
 ierr = -1
 
@@ -2352,7 +2352,7 @@ END DO
 
 ierr = 0
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_16)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_16)
 RETURN
 END SUBROUTINE asad_lightning_diagnostics
 

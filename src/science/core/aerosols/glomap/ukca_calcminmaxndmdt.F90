@@ -65,7 +65,7 @@ USE ukca_config_specification_mod, ONLY: glomap_variables
 USE ukca_mode_setup,   ONLY: nmodes
 USE parkind1,          ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE umPrintMgr, ONLY:                                                          &
     umPrint,                                                                   &
     umMessage
@@ -93,7 +93,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CALCMINMAXNDMDT'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (verbose > 0) THEN
   !  Write header
@@ -127,7 +127,7 @@ DO imode=1,nmodes
   END IF
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_calcminmaxndmdt
 END MODULE ukca_calcminmaxndmdt_mod

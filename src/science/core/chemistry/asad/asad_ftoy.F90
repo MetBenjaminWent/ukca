@@ -145,7 +145,7 @@ USE asad_mod,            ONLY: f, y, prod, slos, ratio, qa,                    &
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod, ONLY: ereport
 
 USE umPrintMgr, ONLY: umPrint
@@ -217,7 +217,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_FTOY'
 !       1.  Initialise.
 !           -----------
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 
 ! initalise ints
@@ -328,7 +328,7 @@ END IF
 !       1.2 If there are no family or steady species then exit
 
 IF ( nstst == 0) THEN
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -351,7 +351,7 @@ IF ( ofirst ) CALL asad_fyself(n_points)
 
 IF (iter == 0) THEN
   CALL asad_fyfixr(n_points)
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -527,7 +527,7 @@ DO jit = 1, iter
     IF ( .NOT. gconv ) EXIT
   END DO
   IF (gconv) THEN
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
     RETURN
   END IF
 
@@ -542,7 +542,7 @@ END DO    ! End of iterations
 
 !       9. Convergence achieved or max. iterations reached.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_ftoy
 

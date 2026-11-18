@@ -11,7 +11,7 @@ MODULE quanto12_mod
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 
@@ -38,7 +38,7 @@ CONTAINS
 SUBROUTINE quanto12(t,jpwav,wavenm,qeo1d)
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -57,7 +57,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='QUANTO12'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !     Factor = hc (planck (Js) x speed of light (cms-1))
 phifac = 6.626e-34*2.99e10
@@ -70,7 +70,7 @@ qeo1d(94:98) = phi1da(1:5)*EXP((-phi1db(1:5)*phifac)                           &
   /(1.38e-23*t))
 
 qeo1d(99:jpwav) = 0.0
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE quanto12

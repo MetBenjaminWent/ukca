@@ -27,7 +27,7 @@ SUBROUTINE ukca_calc_rho(                                                      &
  r_theta_levels, r_rho_levels, air_density, air_burden)
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -75,7 +75,7 @@ CHARACTER (LEN=*), PARAMETER :: RoutineName='UKCA_CALC_RHO'
 
 INTEGER(KIND=vik) :: vnr_handle_1
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 air_density(:,:,:) = 0.0
 air_burden (:,:,:) = 0.0
@@ -155,7 +155,7 @@ DO k = 1, model_levels
 
 END DO ! k
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_calc_rho

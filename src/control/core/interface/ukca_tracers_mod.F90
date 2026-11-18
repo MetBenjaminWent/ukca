@@ -48,7 +48,7 @@
 MODULE ukca_tracers_mod
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 
 USE ukca_fieldname_mod,  ONLY: maxlen_fieldname,                               &
@@ -207,7 +207,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'INIT_TRACER_REQ'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -333,7 +333,7 @@ IF (n > n_max) THEN
     'Number of required tracers (', n,                                         &
     ') exceeds maximum: n_max = ', n_max
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -345,7 +345,7 @@ n_tracers = n
 ! Set public flag to show availability of tracer requirement
 l_tracer_req_available = .TRUE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE init_tracer_req
 
@@ -437,7 +437,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'TRACER_COPY_IN_1D'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -449,7 +449,7 @@ IF (.NOT. l_tracer_req_available) THEN
   IF (PRESENT(error_message)) error_message =                                  &
     'Tracer requirement has not been initialised'
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
   RETURN
 END IF
 
@@ -460,7 +460,7 @@ IF (SIZE(tracer_data,DIM=2) /= n_tracers) THEN
     'Number of tracer fields (', SIZE(tracer_data,DIM=2),                      &
     ') does not match requirement: n_tracers = ', n_tracers
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
   RETURN
 END IF
 
@@ -477,7 +477,7 @@ IF (n_tracers > 0) THEN
       error_message =                                                          &
         'The tracer fields have one or more invalid array bounds'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
     RETURN
   END IF
 
@@ -488,7 +488,7 @@ IF (n_tracers > 0) THEN
 
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 
 END SUBROUTINE tracer_copy_in_1d
 
@@ -538,7 +538,7 @@ INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'TRACER_COPY_IN_3D'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -550,7 +550,7 @@ IF (.NOT. l_tracer_req_available) THEN
   IF (PRESENT(error_message)) error_message =                                  &
     'Tracer requirement has not been initialised'
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
   RETURN
 END IF
 
@@ -561,7 +561,7 @@ IF (SIZE(tracer_data,DIM=4) /= n_tracers) THEN
     'Number of tracer fields (', SIZE(tracer_data,DIM=4),                      &
     ') does not match requirement: n_tracers = ', n_tracers
   IF (PRESENT(error_routine)) error_routine = RoutineName
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
   RETURN
 END IF
 
@@ -583,7 +583,7 @@ IF (n_tracers > 0) THEN
       error_message =                                                          &
         'The tracer fields have one or more invalid array bounds'
     IF (PRESENT(error_routine)) error_routine = RoutineName
-    IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+    IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
     RETURN
   END IF
 
@@ -594,7 +594,7 @@ IF (n_tracers > 0) THEN
 
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 
 END SUBROUTINE tracer_copy_in_3d
 
@@ -624,11 +624,11 @@ INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'TRACER_COPY_OUT_1D'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 tracer_data(1:model_levels,:) = all_tracers(1,1,:,:)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 
 END SUBROUTINE tracer_copy_out_1d
 
@@ -661,11 +661,11 @@ INTEGER(KIND=vik) :: vnr_handle_5
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'TRACER_COPY_OUT_3D'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 tracer_data(1:row_length,1:rows,1:model_levels,:) = all_tracers(:,:,:,:)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
 
 END SUBROUTINE tracer_copy_out_3d
 

@@ -155,7 +155,7 @@ USE umPrintMgr,                ONLY:                                           &
     newline
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -324,7 +324,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_ACTIVATE'
 
 CHARACTER(LEN=errormessagelength) :: cmessage
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables_local%
 !           have been included here to make the code easier to read
@@ -707,7 +707,7 @@ END DO ! k
 
 IF ( i_glomap_clim_activation_scheme == i_gc_activation_arg ) THEN
   ! Return cdncflag and cdncwt
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -790,7 +790,7 @@ END IF       ! l_ukca_mode_diags
 
 first=.FALSE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 END SUBROUTINE ukca_activate
 
 SUBROUTINE ukca_activate_calc_zn_zxtm1 ( row_length,                           &
@@ -831,7 +831,7 @@ USE umPrintMgr,                ONLY:                                           &
     umMessage
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -880,7 +880,7 @@ CHARACTER(LEN=*), PARAMETER       :: RoutineName='UKCA_ACTIVATE_CALC_ZN_ZXTM1'
 
 INTEGER(KIND=vik) :: vnr_handle_2
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 ! find the first tracer in nmr_index and mmr_index (these refer to all tracers)
 ifirst = jpctr + 1
@@ -935,7 +935,7 @@ DO imode=1,topmode
   END IF
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 END SUBROUTINE ukca_activate_calc_zn_zxtm1
 
 SUBROUTINE gc_activate_calc_zn_zxtm1 ( row_length,                             &
@@ -998,7 +998,7 @@ USE umPrintMgr,             ONLY:                                              &
     newline
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -1046,7 +1046,7 @@ CHARACTER(LEN=*), PARAMETER   :: RoutineName='GC_ACTIVATE_CALC_ZN_ZXTM1'
 
 INTEGER(KIND=vik) :: vnr_handle_3
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 SELECT CASE(i_glomap_clim_setup)
 CASE (i_sussbcoc_5mode)
@@ -1147,7 +1147,7 @@ END DO
 DEALLOCATE(zammr3d)
 DEALLOCATE(znmr3d)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 END SUBROUTINE gc_activate_calc_zn_zxtm1
 
 SUBROUTINE ukca_activate_calc_zrdry (row_length,rows,model_levels,kbdim,mode,  &
@@ -1176,7 +1176,7 @@ USE umPrintMgr,             ONLY:                                              &
     newline
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -1210,7 +1210,7 @@ INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER       :: RoutineName='UKCA_ACTIVATE_CALC_ZRDRY'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 ! Initialise zrdry
 zrdry(:,:,:) = rmdi
@@ -1249,7 +1249,7 @@ ELSE
   CALL ereport(RoutineName,icode,cmessage)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 END SUBROUTINE ukca_activate_calc_zrdry
 
 SUBROUTINE ukca_activate_calc_updraft_velocity ( row_length,                   &
@@ -1266,7 +1266,7 @@ USE parkind1,             ONLY:                                                &
     jpim
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -1292,7 +1292,7 @@ INTEGER(KIND=vik) :: vnr_handle_5
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_ACTIVATE_CALC_UPDRAFT_VELOCITY'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 ! Updraught velocity pdf std. dev. (m/s)
 ! ======================================
@@ -1325,7 +1325,7 @@ ELSE
   END DO
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
 END SUBROUTINE ukca_activate_calc_updraft_velocity
 
 SUBROUTINE gc_activate_calc_updraft_velocity ( row_length,                     &
@@ -1340,7 +1340,7 @@ USE parkind1,             ONLY:                                                &
     jpim
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -1368,7 +1368,7 @@ INTEGER(KIND=vik) :: vnr_handle_6
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='GC_ACTIVATE_CALC_UPDRAFT_VELOCITY'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 sigw(:,:,:)=0.0e0         ! initialise to 0
 
@@ -1392,7 +1392,7 @@ DO k = bl_levels, model_levels
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_6)
 END SUBROUTINE gc_activate_calc_updraft_velocity
 
 END MODULE ukca_activate_mod

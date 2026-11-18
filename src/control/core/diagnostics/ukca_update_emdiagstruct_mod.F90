@@ -51,7 +51,7 @@ USE ukca_um_legacy_mod,     ONLY: get_emdiag_stash, sf, UKCA_diag_sect
 USE ereport_mod,            ONLY: ereport
 USE parkind1,               ONLY: jpim,  jprb     ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE errormessagelength_mod, ONLY: errormessagelength
 
 IMPLICIT NONE
@@ -78,7 +78,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UPDATE_EMDIAGSTRUCT'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ierr    = 0
 
@@ -546,7 +546,7 @@ IF (ierr == 1) THEN
   CALL ereport ('UPDATE_EMDIAGSTRUCT', ierr, cmessage)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE update_emdiagstruct

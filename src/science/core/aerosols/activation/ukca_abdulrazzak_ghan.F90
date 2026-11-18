@@ -102,7 +102,7 @@ USE ereport_mod, ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,              ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -229,7 +229,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_ABDULRAZZAK_GHAN'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Allow for the possibility that this routine is called from outside UKCA,
 ! by-passing the UKCA API. This is only allowed if UKCA constants are properly
@@ -668,7 +668,7 @@ DO jk=1, klev
   END DO ! jl
 END DO ! jk
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_abdulrazzak_ghan

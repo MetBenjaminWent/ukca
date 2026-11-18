@@ -92,7 +92,7 @@ USE ukca_config_specification_mod, ONLY: ukca_config
 USE ukca_ntp_mod,       ONLY: ntp_type, dim_ntp, name2ntpindex
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 USE ereport_mod, ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint
@@ -243,7 +243,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEMISTRY_CTL_COL'
 TYPE(autotune_type), ALLOCATABLE, SAVE :: autotune_state
 #endif
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 #if !defined(LFRIC)
 ! Set up automatic segment size tuning
@@ -742,7 +742,7 @@ IF (l_autotune_segments) THEN
 END IF
 #endif
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_chemistry_ctl_col
 

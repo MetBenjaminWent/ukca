@@ -31,7 +31,7 @@ USE umPrintMgr, ONLY: umPrint, umMessage, PrStatus_Diag, PrintStatus
 USE errormessagelength_mod, ONLY: errormessagelength
 USE ereport_mod,       ONLY: ereport
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,          ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -88,7 +88,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SET_LBC_INDEX'
 
 ! Body of subroutine
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialise full_lbc array (assuming this routine is only called once)
 DO i = 1, n_full_spc
@@ -152,7 +152,7 @@ DO i= 1, n_lbc
   END SELECT
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_set_lbc_index
 
@@ -221,7 +221,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_LUMP_LBCS'
 
 ! Body of subroutine
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 IF (first) THEN
 
@@ -276,7 +276,7 @@ IF (PrintStatus >= Prstatus_Diag) THEN
   END DO
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 
 RETURN
 END SUBROUTINE ukca_lump_lbcs
@@ -302,7 +302,7 @@ INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SET_LBC_MMR'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Initialise lbc array
 DO i = 1, n_bdy_vals
@@ -339,7 +339,7 @@ IF (icf3chf2    > 0) lbc_mmr(icf3chf2   ) = full_lbc(i_cf3chf2) ! HFC125
 IF (ich2fcf3    > 0) lbc_mmr(ich2fcf3   ) = full_lbc(i_ch2fcf3) ! HFC134a
 IF (ichbr3      > 0) lbc_mmr(ichbr3     ) = full_lbc(i_chbr3) ! CHBr3
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE ukca_set_lbc_mmr
 

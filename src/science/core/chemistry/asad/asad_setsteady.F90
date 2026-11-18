@@ -96,7 +96,7 @@ USE asad_mod, ONLY: ctype, h_in_ss,                                            &
                     o1d_in_ss, o3p_in_ss, speci
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod, ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
 
@@ -124,7 +124,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_SETSTEADY'
 
 
 ! Zero all arrays
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 nsst=0
 nssi=0
 indss=0
@@ -250,7 +250,7 @@ DO ix=1,nsst
 END DO
 
 9999 CONTINUE
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_setsteady
 END MODULE asad_setsteady_mod

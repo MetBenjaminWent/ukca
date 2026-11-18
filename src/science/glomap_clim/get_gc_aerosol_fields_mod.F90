@@ -78,7 +78,7 @@ USE um_types,               ONLY:                                              &
     real_umphys
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 
 IMPLICIT NONE
@@ -180,7 +180,7 @@ CHARACTER(LEN=*), PARAMETER       :: RoutineName='GET_GC_AEROSOL_FIELDS'
 
 INTEGER(KIND=vik) :: vnr_handle_1
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 !$OMP PARALLEL DEFAULT(NONE) PRIVATE(i, j, k)                                  &
 !$OMP SHARED(n_points, glomap_variables_climatology,  nmr1d, mmr1d)
@@ -258,7 +258,7 @@ CASE DEFAULT
   CALL ereport(RoutineName,errcode,cmessage)
 END SELECT
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 END SUBROUTINE get_gc_aerosol_fields
 
 END MODULE get_gc_aerosol_fields_mod

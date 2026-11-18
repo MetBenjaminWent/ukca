@@ -56,7 +56,7 @@ USE errormessagelength_mod,          ONLY:                                     &
     errormessagelength
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -77,7 +77,7 @@ INTEGER                           :: errcode
 INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER   :: RoutineName='GLOMAP_CLIM_MODE_SETUP_INTERFACE'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! This routine is called from outside UKCA, by-passing the UKCA API.
 ! This is only allowed if UKCA constants are properly set up.
@@ -95,7 +95,7 @@ CALL common_mode_setup_interface ( glomap_variables_climatology,               &
                                    l_fix_ukca_hygroscopicities_in,             &
                                    l_dust_mp_ageing )
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 END SUBROUTINE glomap_clim_mode_setup_interface
 
 END MODULE glomap_clim_mode_setup_interface_mod

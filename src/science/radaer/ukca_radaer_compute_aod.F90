@@ -65,7 +65,7 @@ SUBROUTINE ukca_radaer_compute_aod(                                            &
 
 USE parkind1, ONLY: jpim, jprb
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE conversions_mod, ONLY: pi
 USE ukca_radaer_lut_read_in, ONLY: ukca_radaer_get_lut_index
 
@@ -270,7 +270,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_RADAER_COMPUTE_AOD'
 !
 !
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO n = 1, npd_aod_wavel
   DO i_prof = 1, npd_profile
@@ -530,7 +530,7 @@ DO i_mode = 1, n_ukca_mode
 
 END DO ! i_mode
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_radaer_compute_aod

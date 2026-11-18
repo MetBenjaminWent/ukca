@@ -93,7 +93,7 @@ USE ukca_mode_setup,        ONLY: nmodes, cp_du, mode_sup_insol
 USE ukca_environment_fields_mod, ONLY: drep
 USE ereport_mod,            ONLY: ereport
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,               ONLY: jprb, jpim
 USE ereport_mod,            ONLY: ereport
 USE umPrintMgr,             ONLY: umPrint, umMessage
@@ -138,7 +138,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_PRIM_DU'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Molar mass of dry air (kg/mol)
 mm_da = avogadro*boltzmann/rgas
@@ -220,7 +220,7 @@ DO idiv = 1,ndiv    ! loop over bins
   END DO   ! nmodes
 END DO   ! ndiv
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_prim_du

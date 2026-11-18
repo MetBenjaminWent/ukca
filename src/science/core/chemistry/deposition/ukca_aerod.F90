@@ -180,7 +180,7 @@ USE ukca_um_legacy_mod,      ONLY: vkman, gg => g
 USE ukca_config_constants_mod, ONLY: rmol
 USE parkind1,                ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod,             ONLY: ereport
 USE errormessagelength_mod,  ONLY: errormessagelength
 
@@ -264,7 +264,7 @@ INTEGER :: icode
 !     The values of d0 will be used to flag those species
 !     that dry deposit
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 IF (first) THEN
   ALLOCATE(d0(jpdd))
   d0(:) = -1.0
@@ -793,7 +793,7 @@ DO j = 1, ndepd
   END IF
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_aerod
 END MODULE ukca_aerod_mod

@@ -80,7 +80,7 @@ USE umPrintMgr,                      ONLY:                                     &
     umMessage
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -102,7 +102,7 @@ CHARACTER(LEN=errormessagelength) :: cmessage ! error message
 INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER   :: RoutineName='COMMON_MODE_SETUP_INTERFACE'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 SELECT CASE(i_mode_setup_in)
 CASE (i_suss_4mode) ! 1
@@ -201,7 +201,7 @@ CASE DEFAULT
   CALL ereport(RoutineName,errcode,cmessage)
 END SELECT
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 END SUBROUTINE common_mode_setup_interface
 
 END MODULE common_mode_setup_interface_mod

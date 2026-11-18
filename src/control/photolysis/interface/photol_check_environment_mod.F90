@@ -50,7 +50,7 @@ USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname, error_report,       &
                           errcode_env_field_mismatch, errcode_env_field_missing
 ! Dr Hook modules
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -101,7 +101,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='CHK_ENV_FIELDS_LIST'
 ! ------------------------------------------------------------------------
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 err_msg = ''
@@ -129,7 +129,7 @@ IF ( error_code_ptr /= 0 .OR. n_missing > 0 ) THEN
 
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE check_env_fields_list
 
@@ -156,7 +156,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName='CHK_ENVGROUP_SCALAR_REAL'
 ! ------------------------------------------------------------------------
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code_ptr= 0
 IF (PRESENT(error_message)) error_message = ''
@@ -167,7 +167,7 @@ IF ( .NOT. ALLOCATED(environ_fldnames_scalar_real) .OR.                        &
      SIZE(environ_fldnames_scalar_real) == 0 ) THEN
   l_fields_this_group = .FALSE.   ! Assume no fields of this type required
 
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
   RETURN
 END IF
 
@@ -186,7 +186,7 @@ ELSE
 END IF
 
 ! No other dimensions to check
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE check_envgroup_scalar_real
 
@@ -215,7 +215,7 @@ INTEGER(KIND=vik) :: vnr_handle_3
 CHARACTER(LEN=*), PARAMETER :: RoutineName='CHK_ENVGROUP_FLAT_INTEGER'
 ! ------------------------------------------------------------------------
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 error_code_ptr= 0
 err_msg = ''
@@ -227,7 +227,7 @@ IF ( .NOT. ALLOCATED(environ_fldnames_flat_integer) .OR.                       &
      SIZE(environ_fldnames_flat_integer) == 0 ) THEN
   l_fields_this_group = .FALSE.   ! Assume no fields of this type required
 
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
   RETURN
 END IF
 
@@ -241,7 +241,7 @@ IF ( n_flds_in /= n_flds_req ) THEN
   CALL error_report(photol_config%i_error_method, error_code_ptr, err_msg,     &
           RoutineName, msg_out=error_message, locn_out=error_routine)
 
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
   RETURN
 ELSE
   l_fields_this_group = .TRUE.   ! Some fields of this type required
@@ -257,7 +257,7 @@ IF ( SIZE(flds_in, DIM=1) /= dim_x .OR. SIZE(flds_in, DIM=2) /= dim_y) THEN
          RoutineName, msg_out=error_message, locn_out=error_routine)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE check_envgroup_flat_integer
 
@@ -285,7 +285,7 @@ INTEGER(KIND=vik) :: vnr_handle_4
 CHARACTER(LEN=*), PARAMETER :: RoutineName='CHK_ENVGROUP_FLAT_REAL'
 ! ------------------------------------------------------------------------
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 error_code_ptr= 0
 err_msg = ''
@@ -297,7 +297,7 @@ IF ( .NOT. ALLOCATED(environ_fldnames_flat_real) .OR.                          &
      SIZE(environ_fldnames_flat_real) == 0 ) THEN
   l_fields_this_group = .FALSE.   ! Assume no fields of this type required
 
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
   RETURN
 END IF
 
@@ -311,7 +311,7 @@ IF ( n_flds_in /= n_flds_req ) THEN
   CALL error_report(photol_config%i_error_method, error_code_ptr, err_msg,     &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
   RETURN
 ELSE
   l_fields_this_group = .TRUE.   ! Some fields of this type required
@@ -328,7 +328,7 @@ IF ( SIZE(flds_in, DIM=1) /= dim_x .OR. SIZE(flds_in, DIM=2) /= dim_y) THEN
 
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE check_envgroup_flat_real
 
@@ -358,7 +358,7 @@ INTEGER(KIND=vik) :: vnr_handle_5
 CHARACTER(LEN=*), PARAMETER :: RoutineName='CHK_ENVGROUP_FULLHT_REAL'
 ! ------------------------------------------------------------------------
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 error_code_ptr= 0
 err_msg = ''
@@ -374,7 +374,7 @@ IF ( (group_name == 'fullht_real' .AND.                                        &
        SIZE(environ_fldnames_fullht0_real) == 0) ) ) THEN
   l_fields_this_group = .FALSE.   ! Assume no fields of this type required
 
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
   RETURN
 END IF
 
@@ -396,7 +396,7 @@ ELSE
   CALL error_report(photol_config%i_error_method, error_code_ptr, err_msg,     &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
   RETURN
 END IF
 IF ( n_flds_in /= n_flds_req ) THEN
@@ -406,7 +406,7 @@ IF ( n_flds_in /= n_flds_req ) THEN
   CALL error_report(photol_config%i_error_method, error_code_ptr, err_msg,     &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
   RETURN
 ELSE
   l_fields_this_group = .TRUE.   ! Some fields of this type required
@@ -423,7 +423,7 @@ IF ( SIZE(flds_in, DIM=1) /= dim_x .OR. SIZE(flds_in, DIM=2) /= dim_y .OR.     &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
 RETURN
 END SUBROUTINE check_envgroup_fullht_real
 
@@ -453,7 +453,7 @@ INTEGER(KIND=vik) :: vnr_handle_6
 CHARACTER(LEN=*), PARAMETER :: RoutineName='CHK_ENVGROUP_FULLHTPHOT_REAL'
 ! ------------------------------------------------------------------------
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 error_code_ptr= 0
 err_msg = ''
@@ -466,7 +466,7 @@ IF ( group_name == 'fullhtphot_real' .AND.                                     &
        SIZE(environ_fldnames_fullhtphot_real) == 0) ) THEN
   l_fields_this_group = .FALSE.   ! Assume no fields of this type required
 
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_6)
   RETURN
 END IF
 
@@ -482,7 +482,7 @@ IF ( n_flds_in /= n_flds_req ) THEN
   CALL error_report(photol_config%i_error_method, error_code_ptr, err_msg,     &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_6)
   RETURN
 ELSE
   l_fields_this_group = .TRUE.   ! Some fields of this type required
@@ -499,7 +499,7 @@ IF ( SIZE(flds_in, DIM=1) /= dim_x .OR. SIZE(flds_in, DIM=2) /= dim_y .OR.     &
          RoutineName, msg_out=error_message, locn_out=error_routine)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_6)
 RETURN
 END SUBROUTINE check_envgroup_fullhtphot_real
 

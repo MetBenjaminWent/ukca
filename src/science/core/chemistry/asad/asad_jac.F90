@@ -97,7 +97,7 @@ USE asad_mod, ONLY: ctype, dpd, dpw, ej, f, jpcspf, jpif, jpfm,                &
                     ntr3, ntrf, peps, prk, y
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: n_points
@@ -148,7 +148,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_JAC'
 !       1.  Initialise local variables.
 !           ---------- ----- ----------
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 DO jtr = 1, jpcspf
   DO jl = 1, n_points
     ej(jl,jtr) = 0.0
@@ -371,7 +371,7 @@ DO jtr = 1, jpcspf
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_jac
 END MODULE asad_jac_mod

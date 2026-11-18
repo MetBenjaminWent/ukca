@@ -38,7 +38,7 @@ USE ukca_error_mod, ONLY: maxlen_message, maxlen_procname,                     &
 USE ukca_missing_data_mod, ONLY: imdi
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -117,7 +117,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_DIAG_PTRS_1D_DOMAIN'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -175,7 +175,7 @@ END IF
 IF (error_code_ptr > 0) THEN
   CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt,   &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -229,7 +229,7 @@ END IF
 IF (error_code_ptr > 0) THEN
   CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt,   &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -265,7 +265,7 @@ END IF
 NULLIFY(diagnostics%value_2d_real_ptr)
 NULLIFY(diagnostics%value_3d_real_ptr)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE set_diag_ptrs_1d_domain
 
@@ -327,7 +327,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_DIAG_PTRS_3D_DOMAIN'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -390,7 +390,7 @@ END IF
 IF (error_code_ptr > 0) THEN
   CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt,   &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
   RETURN
 END IF
 
@@ -446,7 +446,7 @@ END IF
 IF (error_code_ptr > 0) THEN
   CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt,   &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
   RETURN
 END IF
 
@@ -482,7 +482,7 @@ END IF
 NULLIFY(diagnostics%value_0d_real_ptr)
 NULLIFY(diagnostics%value_1d_real_ptr)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE set_diag_ptrs_3d_domain
 

@@ -47,7 +47,7 @@ USE ukca_um_legacy_mod,      ONLY:                                             &
     umErf
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -78,7 +78,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER   :: RoutineName='UKCA_CDNC_JONES'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! This is the Jones method for calculating CDNC, see doi:10.1038/370450a0
 CALL log_v(nmodes,glomap_variables_local%sigmag,log_sigmag)
@@ -121,7 +121,7 @@ DO i = 1, nbox
 END DO
 !$OMP END PARALLEL DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_cdnc_jones
 

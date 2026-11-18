@@ -100,7 +100,7 @@ USE ukca_emiss_mode_mod,     ONLY: aero_ems_species
 USE ukca_day_of_week_mod,    ONLY: day_of_week    ! Calculate day of week
 USE parkind1,                ONLY: jprb, jpim     ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod,             ONLY: ereport
 USE errormessagelength_mod,  ONLY: errormessagelength
 USE umPrintMgr,  ONLY: umPrint, umMessage, PrintStatus, PrStatus_Normal
@@ -267,7 +267,7 @@ INTEGER                            :: item      ! stash item
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -1152,7 +1152,7 @@ IF (ALLOCATED(hourly_scaling_all_2d)) DEALLOCATE(hourly_scaling_all_2d)
 IF (ALLOCATED(tmp3dems)) DEALLOCATE(tmp3dems)
 
 firstcall = .FALSE.
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_add_emiss

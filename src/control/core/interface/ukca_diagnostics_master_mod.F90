@@ -83,7 +83,7 @@ SUBROUTINE create_master_diagnostics_list(error_code_ptr, error_message,       &
 ! ----------------------------------------------------------------------
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,  ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -110,7 +110,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'CREATE_MASTER_DIAGNOSTICS_LIST'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -140,11 +140,11 @@ IF (n /= n_diag_tot) THEN
   error_code_ptr = errcode_ukca_internal_fault
   CALL error_report(ukca_config%i_error_method, error_code_ptr, message_txt,   &
                     RoutineName, msg_out=error_message, locn_out=error_routine)
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE create_master_diagnostics_list
@@ -214,7 +214,7 @@ USE ukca_chem_defs_mod, ONLY: ratj_defs
 USE asad_flux_dat,      ONLY: asad_chemical_fluxes, stashcode_ukca_chem_diag
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,  ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -250,7 +250,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_DIAGNOSTIC_AVAILABILITIES'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code_ptr = 0
 IF (PRESENT(error_message)) error_message = ''
@@ -308,7 +308,7 @@ DO i = 1, SIZE(master_diag_list)
           'No ASAD id code defined for a recognised ASAD diagnostic: ' //      &
           master_diag_list(i)%varname, RoutineName,                            &
           msg_out=error_message, locn_out=error_routine)
-        IF (LPROF_UKCA) THEN
+        IF (lprof_ukca) THEN
           CALL vernier_stop(vnr_handle_2)
         END IF
         RETURN
@@ -322,7 +322,7 @@ DO i = 1, SIZE(master_diag_list)
 
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 
 END SUBROUTINE set_diagnostic_availabilities

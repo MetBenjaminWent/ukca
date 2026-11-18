@@ -89,7 +89,7 @@ USE umPrintMgr,                        ONLY:                                   &
     umMessage
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -115,7 +115,7 @@ CHARACTER(LEN=errormessagelength) :: cmessage ! error message
 INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*),   PARAMETER :: RoutineName='UKCA_RADAER_LFRIC_INIT'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 SELECT CASE(i_mode_setup_in)
 CASE (i_suss_4mode) ! 1
@@ -228,7 +228,7 @@ CALL ukca_radaer_lfric_settings ( l_ukca_radaer_sustrat,                       &
 ! Allocate lists used in radaer kernel based on i_mode_setup_in
 CALL ukca_radaer_lfric_list( i_mode_setup_in )
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE ukca_radaer_lfric_init
 

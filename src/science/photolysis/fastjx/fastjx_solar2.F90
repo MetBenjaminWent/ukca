@@ -73,7 +73,7 @@ USE photol_constants_mod, ONLY: pi => const_pi,                                &
                                 pi_over_180 => const_pi_over_180
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,         ONLY: jprb, jpim
 IMPLICIT  NONE
 
@@ -99,7 +99,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_SOLAR2'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (lcal360) THEN
   sindec = 0.3978*SIN(2* pi *(REAL(daynumber)-80.0)/360.0)
@@ -124,7 +124,7 @@ ELSE WHERE
   sza_2d    = szamax   ! Reduce SZA to avoid airmass problems
 END WHERE
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE fastjx_solar2
 END MODULE fastjx_solar2_mod

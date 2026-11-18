@@ -27,7 +27,7 @@
 MODULE ukca_environment_rdim_mod
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 
 USE ukca_fieldname_mod,  ONLY:                                                 &
@@ -290,7 +290,7 @@ INTEGER :: j2
 INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_ENV_2D_FROM_0D_REAL'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 error_code = 0
 
@@ -404,7 +404,7 @@ CASE DEFAULT
   error_code = errcode_env_field_unknown
 END SELECT
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE set_env_2d_from_0d_real
 
@@ -438,7 +438,7 @@ INTEGER :: j2
 INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_ENV_2D_FROM_0D_INTEGER'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 error_code = 0
 
@@ -472,7 +472,7 @@ CASE DEFAULT
   error_code = errcode_env_field_unknown
 END SELECT
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE set_env_2d_from_0d_integer
 
@@ -506,7 +506,7 @@ INTEGER :: j2
 INTEGER(KIND=vik) :: vnr_handle_3
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_ENV_2D_FROM_0D_LOGICAL'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 error_code = 0
 
@@ -536,7 +536,7 @@ CASE DEFAULT
   error_code = errcode_env_field_unknown
 END SELECT
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE set_env_2d_from_0d_logical
 
@@ -578,7 +578,7 @@ INTEGER :: k2
 INTEGER(KIND=vik) :: vnr_handle_4
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_ENV_3D_FROM_1D_REAL'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 error_code = 0
 
@@ -795,7 +795,7 @@ CASE DEFAULT
   error_code = errcode_env_field_unknown
 END SELECT
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE set_env_3d_from_1d_real
 
@@ -839,7 +839,7 @@ INTEGER :: n2
 INTEGER(KIND=vik) :: vnr_handle_5
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'SET_ENV_4D_FROM_2D_REAL'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 error_code = 0
 
@@ -866,7 +866,7 @@ CASE DEFAULT
   error_code = errcode_env_field_unknown
 END SELECT
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
 RETURN
 END SUBROUTINE set_env_4d_from_2d_real
 

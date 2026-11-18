@@ -11,7 +11,7 @@ MODULE acscnit_mod
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 
@@ -38,7 +38,7 @@ SUBROUTINE acscnit(temp,wavenm,acnita, acnitb)
 USE ukca_parpho_mod, ONLY: jpwav
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -102,7 +102,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSCNIT'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 IF (first) THEN
   quanty = MIN(MAX(7.143e-3 * wavenm - 1.6, 0.6), 1.0)
   first = .FALSE.
@@ -122,7 +122,7 @@ acnita(55:120) = acnitt(55:120)*(1.0 + a1(55:120)*(tc-296.0)                   &
 acnitb(55:120) = (1.0 - quanty(55:120)) * acnita(55:120)
 ! ClONO2 cross section, times quantum yield for Cl  + NO3 channel
 acnita(55:120) = quanty(55:120) * acnita(55:120)
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE acscnit

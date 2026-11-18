@@ -77,7 +77,7 @@ USE fastjx_data, ONLY: amf2, atau, atau0, dm_3d, dm_block,                     &
                        tqq, tz_3d, tz_block, u0, w_, wl
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 USE fastjx_extral_mod, ONLY: fastjx_extral
 USE fastjx_jratet_mod, ONLY: fastjx_jratet
@@ -164,7 +164,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_PHOTOJ'
 ! ************************************
 ! End of Header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialise to 0.
 zj(:,:) = 0.0
@@ -386,7 +386,7 @@ DO ix = 1, kpcx
 END DO ! xy
 !$OMP END PARALLEL DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE fastjx_photoj
 END MODULE fastjx_photoj_mod

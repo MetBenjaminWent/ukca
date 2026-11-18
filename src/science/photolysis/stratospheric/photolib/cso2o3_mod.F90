@@ -11,7 +11,7 @@ MODULE cso2o3_mod
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 
@@ -39,7 +39,7 @@ USE acso3w_mod, ONLY: acso3w
 USE acssrw_mod, ONLY: acssrw
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -56,7 +56,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='CSO2O3'
 
 
 !     Calculate the T dependent O3 cross-section.
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 IF ( jw >= 84 .AND. jw <= 102 ) THEN
   CALL acso3w(jw,tempc,jpwav,ao3)
 END IF
@@ -66,7 +66,7 @@ END IF
 IF ( jw >= 46 .AND. jw <= 62 ) THEN
   CALL acssrw(tspo2,jw,jpwav,ao2sr)
 END IF
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE cso2o3

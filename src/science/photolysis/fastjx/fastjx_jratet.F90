@@ -74,7 +74,7 @@ SUBROUTINE fastjx_jratet(ppj,ttj,fff, valjl)
 USE fastjx_data, ONLY: lpar, jpcl, njval, q1d, qqq,                            &
                        qo2, qo3, tqq, w_, x_, titlej
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,     ONLY: jprb, jpim
 IMPLICIT NONE
 
@@ -115,7 +115,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_JRATET'
 
 ! *************************************************************
 ! End of Header
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 DO l = 1,jpcl    ! master loop over layer = l
 
@@ -304,7 +304,7 @@ DO l = 1,jpcl    ! master loop over layer = l
 
 END DO    ! master loop over l=1,jpcl
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE fastjx_jratet

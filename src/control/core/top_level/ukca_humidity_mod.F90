@@ -25,7 +25,7 @@
 MODULE ukca_humidity_mod
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,            ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -117,7 +117,7 @@ CHARACTER(LEN=errormessagelength) :: cmessage    ! Error return message
 INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_VMRSAT_LIQ'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (PRESENT(vmr_sat) .AND. (.NOT. PRESENT(pres))) THEN
   errcode = 1
@@ -161,7 +161,7 @@ DO k = 1, model_levels
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_vmrsat_liq
 
@@ -213,7 +213,7 @@ INTEGER :: k
 INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName = 'UKCA_VMR_CLEAR_SKY'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 DO k = 1, model_levels
   DO j = 1, rows
@@ -229,7 +229,7 @@ DO k = 1, model_levels
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END FUNCTION ukca_vmr_clear_sky
 

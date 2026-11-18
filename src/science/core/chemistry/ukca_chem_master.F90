@@ -47,7 +47,7 @@ USE ukca_config_specification_mod, ONLY: ukca_config
 USE asad_mod,           ONLY: jddepc, jddept, jpctr, jpspec, jpro2, jpcspf,    &
                               jpbk, jptk, jppj, jphk, jpnr, jpdd, jpdw
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,    ONLY: jprb, jpim
 USE ereport_mod, ONLY: ereport
 USE errormessagelength_mod, ONLY: errormessagelength
@@ -153,7 +153,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_CHEM_MASTER'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 
 ! Define below the chemistry schemes
@@ -8957,7 +8957,7 @@ IF (ierr > 1) THEN
   CALL ereport(RoutineName,ierr,cmessage)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_chem_master
 

@@ -171,7 +171,7 @@ USE ukca_types_mod,     ONLY: log_small
 USE ukca_config_constants_mod, ONLY: boltzmann
 USE parkind1,           ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 ! Subroutine interface:
@@ -232,11 +232,11 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_COAG_COFF_V'
 
 !
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 kij(:) = 0.0
 !
 IF (coag_on == 0) THEN
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 !
@@ -341,7 +341,7 @@ IF (icoag == 4) THEN
   END WHERE
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_coag_coff_v
 END MODULE ukca_coag_coff_v_mod

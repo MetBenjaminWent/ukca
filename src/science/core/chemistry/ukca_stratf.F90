@@ -47,7 +47,7 @@ USE ukca_cspecies,     ONLY: n_o3, n_o3s, n_hono2
 USE ukca_constants,    ONLY: c_n, c_hno3
 USE parkind1,          ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 USE ereport_mod,       ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Diag
@@ -88,7 +88,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_STRATF'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Set number of levels above tropopause at which to start overwriting values.
 ! If number of levels is not set explicitly then set it depending on vertical
@@ -122,7 +122,7 @@ END IF
 
 ! Skip processing if there are no updates to do
 IF (no_above_trop >= model_levels) THEN
-  IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+  IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
   RETURN
 END IF
 
@@ -148,7 +148,7 @@ IF (n_o3s > 0) THEN
   END WHERE
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_stratf
 END MODULE ukca_stratf_mod

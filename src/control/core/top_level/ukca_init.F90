@@ -90,7 +90,7 @@ USE umPrintMgr,            ONLY: umPrint, umMessage,                           &
 USE ereport_mod,           ONLY: ereport
 USE parkind1,              ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE errormessagelength_mod, ONLY: errormessagelength
 
 IMPLICIT NONE
@@ -109,7 +109,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_INIT'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Check the logical switches
 CALL check_settings(ukca_config, glomap_config)
@@ -329,7 +329,7 @@ ELSE
 
 END IF    ! ukca_config%_ukca_mode
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_init
 
@@ -375,7 +375,7 @@ USE errormessagelength_mod, ONLY: errormessagelength
 USE ereport_mod,           ONLY: ereport
 USE parkind1,              ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -391,7 +391,7 @@ INTEGER                            :: errcode    ! Variable passed to ereport
 
 INTEGER(KIND=vik) :: vnr_handle_2
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 errcode = 0                   ! Initialise
 
@@ -994,7 +994,7 @@ IF (ukca_config%i_ukca_chem /= i_ukca_chem_off .AND.                           &
   CALL ereport(RoutineName,errcode,cmessage)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE check_settings
 

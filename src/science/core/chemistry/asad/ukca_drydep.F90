@@ -43,7 +43,7 @@ USE asad_mod,       ONLY: ndepd, nldepd, dpd, jpdd
 USE ukca_config_specification_mod,ONLY: ukca_config
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 INTEGER, INTENT(IN) :: nlev                 ! Level number
@@ -61,7 +61,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_DRYDEP'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 IF (nlev == 1 .OR. ukca_config%l_ukca_intdd) THEN
   ! Bottom level or interactive dry deposition
@@ -85,7 +85,7 @@ ELSE
 
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_drydep
 END MODULE ukca_drydep_mod

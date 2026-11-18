@@ -11,7 +11,7 @@ MODULE inijtab_mod
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE umPrintMgr, ONLY:                                                          &
     umPrint,                                                                   &
     umMessage
@@ -145,7 +145,7 @@ USE acssr_mod, ONLY: acssr
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 USE fastjx_data, ONLY: solcyc_quanta
 USE photol_solflux_mod, ONLY: photol_solflux
@@ -224,7 +224,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='INIJTAB'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Read standard atmosphere data from string variable
 DO l=1,nin
@@ -560,7 +560,7 @@ DO jo=1,jpo3p
 
   !     End of O3 profile loop.
 END DO
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 

@@ -56,7 +56,7 @@ USE umPrintMgr,            ONLY: umPrint, umMessage, PrintStatus,              &
 
 USE parkind1,              ONLY: jpim, jprb      ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -169,7 +169,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_ONL_EMISS_INIT'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -1501,7 +1501,7 @@ END IF
 
 emissions(num_cdf_em_flds+1:num_em_flds)%l_update = .FALSE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 
@@ -1546,7 +1546,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_EMISS_SPATIAL_VARS_INIT'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 component   => glomap_variables%component
 mode        => glomap_variables%mode
@@ -1889,7 +1889,7 @@ END IF
 
 emissions(num_cdf_em_flds+1:num_em_flds)%l_update = .FALSE.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 
 RETURN
 
@@ -1957,7 +1957,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_EMISS_UPDATE_MODE'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 ! Call ukca_def_mode_emiss to obtain emission mask, mode fraction, diameter
 ! and stdev for each mode, as well as component emissions applied to (=icp).
@@ -2007,7 +2007,7 @@ DO imode = 1, nmodes
   END IF
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 
 RETURN
 END SUBROUTINE ukca_emiss_update_mode
@@ -2063,7 +2063,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_EMISS_MODE_MAP'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 nlev = emiss_levs
 
@@ -2106,7 +2106,7 @@ DO imode = 1, nmodes
   END IF  ! lmode_emiss(imode) and component(imode,icp)
 END DO  ! nmodes
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 
 RETURN
 END SUBROUTINE ukca_emiss_mode_map

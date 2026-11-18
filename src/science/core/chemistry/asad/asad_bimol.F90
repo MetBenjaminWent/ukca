@@ -84,7 +84,7 @@ USE ukca_config_specification_mod, ONLY: ukca_config
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ukca_um_legacy_mod, ONLY: exp_v, powr_v, oneover_v
 USE errormessagelength_mod, ONLY: errormessagelength
 USE ereport_mod, ONLY: ereport
@@ -155,7 +155,7 @@ LOGICAL :: stratflag(n_points)
 INTEGER                             :: errcode=0   ! Error flag (0 = OK)
 CHARACTER(LEN=errormessagelength)   :: cmessage    ! Error return message
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ALLOCATE(z1(1:n_points))
 ALLOCATE(z3(1:n_points))
@@ -528,7 +528,7 @@ IF (ALLOCATED(ratioa2b)) DEALLOCATE(ratioa2b)
 IF (ALLOCATED(ratiob2total)) DEALLOCATE(ratiob2total)
 IF (ALLOCATED(alpha)) DEALLOCATE(alpha)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_bimol
 END MODULE asad_bimol_mod

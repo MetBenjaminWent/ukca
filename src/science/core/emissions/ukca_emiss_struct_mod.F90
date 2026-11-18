@@ -122,7 +122,7 @@ SUBROUTINE ukca_em_struct_init(emissions)
 
 USE parkind1,             ONLY: jpim, jprb      ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -135,7 +135,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_EM_STRUCT_INIT'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 emissions(:)%var_name    = REPEAT(' ',80)
 emissions(:)%tracer_name = REPEAT(' ',10)
@@ -170,7 +170,7 @@ emissions(:)%from_emiss  = -1
 ! independently for each element of emissions(:). This is done in
 ! ukca_emiss_init after calling this routine.
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 RETURN
 END SUBROUTINE ukca_em_struct_init
@@ -186,7 +186,7 @@ SUBROUTINE ukca_copy_emiss_struct(srce, targ)
 
 USE parkind1,             ONLY: jpim, jprb      ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -200,7 +200,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_COPY_EMISS_STRUCT'
 
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 targ%var_name    = srce%var_name
 targ%tracer_name = srce%tracer_name
@@ -255,7 +255,7 @@ IF (ASSOCIATED(srce%diags)) THEN
   targ%diags(:,:,:) = srce%diags(:,:,:)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 
 RETURN
 END SUBROUTINE ukca_copy_emiss_struct

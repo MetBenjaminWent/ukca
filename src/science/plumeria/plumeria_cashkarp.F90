@@ -67,7 +67,7 @@ SUBROUTINE plumeria_cashkarpqs(y, dydx, x, x_out, h_in, yscal, h_out, hnext)
 USE plumeria_derivs_mod,       ONLY: plumeria_derivs
 USE parkind1,                  ONLY: jpim, jprb      ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -95,7 +95,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='PLUMERIA_CASHKARPQS'
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 h = h_in
 CALL plumeria_cashkarp(y, dydx, x, h, ytemp, yerr)
@@ -141,7 +141,7 @@ SUBROUTINE plumeria_cashkarp(y_in, dydx, x, h, yout, yerr)
 USE plumeria_derivs_mod,   ONLY: plumeria_derivs
 USE parkind1,              ONLY: jpim, jprb      ! DrHook
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -195,7 +195,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName='PLUMERIA_CASHKARP'
 ! End of header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 !Calculate y and dydx at intermediate values of x
 ytemp = y_in + b_21 * h * dydx

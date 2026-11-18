@@ -45,7 +45,7 @@ USE ukca_constants,         ONLY: pi, c_no, c_co, c_h2o, c_h2, c_h, c_oh, c_o3
 USE ukca_time_mod,          ONLY: i_day_number, i_year, days_in_year
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,               ONLY: jprb, jpim
 
 IMPLICIT NONE
@@ -265,7 +265,7 @@ REAL, PARAMETER :: o3coeffs(5,n_ace) = RESHAPE([                               &
 CHARACTER (LEN=*), PARAMETER  :: RoutineName = 'UKCA_TOP_BOUNDARY'
 INTEGER(KIND=vik) :: vnr_handle_1
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! make sure we initialize the array either if the years no longer match
 ! i.e. the job has crossed into a new year, of at the start of each leg
@@ -380,7 +380,7 @@ IF (ukca_config%i_ukca_topboundary == i_top_BC_H2O) THEN
   DEALLOCATE(toth)
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 
 END SUBROUTINE ukca_top_boundary
 

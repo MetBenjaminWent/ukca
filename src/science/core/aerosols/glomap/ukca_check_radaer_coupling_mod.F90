@@ -55,7 +55,7 @@ USE ukca_mode_setup,   ONLY: nmodes,                                           &
 USE errormessagelength_mod, ONLY: errormessagelength
 USE parkind1,          ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE ereport_mod,       ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint
 
@@ -84,7 +84,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName =                                   &
 
 CHARACTER(LEN=errormessagelength) :: cmessage     ! Error message
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -601,7 +601,7 @@ IF (glomap_config%l_ukca_radaer) THEN
   END IF
 END IF   ! l_ukca_radaer
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_check_radaer_coupling
 END MODULE ukca_check_radaer_coupling_mod

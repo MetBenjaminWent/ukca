@@ -69,7 +69,7 @@ USE ukca_volume_mode_mod,               ONLY:                                  &
     ukca_volume_mode
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -155,7 +155,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='PREPARE_FIELDS_FOR_RADAER_OPENMP'
 INTEGER(KIND=vik) :: vnr_handle_1
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialise dummy fields to zero
 dummy_acc_sol_du_1d(:) = 0.0
@@ -200,7 +200,7 @@ CALL ukca_volume_mode( glomap_variables_climatology, n_points, nd, md, mdt,    &
                        t_theta_levels_1d, p_theta_levels_1d, q_1d,             &
                        mdwat, wvol, wetdp, rhopar, pvol, pvol_wat )
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE prepare_fields_for_radaer_openmp
 END MODULE prepare_fields_for_radaer_openmp_mod

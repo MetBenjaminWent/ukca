@@ -11,7 +11,7 @@ MODULE acsbrcl_mod
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 
@@ -41,7 +41,7 @@ SUBROUTINE acsbrcl(temp,jpwav,wavenm,abrcl)
 USE ukca_config_constants_mod, ONLY: boltzmann
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -79,7 +79,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSBRCL'
 
 
 !     Check that temperature is in range.
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 tc = temp
 tc=MIN(tc, 300.0)
 tc=MAX(tc, 200.0)
@@ -94,7 +94,7 @@ DO jw = 60,136
     + a2*SQRT(tant)*EXP(-b2*tant*(LOG(c2/lam))**2.0)                           &
     + a3*SQRT(tant)*EXP(-b3*tant*(LOG(c3/lam))**2.0)
 END DO
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE acsbrcl

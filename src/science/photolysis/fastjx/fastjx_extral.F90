@@ -83,7 +83,7 @@ SUBROUTINE fastjx_extral(dtaux,l1x,l2x,nx,jtaumx,atau,atau0, jxtra)
 USE ereport_mod,          ONLY: ereport
 USE umPrintMgr, ONLY: umMessage, umPrint, PrintStatus, PrStatus_Oper
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 USE errormessagelength_mod, ONLY: errormessagelength
 
@@ -121,7 +121,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='FASTJX_EXTRAL'
 ! **************************************************************
 ! End of Header
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Set arrays to 0
 ttau(:)  = 0.0e0
@@ -183,7 +183,7 @@ DO l2 = l2x,1,-1
   END IF
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE fastjx_extral
 END MODULE fastjx_extral_mod

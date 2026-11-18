@@ -11,7 +11,7 @@ MODULE ludcmp_mod
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 
@@ -38,7 +38,7 @@ SUBROUTINE ludcmp(a,n,np,indx,d)
 USE ereport_mod, ONLY: ereport
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 USE errormessagelength_mod, ONLY: errormessagelength
 IMPLICIT NONE
@@ -72,7 +72,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='LUDCMP'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 d=1.0
 DO i=1,n
   aamax=0.0
@@ -133,7 +133,7 @@ DO j=1,n
   END IF
 END DO
 IF (a(n,n) == 0.0) a(n,n)=var_tiny
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ludcmp
 END MODULE ludcmp_mod

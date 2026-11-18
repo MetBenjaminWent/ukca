@@ -132,7 +132,7 @@ USE ukca_config_specification_mod,  ONLY: glomap_config, glomap_variables,     &
 
 USE ereport_mod,                    ONLY: ereport
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1,                       ONLY: jprb, jpim
 USE umPrintMgr,                     ONLY: umPrint
 
@@ -230,7 +230,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_PRIM_SS'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Caution - pointers to TYPE glomap_variables%
 !           have been included here to make the code easier to read
@@ -392,7 +392,7 @@ DO jv = 1,nbins
   END IF     ! if drhi(jv) > cutoff
 END DO      ! jv = 1,nbins
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_prim_ss
 END MODULE ukca_prim_ss_mod

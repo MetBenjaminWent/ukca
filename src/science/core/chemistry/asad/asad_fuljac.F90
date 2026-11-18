@@ -92,7 +92,7 @@ USE asad_mod,        ONLY: cdt, ctype, deriv, dpd, dpw,                        &
                            jpspec, jpcspf
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -124,7 +124,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_FULJAC'
 
 !
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 deltt=1.0/cdt
 !
 fj = 0.0
@@ -267,7 +267,7 @@ DO j=1,jpcspf
   ! filter f earlier!
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_fuljac
 END MODULE asad_fuljac_mod

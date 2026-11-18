@@ -53,7 +53,7 @@ USE ukca_um_legacy_mod,  ONLY: log_v, exp_v, powr_v, l_glomap_clim_radaer
 USE ukca_constants,      ONLY: mmsul
 USE parkind1,            ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 USE ukca_config_specification_mod, ONLY: glomap_config
 
@@ -127,7 +127,7 @@ REAL :: tmp2_out(nbox)
 REAL :: wts_m40(nbox)
 REAL :: tmp4(nbox)
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Loop around all the boxes
 DO jl=1,nbox
@@ -237,7 +237,7 @@ DO jl=1,nbox
 END DO  ! end loop around boxes
 
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_vapour
 END MODULE ukca_vapour_mod

@@ -55,7 +55,7 @@ MODULE ukca_mode_setup
 ! ---------------------------------------------------------------------|
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 USE parkind1, ONLY: jprb, jpim
 USE umPrintMgr, ONLY: umPrint, umMessage
 USE ukca_constants, ONLY: pi
@@ -341,7 +341,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_ALLCP_4MODE'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 glomap_variables_local%ncp = 6
 ncp = glomap_variables_local%ncp
@@ -504,7 +504,7 @@ DO imode=1,nmodes
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE ukca_mode_allcp_4mode
 
@@ -544,7 +544,7 @@ INTEGER(KIND=vik) :: vnr_handle_2
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_SUSS_4MODE'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_2, ModuleName//':'//RoutineName)
 
 glomap_variables_local%ncp = 6
 ncp = glomap_variables_local%ncp
@@ -707,7 +707,7 @@ DO imode=1,nmodes
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_2)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_2)
 RETURN
 END SUBROUTINE ukca_mode_suss_4mode
 
@@ -746,7 +746,7 @@ INTEGER(KIND=vik) :: vnr_handle_3
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_SUSSBCOCDU_4MODE'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_3, ModuleName//':'//RoutineName)
 
 glomap_variables_local%ncp = 6
 ncp = glomap_variables_local%ncp
@@ -910,7 +910,7 @@ DO imode=1,nmodes
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_3)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_3)
 RETURN
 END SUBROUTINE ukca_mode_sussbcocdu_4mode
 
@@ -949,7 +949,7 @@ INTEGER(KIND=vik) :: vnr_handle_4
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_SUSSBCOCDU_7MODE'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_4, ModuleName//':'//RoutineName)
 
 glomap_variables_local%ncp = 6
 ncp = glomap_variables_local%ncp
@@ -1112,7 +1112,7 @@ DO imode=1,nmodes
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_4)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_4)
 RETURN
 END SUBROUTINE ukca_mode_sussbcocdu_7mode
 
@@ -1152,7 +1152,7 @@ INTEGER(KIND=vik) :: vnr_handle_5
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_SUSSBCOC_4MODE'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_5, ModuleName//':'//RoutineName)
 
 glomap_variables_local%ncp = 6
 ncp = glomap_variables_local%ncp
@@ -1316,7 +1316,7 @@ DO imode=1,nmodes
 END DO
 
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_5)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_5)
 RETURN
 END SUBROUTINE ukca_mode_sussbcoc_4mode
 
@@ -1356,7 +1356,7 @@ INTEGER(KIND=vik) :: vnr_handle_6
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_SUSSBCOC_5MODE'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_6, ModuleName//':'//RoutineName)
 
 glomap_variables_local%ncp = 6
 ncp = glomap_variables_local%ncp
@@ -1519,7 +1519,7 @@ DO imode=1,nmodes
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_6)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_6)
 RETURN
 END SUBROUTINE ukca_mode_sussbcoc_5mode
 
@@ -1558,7 +1558,7 @@ INTEGER(KIND=vik) :: vnr_handle_7
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_SUSSBCOCSO_4MODE'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_7, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_7, ModuleName//':'//RoutineName)
 
 glomap_variables_local%ncp = 6
 ncp = glomap_variables_local%ncp
@@ -1721,7 +1721,7 @@ DO imode=1,nmodes
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_7)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_7)
 RETURN
 END SUBROUTINE ukca_mode_sussbcocso_4mode
 
@@ -1761,7 +1761,7 @@ INTEGER(KIND=vik) :: vnr_handle_8
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_SUSSBCOCSO_5MODE'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_8, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_8, ModuleName//':'//RoutineName)
 
 glomap_variables_local%ncp = 6
 ncp = glomap_variables_local%ncp
@@ -1925,7 +1925,7 @@ DO imode=1,nmodes
 END DO
 
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_8)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_8)
 RETURN
 END SUBROUTINE ukca_mode_sussbcocso_5mode
 
@@ -1964,7 +1964,7 @@ INTEGER(KIND=vik) :: vnr_handle_9
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_DUONLY_2MODE'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_9, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_9, ModuleName//':'//RoutineName)
 
 glomap_variables_local%ncp = 6
 ncp = glomap_variables_local%ncp
@@ -2126,7 +2126,7 @@ DO imode=1,nmodes
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_9)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_9)
 RETURN
 END SUBROUTINE ukca_mode_duonly_2mode
 
@@ -2169,7 +2169,7 @@ INTEGER(KIND=vik) :: vnr_handle_10
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_SUSSBCOCNTNH_5MODE_7CPT'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_10, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_10, ModuleName//':'//RoutineName)
 
 ! No of components
 glomap_variables_local%ncp = 9
@@ -2357,7 +2357,7 @@ DO imode=1,nmodes
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_10)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_10)
 RETURN
 END SUBROUTINE ukca_mode_sussbcocntnh_5mode_7cpt
 
@@ -2397,7 +2397,7 @@ INTEGER(KIND=vik) :: vnr_handle_11
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_SOLINSOL_6MODE'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_11, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_11, ModuleName//':'//RoutineName)
 
 ! No of components
 glomap_variables_local%ncp = 6
@@ -2576,7 +2576,7 @@ DO imode=1,nmodes
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_11)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_11)
 RETURN
 END SUBROUTINE ukca_mode_solinsol_6mode
 
@@ -2619,7 +2619,7 @@ INTEGER(KIND=vik) :: vnr_handle_12
 CHARACTER(LEN=*), PARAMETER ::                                                 &
   RoutineName='UKCA_MODE_SUSSBCOCDUNTNH_8MODE_8CPT'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_12, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_12, ModuleName//':'//RoutineName)
 
 ! No of components
 glomap_variables_local%ncp = 9
@@ -2806,7 +2806,7 @@ DO imode=1,nmodes
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_12)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_12)
 RETURN
 END SUBROUTINE ukca_mode_sussbcocduntnh_8mode_8cpt
 
@@ -2849,7 +2849,7 @@ INTEGER(KIND=vik) :: vnr_handle_13
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_SUSSBCOCDUMP_8MODE'
 
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_13, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_13, ModuleName//':'//RoutineName)
 
 ! No of components
 glomap_variables_local%ncp = 10
@@ -3022,7 +3022,7 @@ DO imode=1,nmodes
   END DO
 END DO
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_13)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_13)
 RETURN
 END SUBROUTINE ukca_mode_sussbcocdump_8mode
 
@@ -3047,7 +3047,7 @@ INTEGER(KIND=vik) :: vnr_handle_14
 
 CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_MODE_ALLOCATE_CTL_VARS'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_14, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_14, ModuleName//':'//RoutineName)
 
 IF (.NOT. ALLOCATED(glomap_variables_local%component_choice))                  &
           ALLOCATE( glomap_variables_local%component_choice(ncp))
@@ -3070,7 +3070,7 @@ IF (.NOT. ALLOCATED(glomap_variables_local%mfrac_0))                           &
 IF (.NOT. ALLOCATED(glomap_variables_local%component))                         &
           ALLOCATE( glomap_variables_local%component(nmodes,ncp))
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_14)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_14)
 RETURN
 END SUBROUTINE ukca_mode_allocate_ctl_vars
 

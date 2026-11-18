@@ -11,7 +11,7 @@ MODULE acsccl4_mod
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 
@@ -51,7 +51,7 @@ SUBROUTINE acsccl4(t,jpwav,wavenm,accl4)
 
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 IMPLICIT NONE
 
 ! Subroutine interface
@@ -90,7 +90,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ACSCCL4'
 
 
 !     Check that temperature is in range.
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 tc = t
 IF ( tc > 300.0 ) tc = 300.0
 IF ( tc < 210.0 ) tc = 210.0
@@ -112,7 +112,7 @@ DO jw = 57 , 79
 
   !     End of the wavelength loop.
 END DO
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 
 END SUBROUTINE acsccl4

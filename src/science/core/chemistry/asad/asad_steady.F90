@@ -79,7 +79,7 @@ USE asad_mod,               ONLY:  deriv, y, rk, peps,                         &
                                    o3p_in_ss, n_in_ss, h_in_ss
 USE parkind1, ONLY: jprb, jpim
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 
 IMPLICIT NONE
@@ -113,7 +113,7 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='ASAD_STEADY'
 
 !
 ! Set up loops correctly
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! Initialise DERIV this timestep, first done in ASAD_INIT
 deriv(:,:,:) = 1.0
@@ -317,7 +317,7 @@ IF (h_in_ss) THEN
   END WHERE
 END IF
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE asad_steady
 END MODULE asad_steady_mod

@@ -109,7 +109,7 @@ USE ukca_mode_setup,                 ONLY:                                     &
     nmodes_list_sussbcoc_5mode
 
 USE vernier_mod, ONLY: vernier_start, vernier_stop, vik
-USE vernier_timing_mod, ONLY: LPROF_UKCA
+USE vernier_timing_mod, ONLY: lprof_ukca
 
 IMPLICIT NONE
 
@@ -134,7 +134,7 @@ INTEGER(KIND=vik) :: vnr_handle_1
 
 CHARACTER(LEN=*), PARAMETER   :: RoutineName='GLOMAP_CLIM_CALC_DRYDIAM'
 
-IF (LPROF_UKCA) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
+IF (lprof_ukca) CALL vernier_start(vnr_handle_1, ModuleName//':'//RoutineName)
 
 ! This is not deallocated until ukca_activate
 IF (.NOT. ALLOCATED(drydiam))                                                  &
@@ -214,7 +214,7 @@ IF (ALLOCATED(mdt))                 DEALLOCATE(mdt)
 IF (ALLOCATED(md))                  DEALLOCATE(md)
 IF (ALLOCATED(nd))                  DEALLOCATE(nd)
 
-IF (LPROF_UKCA) CALL vernier_stop(vnr_handle_1)
+IF (lprof_ukca) CALL vernier_stop(vnr_handle_1)
 RETURN
 END SUBROUTINE glomap_clim_calc_drydiam
 
